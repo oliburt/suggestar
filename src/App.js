@@ -1,24 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
 import './App.css';
+import {routes} from './config/routes';
+import { Route } from "react-router-dom";
+import { Message, Container } from 'semantic-ui-react';
+import Navbar from './components/Navbar';
+import API from "./adapters/API";
 
-function App() {
+
+const App = props => {
+  const [user, setUser] = useState(null);
+
+  const login = user => {
+    setUser(user)
+    props.history.push('/')
+  }
+
+  useEffect(() => {
+    API.validateUser().then(user => user.id && setUser(user))
+  }, []);
+
+
+  const notFoundMessage = () => <Message negative>Not Found</Message>
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar user={user} />
+      <Container>
+        {
+          routes.map(route => (
+            <Route
+              key={route.path}
+              exact
+              path={route.path}
+              component={routerProps => route.component ? (
+                <route.component
+                  {...routerProps}
+                  login={login}
+                />
+              ) : (
+                notFoundMessage()
+              )}
+            />
+          ))
+        }
+      </Container>
     </div>
   );
 }
