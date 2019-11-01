@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Message } from "semantic-ui-react";
 import API from "../../adapters/API";
 
 export class Login extends Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    errors: null
   };
 
   handleChange = e =>
@@ -15,27 +16,33 @@ export class Login extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const {
-      email,
-      password
-    } = this.state;
+    const { email, password } = this.state;
     API.login({
       email,
       password
     }).then(user => {
-        if (user) {
-            this.props.login(user);
-        } else {
-            console.log(user)
-        }
+      if (user.errors) {
+        this.setState({ errors: user.errors });
+      } else {
+        this.props.login(user);
+      }
     });
   };
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, errors } = this.state;
     return (
       <>
         <h1>Login</h1>
+        {errors ? (
+          <Message negative>
+            <ul>
+              {errors.map(error => (
+                <li>{error}</li>
+              ))}
+            </ul>
+          </Message>
+        ) : null}
         <Form onSubmit={this.handleSubmit}>
           <Form.Input
             label="Email"
