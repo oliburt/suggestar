@@ -2,6 +2,7 @@ const API_ENDPOINT = "http://localhost:3000/api/v1";
 const LOGIN_URL = `${API_ENDPOINT}/login`;
 const REGISTER_URL = `${API_ENDPOINT}/register`;
 const VALIDATE_URL = `${API_ENDPOINT}/validate`;
+const USER_URL = id => `${API_ENDPOINT}/users/${id}`
 
 const jsonHeaders = (more = {}) => ({
   "Content-Type": "application/json",
@@ -50,7 +51,7 @@ const register = userDetails =>
       if (userDetails.token) {
         localStorage.setItem("token", userDetails.token);
       }
-      return userDetails.user;
+      return userDetails.user || userDetails;
     })
     .catch(handleError);
 
@@ -76,13 +77,13 @@ const login = userDetails =>
     method: "POST",
     headers: jsonHeaders(),
     body: JSON.stringify({ user: userDetails })
-  })
+  })    
     .then(handleServerResponse)
     .then(userDetails => {
       if (userDetails.token) {
         localStorage.setItem("token", userDetails.token);
       }
-      return userDetails.user;
+      return userDetails.user || userDetails;
     })
     .catch(handleError);
 
@@ -90,9 +91,19 @@ const logout = () => {
   localStorage.removeItem("token");
 };
 
+const updateUser = (userDetails, id) => {
+    let config = {
+        method: 'PATCH',
+        headers: jsonHeaders(),
+        body: JSON.stringify({ user: userDetails })
+    }
+    return fetch(USER_URL(id), config).then(handleServerResponse).catch(handleError)
+}
+
 export default {
   register,
   validateUser,
   logout,
-  login
+  login,
+  updateUser
 };

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Button, Message } from "semantic-ui-react";
+import { Form, Button, Message, Header } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import API from "../adapters/API";
 
@@ -7,20 +7,21 @@ export class UserEdit extends Component {
   state = {
     email: "",
     password: "",
-    password_confirmation: "",
     first_name: "",
     last_name: "",
     errors: null
   };
 
   componentDidMount() {
-      if (!this.props.isAuthenticated) {
-          this.props.history.push('/')
-      } else {
-          API.getUserDetails().then(console.log)
+    if (this.props.isAuthenticated === false) {
+      this.props.history.push("/");
+    } else {
+      if (this.props.user) {
+        const { email, first_name, last_name } = this.props.user;
+        this.setState({ email, first_name, last_name });
       }
+    }
   }
-  
 
   handleChange = e =>
     this.setState({
@@ -29,47 +30,37 @@ export class UserEdit extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const {
-      email,
-      password,
-      password_confirmation,
-      first_name,
-      last_name
-    } = this.state;
-    // API.register({ email, password, password_confirmation, first_name, last_name })
-    //     .then(user => {
-    //         if (user.errors) {
-    //             this.setState({ registrationErrors: user.errors });
-    //           } else {
-    //             this.props.login(user);
-    //           }
-    //     })
-
-    
+    const { email, password, first_name, last_name } = this.state;
+    API.updateUser(
+      { email, password, first_name, last_name },
+      this.props.user.id
+    ).then(user => {
+      if (user.errors) {
+        this.setState({ errors: user.errors });
+      } else {
+        this.props.updateUser(user);
+      }
+    });
   };
 
   render() {
-    const {
-      email,
-      password,
-      password_confirmation,
-      first_name,
-      last_name,
-      errors
-    } = this.state;
+    const { email, password, first_name, last_name, errors } = this.state;
     return (
       <>
-        <h1>Edit Details Below</h1>
+        <Header as="h1">Edit Details Below</Header>
         {errors ? (
           <Message negative>
             <ul>
               {errors.map(error => (
-                <li>{error}</li>
+                <li key={error}>{error}</li>
               ))}
             </ul>
           </Message>
         ) : null}
-        <Form onSubmit={this.handleSubmit}>
+        <Form
+          onSubmit={this.handleSubmit}
+          loading={this.props.user ? false : true}
+        >
           <Form.Input
             label={"First Name"}
             placeholder="First Name"
@@ -94,6 +85,9 @@ export class UserEdit extends Component {
             value={email}
             onChange={this.handleChange}
           />
+
+          <Header as="h3">Enter Your Password to Confirm Changes</Header>
+
           <Form.Input
             label={"Password"}
             placeholder="Password"
@@ -102,16 +96,14 @@ export class UserEdit extends Component {
             id="password"
             onChange={this.handleChange}
           />
-          <Form.Input
-            label={"Password Confirmation"}
-            placeholder="Password Confirmation"
-            type="password"
-            value={password_confirmation}
-            id="password_confirmation"
-            onChange={this.handleChange}
-          />
+
           <Button type="submit">Submit</Button>
-          <Button as={Link} to={`/users/${this.props.user ? this.props.user.id : ''}`}>Back</Button>
+          <Button
+            as={Link}
+            to={`/users/${this.props.user ? this.props.user.id : ""}`}
+          >
+            Back
+          </Button>
         </Form>
       </>
     );

@@ -19,6 +19,11 @@ const App = props => {
     props.history.push('/')
   }
 
+  const updateUser = user => {
+    setUser(user)
+    props.history.push(`/users/${user.id}`)
+  }
+
   const logout = () => {
     API.logout()
     setUser(null)
@@ -61,6 +66,7 @@ const App = props => {
                     user={user}
                     isAuthenticated={isAuthenticated}
                     setIsAuthenticated={setIsAuthenticated}
+                    updateUser={updateUser}
                   />
                 ) : (
                   notFoundMessage()

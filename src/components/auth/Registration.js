@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Button, Message } from "semantic-ui-react";
+import { Form, Button, Message, Header } from "semantic-ui-react";
 import API from "../../adapters/API";
 
 export class Registration extends Component {
@@ -49,12 +49,12 @@ export class Registration extends Component {
     } = this.state;
     return (
       <>
-        <h1>Register</h1>
+      <Header as='h1'>Register</Header>
         {registrationErrors ? (
           <Message negative>
             <ul>
               {registrationErrors.map(error => (
-                <li>{error}</li>
+                <li key={error}>{error}</li>
               ))}
             </ul>
           </Message>

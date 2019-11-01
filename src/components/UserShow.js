@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { Header, Button, Icon } from "semantic-ui-react";
+import { Header, Button } from "semantic-ui-react";
 
 const UserShow = ({user}) => {
     return (
@@ -12,6 +12,8 @@ const UserShow = ({user}) => {
             <ul>
                 {user.venues.map(v => <li>{v.name}</li>)}
             </ul>
+            <Button as={Link} to="/venues/new">New Venue</Button>
+
         </div>
     );
 }

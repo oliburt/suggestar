@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Button, Message } from "semantic-ui-react";
+import { Form, Button, Message, Header } from "semantic-ui-react";
 import API from "../../adapters/API";
 
 export class Login extends Component {
@@ -33,12 +33,13 @@ export class Login extends Component {
     const { email, password, errors } = this.state;
     return (
       <>
-        <h1>Login</h1>
+        <Header as='h1'>Login</Header>
+
         {errors ? (
           <Message negative>
             <ul>
               {errors.map(error => (
-                <li>{error}</li>
+                <li key={error}>{error}</li>
               ))}
             </ul>
           </Message>
