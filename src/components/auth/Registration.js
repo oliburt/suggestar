@@ -9,7 +9,6 @@ export class Registration extends Component {
     password_confirmation: "",
     first_name: "",
     last_name: "",
-    registrationErrors: ""
   };
 
   handleChange = e =>
