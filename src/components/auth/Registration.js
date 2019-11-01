@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Message } from "semantic-ui-react";
 import API from "../../adapters/API";
 
 export class Registration extends Component {
@@ -9,6 +9,7 @@ export class Registration extends Component {
     password_confirmation: "",
     first_name: "",
     last_name: "",
+    registrationErrors: null
   };
 
   handleChange = e =>
@@ -27,15 +28,13 @@ export class Registration extends Component {
     } = this.state;
     API.register({ email, password, password_confirmation, first_name, last_name })
         .then(user => {
-            this.props.login(user)
+            if (user.errors) {
+                this.setState({ registrationErrors: user.errors });
+              } else {
+                this.props.login(user);
+              }
         })
-    // this.setState({
-    //     email: '',
-    //     password: '',
-    //     password_confirmation: '',
-    //     first_name: '',
-    //     last_name: ''
-    // })
+
     
   };
 
@@ -45,11 +44,21 @@ export class Registration extends Component {
       password,
       password_confirmation,
       first_name,
-      last_name
+      last_name,
+      registrationErrors
     } = this.state;
     return (
       <>
         <h1>Register</h1>
+        {registrationErrors ? (
+          <Message negative>
+            <ul>
+              {registrationErrors.map(error => (
+                <li>{error}</li>
+              ))}
+            </ul>
+          </Message>
+        ) : null}
         <Form onSubmit={this.handleSubmit}>
           <Form.Input
             label={"First Name"}
