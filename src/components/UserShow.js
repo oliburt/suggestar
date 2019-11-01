@@ -1,17 +1,19 @@
-import React from "react";
+import React from 'react';
+import { Link } from "react-router-dom";
+import { Header, Button, Icon } from "semantic-ui-react";
 
-class UserShow extends React.Component {
-  componentDidMount() {
-    if (!this.props.user) return this.props.history.push("/");
-  }
-
-  render() {
+const UserShow = ({user}) => {
     return (
-      <div>
-        {this.props.user ? this.props.user.full_name : <div>hello</div>}
-      </div>
+        <div>
+            <Header as='h1'>{user.full_name}</Header>
+            <Button as={Link} to="/users/edit">Edit</Button>
+            <p>Email: {user.email}</p>
+            <p>Venues:</p>
+            <ul>
+                {user.venues.map(v => <li>{v.name}</li>)}
+            </ul>
+        </div>
     );
-  }
 }
 
 export default UserShow;
