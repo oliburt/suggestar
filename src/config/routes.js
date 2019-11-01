@@ -1,7 +1,8 @@
 import Home from '../components/Home';
 import Registration from '../components/auth/Registration'
 import Login from '../components/auth/Login'
-import UserShow from '../components/UserShow'
+import UserEdit from '../components/UserEdit';
+import UserShowContainer from '../containers/UserShowContainer'
 import React from "react";
 
 
@@ -10,8 +11,18 @@ const Logout = props => {
     return <></>
 }
 
+export const otherRoutes = [
+    {
+        title: 'UserEdit',
+        exact: true,
+        path: '/users/edit',
+        icon: 'edit',
+        component: UserEdit
+    },
+]
 
-export const routes = [
+
+export const menuRoutes = [
     {
         title: 'Home',
         exact: true,
@@ -38,7 +49,7 @@ export const routes = [
         exact: true,
         path: '/users/:id',
         icon: 'user',
-        component: UserShow
+        component: UserShowContainer
     },
     {
         title: "Logout",
@@ -46,7 +57,7 @@ export const routes = [
         path: '/logout',
         icon: 'sign out',
         component: Logout
-    },
-    
-
+    },    
 ]
+
+export const allRoutes = otherRoutes.concat(menuRoutes)
