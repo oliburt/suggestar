@@ -2,6 +2,7 @@ import Home from '../components/Home';
 import Registration from '../components/auth/Registration'
 import Login from '../components/auth/Login'
 import UserEdit from '../components/UserEdit';
+import NewVenueForm from '../components/NewVenueForm';
 import UserShowContainer from '../containers/UserShowContainer'
 import React from "react";
 
@@ -50,6 +51,13 @@ export const menuRoutes = [
         path: '/users/:id',
         icon: 'user',
         component: UserShowContainer
+    },
+    {
+        title: "New Venue",
+        exact: true,
+        path: '/venue/new',
+        icon: 'plus',
+        component: NewVenueForm
     },
     {
         title: "Logout",
