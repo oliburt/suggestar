@@ -1,6 +1,6 @@
 import React from "react";
 import { Sidebar, Menu, Icon } from "semantic-ui-react";
-import {routes} from "../config/routes";
+import {menuRoutes} from "../config/routes";
 import { NavLink } from "react-router-dom";
 
 const SideBarMenu = ({ onHide, user, visible }) => {
@@ -23,7 +23,7 @@ const SideBarMenu = ({ onHide, user, visible }) => {
         visible={visible}
         width="thin"
       >
-        {filteredRoutes(routes, user).map(route => (
+        {filteredRoutes(menuRoutes, user).map(route => (
           <Menu.Item
             key={route.path}
             as={NavLink}
