@@ -34,11 +34,13 @@ const App = props => {
 
   useEffect(() => {
     API.validateUser().then(user => {
-      if (user.errors) {
+      if (user && user.errors) {
         setIsAuthenticated(false)
-      } else {
+      } else if (user && user.id) {
         setUser(user)
         setIsAuthenticated(true)
+      } else {
+        logout()
       }
     })
   }, []);
