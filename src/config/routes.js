@@ -55,7 +55,7 @@ export const menuRoutes = [
     {
         title: "New Venue",
         exact: true,
-        path: '/venue/new',
+        path: '/venues/new',
         icon: 'plus',
         component: NewVenueForm
     },
