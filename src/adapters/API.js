@@ -3,6 +3,7 @@ const LOGIN_URL = `${API_ENDPOINT}/login`;
 const REGISTER_URL = `${API_ENDPOINT}/register`;
 const VALIDATE_URL = `${API_ENDPOINT}/validate`;
 const USER_URL = id => `${API_ENDPOINT}/users/${id}`
+const VENUES_URL = `${API_ENDPOINT}/venues`
 
 const jsonHeaders = (more = {}) => ({
   "Content-Type": "application/json",
@@ -39,6 +40,15 @@ const handleServerResponse = res => {
     }
   });
 };
+
+const postVenue = venue => {
+  let config = {
+    method: "POST",
+    headers: jsonHeaders(authHeader()),
+    body: JSON.stringify({venue})
+  }
+  return fetch(VENUES_URL, config).then(handleServerResponse).catch(handleError)
+}
 
 const register = userDetails =>
   fetch(REGISTER_URL, {
@@ -105,5 +115,6 @@ export default {
   validateUser,
   logout,
   login,
-  updateUser
+  updateUser,
+  postVenue
 };
