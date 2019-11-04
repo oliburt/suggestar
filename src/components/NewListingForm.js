@@ -1,14 +1,83 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button } from "semantic-ui-react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import API from "../adapters/API";
 
-const NewListingForm = () => {
-    const [title, setTitle] = useState(null);
-    const [description, setDescription] = useState(null);
-    const [ticketURL, setTicketURL] = useState(null);
-    const [ageRestriction, setAgeRestriction] = useState(null);
+const NewListingForm = ({ user }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [ticketURL, setTicketURL] = useState("");
+  const [ageRestriction, setAgeRestriction] = useState("");
+  const [beginDateTime, setBeginDateTime] = useState(new Date());
+  const [endDateTime, setEndDateTime] = useState(new Date());
+  const [venueOptions, setVenueOptions] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [selectedVenue, setSelectedVenue] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  useEffect(() => {
+    if (user)
+      setVenueOptions(
+        user.venues.map(venue => {
+          return { key: venue.id, text: venue.name, value: venue.id };
+        })
+      );
+      if (categoryOptions.length === 0) {
+        API.getCategories().then(categories => {
+          setCategoryOptions(categories.map(category => {
+            return { key: category.id, text: category.name, value: category.id}
+          }))
+        })
+      }
+  }, [user]);
+
+  const handleBeginDateTimeChange = date => {
+    setBeginDateTime(date);
+    if (endDateTime < date) {
+      setEndDateTime(date);
+    }
+  };
+
+  const handleEndDateTimeChange = date => {
+    if (date >= beginDateTime) {
+      setEndDateTime(date);
+    } else {
+      setEndDateTime(beginDateTime);
+    }
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const listing = {
+      title,
+      description,
+      ticket_url: ticketURL,
+      age_restriction: ageRestriction,
+      begin_datetime: beginDateTime,
+      end_datetime: endDateTime
+    };
+  };
 
   return (
     <Form onSubmit={() => {}}>
+      <Form.Select
+        options={venueOptions}
+        label="Select Venue"
+        placeholder="Venue"
+        value={selectedVenue}
+        onChange={(e,data) => setSelectedVenue(data.value)}
+      />
+      <Form.Dropdown 
+        options={categoryOptions}
+        label="Select Categories (Select all that apply)"
+        placeholder="Categories"
+        value={selectedCategories}
+        onChange={(e, data) => setSelectedCategories(data.value)}        
+        fluid
+        multiple
+        selection
+      />
       <Form.Input
         placeholder="title..."
         value={title}
@@ -33,12 +102,30 @@ const NewListingForm = () => {
         name="ageRestriction"
         onChange={e => setAgeRestriction(e.target.value)}
       />
-
+      <p>Begin Date:</p>
+      <DatePicker
+        selected={beginDateTime}
+        onChange={handleBeginDateTimeChange}
+        showTimeSelect
+        timeFormat="HH:mm"
+        timeIntervals={30}
+        timeCaption="Time"
+        dateFormat="MMM d, yyyy h:mm aa"
+      />
+      <p>End Date:</p>
+      <DatePicker
+        selected={endDateTime}
+        onChange={handleEndDateTimeChange}
+        showTimeSelect
+        timeFormat="HH:mm"
+        timeIntervals={30}
+        timeCaption="Time"
+        dateFormat="MMM d, yyyy h:mm aa"
+      />
+      <br/>
       <Button type="submit">Create Venue</Button>
     </Form>
   );
 };
 
 export default NewListingForm;
-
-//     t.datetime "datetime"
