@@ -5,6 +5,7 @@ const VALIDATE_URL = `${API_ENDPOINT}/validate`;
 const USER_URL = id => `${API_ENDPOINT}/users/${id}`;
 const VENUES_URL = `${API_ENDPOINT}/venues`;
 const CATEGORIES_URL = `${API_ENDPOINT}/categories`;
+const LISTINGS_URL = `${API_ENDPOINT}/listings`;
 
 const jsonHeaders = (more = {}) => ({
   "Content-Type": "application/json",
@@ -120,7 +121,20 @@ const updateUser = (userDetails, id) => {
     .catch(handleError);
 };
 
-const getCategories = () => fetch(CATEGORIES_URL).then(res => res.json())
+const getCategories = () => fetch(CATEGORIES_URL).then(handleServerResponse).catch(handleError)
+
+const postListing = listing => {
+  let config = {
+    method: "POST",
+    headers: jsonHeaders(authHeader()),
+    body: JSON.stringify({listing, category_ids: listing.category_ids})
+  }
+  return fetch(LISTINGS_URL, config).then(handleServerResponse).catch(handleError)
+}
+
+const getListing = id => fetch(`${LISTINGS_URL}/${id}`).then(handleServerResponse).catch(handleError)
+
+
 
 export default {
   register,
@@ -130,5 +144,7 @@ export default {
   updateUser,
   postVenue,
   getVenue,
-  getCategories
+  getCategories,
+  postListing,
+  getListing
 };
