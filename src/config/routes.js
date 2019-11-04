@@ -5,6 +5,8 @@ import UserEdit from '../components/UserEdit';
 import NewVenueForm from '../components/NewVenueForm';
 import UserShowContainer from '../containers/UserShowContainer'
 import React from "react";
+import VenueShowContainer from '../containers/VenueShowContainer';
+import NewListingForm from '../components/NewListingForm';
 
 
 const Logout = props => {
@@ -12,13 +14,24 @@ const Logout = props => {
     return <></>
 }
 
-export const otherRoutes = [
+export const beforeRoutes = [
     {
         title: 'UserEdit',
         exact: true,
         path: '/users/edit',
         icon: 'edit',
         component: UserEdit
+    },
+    
+
+]
+
+export const afterRoutes = [
+    {
+        title: 'Venue Show',
+        exact: true,
+        path: '/venues/:id',
+        component: VenueShowContainer
     },
 ]
 
@@ -60,6 +73,13 @@ export const menuRoutes = [
         component: NewVenueForm
     },
     {
+        title: 'New Listing',
+        exact: true,
+        path: '/listings/new',
+        icon: 'add to calendar',
+        component: NewListingForm
+    },
+    {
         title: "Logout",
         exact: true,
         path: '/logout',
@@ -68,4 +88,4 @@ export const menuRoutes = [
     },    
 ]
 
-export const allRoutes = otherRoutes.concat(menuRoutes)
+export const allRoutes = beforeRoutes.concat(menuRoutes).concat(afterRoutes)
