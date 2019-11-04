@@ -7,6 +7,7 @@ import UserShowContainer from '../containers/UserShowContainer'
 import React from "react";
 import VenueShowContainer from '../containers/VenueShowContainer';
 import NewListingForm from '../components/NewListingForm';
+import ListingShowContainer from '../containers/ListingShowContainer';
 
 
 const Logout = props => {
@@ -32,6 +33,12 @@ export const afterRoutes = [
         exact: true,
         path: '/venues/:id',
         component: VenueShowContainer
+    },
+    {
+        title: 'Listing Show',
+        exact: true,
+        path: '/listings/:id',
+        component: ListingShowContainer
     },
 ]
 
