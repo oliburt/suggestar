@@ -7,9 +7,9 @@ const SideBarMenu = ({ onHide, user, visible }) => {
   const filteredRoutes = (routes, user) => {
     return user
       ? routes.filter(
-          route => route.title !== "Login" && route.title !== "Registration"
+          route => !route.title.match(/Login|Registration/)
         )
-      : routes.filter(route => route.title !== "Logout" && route.title !== "My Profile");
+      : routes.filter(route => !route.title.match(/Logout|My Profile|New Venue|New Listing/));
   };
 
   return (
