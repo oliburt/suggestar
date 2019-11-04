@@ -2,8 +2,8 @@ const API_ENDPOINT = "http://localhost:3000/api/v1";
 const LOGIN_URL = `${API_ENDPOINT}/login`;
 const REGISTER_URL = `${API_ENDPOINT}/register`;
 const VALIDATE_URL = `${API_ENDPOINT}/validate`;
-const USER_URL = id => `${API_ENDPOINT}/users/${id}`
-const VENUES_URL = `${API_ENDPOINT}/venues`
+const USER_URL = id => `${API_ENDPOINT}/users/${id}`;
+const VENUES_URL = `${API_ENDPOINT}/venues`;
 
 const jsonHeaders = (more = {}) => ({
   "Content-Type": "application/json",
@@ -41,14 +41,21 @@ const handleServerResponse = res => {
   });
 };
 
+const getVenue = id =>
+  fetch(`${VENUES_URL}/${id}`)
+    .then(handleServerResponse)
+    .catch(handleError);
+
 const postVenue = venue => {
   let config = {
     method: "POST",
     headers: jsonHeaders(authHeader()),
-    body: JSON.stringify({venue})
-  }
-  return fetch(VENUES_URL, config).then(handleServerResponse).catch(handleError)
-}
+    body: JSON.stringify({ venue })
+  };
+  return fetch(VENUES_URL, config)
+    .then(handleServerResponse)
+    .catch(handleError);
+};
 
 const register = userDetails =>
   fetch(REGISTER_URL, {
@@ -87,7 +94,7 @@ const login = userDetails =>
     method: "POST",
     headers: jsonHeaders(),
     body: JSON.stringify({ user: userDetails })
-  })    
+  })
     .then(handleServerResponse)
     .then(userDetails => {
       if (userDetails.token) {
@@ -102,13 +109,15 @@ const logout = () => {
 };
 
 const updateUser = (userDetails, id) => {
-    let config = {
-        method: 'PATCH',
-        headers: jsonHeaders(),
-        body: JSON.stringify({ user: userDetails })
-    }
-    return fetch(USER_URL(id), config).then(handleServerResponse).catch(handleError)
-}
+  let config = {
+    method: "PATCH",
+    headers: jsonHeaders(),
+    body: JSON.stringify({ user: userDetails })
+  };
+  return fetch(USER_URL(id), config)
+    .then(handleServerResponse)
+    .catch(handleError);
+};
 
 export default {
   register,
@@ -116,5 +125,6 @@ export default {
   logout,
   login,
   updateUser,
-  postVenue
+  postVenue,
+  getVenue
 };
