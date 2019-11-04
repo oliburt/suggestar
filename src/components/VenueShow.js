@@ -13,7 +13,7 @@ const VenueShow = ({ name, description, address, listings}) => {
             <ul>
                 {listings.map(listing => <Link to={`/listings/${listing.id}`}><li>{listing.title}</li></Link>)}
             </ul>
-            <Link to="/lisings/new"><Button>Add New Listing</Button></Link>
+            <Link to="/listings/new"><Button>Add New Listing</Button></Link>
         </div>
     );
 }
