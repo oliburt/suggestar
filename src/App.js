@@ -24,6 +24,11 @@ const App = props => {
     props.history.push(`/users/${user.id}`)
   }
 
+  const addVenueToCurrentUser = (user, venue) => setUser({
+    ...user,
+    venues: [...user.venues, venue]
+  })
+
   const logout = () => {
     API.logout()
     setUser(null)
@@ -69,6 +74,7 @@ const App = props => {
                     isAuthenticated={isAuthenticated}
                     setIsAuthenticated={setIsAuthenticated}
                     updateUser={updateUser}
+                    addVenueToCurrentUser={addVenueToCurrentUser}
                   />
                 ) : (
                   notFoundMessage()
