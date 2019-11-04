@@ -4,6 +4,7 @@ const REGISTER_URL = `${API_ENDPOINT}/register`;
 const VALIDATE_URL = `${API_ENDPOINT}/validate`;
 const USER_URL = id => `${API_ENDPOINT}/users/${id}`;
 const VENUES_URL = `${API_ENDPOINT}/venues`;
+const CATEGORIES_URL = `${API_ENDPOINT}/categories`;
 
 const jsonHeaders = (more = {}) => ({
   "Content-Type": "application/json",
@@ -119,6 +120,8 @@ const updateUser = (userDetails, id) => {
     .catch(handleError);
 };
 
+const getCategories = () => fetch(CATEGORIES_URL).then(res => res.json())
+
 export default {
   register,
   validateUser,
@@ -126,5 +129,6 @@ export default {
   login,
   updateUser,
   postVenue,
-  getVenue
+  getVenue,
+  getCategories
 };
