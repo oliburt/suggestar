@@ -14,7 +14,7 @@ class UserShowContainer extends React.Component {
   render() {
     return (
       <div>
-        {this.props.isAuthenticated ? <UserShow user={this.props.user} />: <UserPlaceHolder />}
+        {this.props.isAuthenticated ? <UserShow user={this.props.user} history={this.props.history} />: <UserPlaceHolder />}
       </div>
     );
   }
