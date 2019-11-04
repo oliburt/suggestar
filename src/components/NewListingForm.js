@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { Form, Button } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -15,6 +16,9 @@ const NewListingForm = ({ user }) => {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedVenue, setSelectedVenue] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  
+  let history = useHistory()
+  
 
   useEffect(() => {
     if (user)
@@ -55,12 +59,21 @@ const NewListingForm = ({ user }) => {
       ticket_url: ticketURL,
       age_restriction: ageRestriction,
       begin_datetime: beginDateTime,
-      end_datetime: endDateTime
-    };
+      end_datetime: endDateTime,
+      venue_id: selectedVenue,
+      category_ids: selectedCategories
+    }
+    API.postListing(listing).then(listing => {
+      if (listing && listing.id) {
+        history.push(`/listings/${listing.id}`)
+      } else {
+        console.log('todo: error handling')
+      }
+    })
   };
 
   return (
-    <Form onSubmit={() => {}}>
+    <Form onSubmit={handleSubmit}>
       <Form.Select
         options={venueOptions}
         label="Select Venue"
@@ -123,7 +136,7 @@ const NewListingForm = ({ user }) => {
         dateFormat="MMM d, yyyy h:mm aa"
       />
       <br/>
-      <Button type="submit">Create Venue</Button>
+      <Button type="submit">Create Listing</Button>
     </Form>
   );
 };
