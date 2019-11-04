@@ -4,7 +4,7 @@ import AutoComplete from "./AutoComplete";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import API from "../adapters/API";
 
-const NewVenueForm = ({history}) => {
+const NewVenueForm = ({history, addVenueToCurrentUser, user}) => {
   const [address, setAddress] = React.useState("");
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -37,7 +37,12 @@ const NewVenueForm = ({history}) => {
         longitude: coordinates.lng
     }
     API.postVenue(venue).then(venue => {
+      if (venue && venue.id) {
+        addVenueToCurrentUser(user, venue)
         history.push(`/venues/${venue.id}`)
+      } else {
+        console.log('todo: handle errors for new venue')
+      }
     })
   };
 
