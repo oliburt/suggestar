@@ -24,15 +24,21 @@ export class ListingShow extends Component {
 
         return `${day} ${month} ${year} - ${fullTime}`
     }
+
+    handleViewOnMapClick = id => {
+        this.props.setSelectedListingId(id)
+        this.props.history.push('/map')
+    }
     
     render() {
-        const { title, description, venue, categories, ticket_url, age_restriction, end_datetime, begin_datetime} = this.props
+        const { title, description, venue, categories, ticket_url, age_restriction, end_datetime, begin_datetime, id} = this.props
         const startDate = new Date(begin_datetime)
         const endDate = new Date(end_datetime)
 
         return (
             <div>
                 <Header as='h1' >{title}</Header>
+                <span style={{color: 'blue'}} onClick={() => this.handleViewOnMapClick(id)}>>>View on Map</span>
                 <Header as='h3'>Description</Header>
                 <p>{description}</p>
                 
