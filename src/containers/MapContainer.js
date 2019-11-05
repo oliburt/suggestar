@@ -3,7 +3,7 @@ import ShowMap from "../components/ShowMap";
 
 export class MapContainer extends Component {
   render() {
-    const { listings, location } = this.props;
+    const { listings, location, selectedListingId, setSelectedListingId } = this.props;
     return (
       <div style={{width: '90vw', height: '90vh', maxWidth: '1127px'}}>
         { location[0] && location[1] ? 
@@ -14,6 +14,8 @@ export class MapContainer extends Component {
           mapElement={<div style={{ height: "100%" }} />}
           location={location}
           listings={listings}
+          setSelectedListingId={setSelectedListingId}
+          selectedListingId={selectedListingId}
         /> : 
         
         <div>Loading</div>
