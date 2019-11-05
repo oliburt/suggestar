@@ -134,7 +134,9 @@ const postListing = listing => {
 
 const getListing = id => fetch(`${LISTINGS_URL}/${id}`).then(handleServerResponse).catch(handleError)
 
-
+const getNearbyListings = (latitude, longitude, radius) => {
+  return fetch(`${LISTINGS_URL}?latitude=${latitude}&longitude=${longitude}&radius=${radius}`).then(handleServerResponse).catch(handleError)
+}
 
 export default {
   register,
@@ -146,5 +148,6 @@ export default {
   getVenue,
   getCategories,
   postListing,
-  getListing
+  getListing,
+  getNearbyListings
 };
