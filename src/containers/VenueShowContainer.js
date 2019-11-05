@@ -13,13 +13,16 @@ class VenueShowContainer extends React.Component {
     const id = this.props.match.params.id
     API.getVenue(id).then(venue => {
       if (venue && venue.id) {
-        this.setState({venue})
+        this.setState({venue}, () => {
+          this.getAddress(venue)
+        })
       } else {
         console.log("error")
         console.log("Server response", venue)
       }
-      return venue
-    }).then(this.getAddress)
+      // return venue
+    })
+    // .then(this.getAddress)
     
   }
 
