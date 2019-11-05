@@ -29,11 +29,9 @@ const Home = ({ listings, location }) => {
   const renderCards = listings =>
     listings.map(listing => <ListingCard key={listing.id} {...listing} distance={getDistance(listing, location)} />);
 
-  return listings.length > 0 ? (
+  return (
     <Card.Group centered>{renderCards(listings)}</Card.Group>
-  ) : (
-    <UserPlaceHolder />
-  );
+  )
 };
 
 export default Home;
