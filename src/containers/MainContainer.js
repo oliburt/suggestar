@@ -37,13 +37,13 @@ class MainContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextState.selectedListingId === -1) return false
-    return true
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (nextState.selectedListingId === -1) return false
+  //   return true
+  // }
   
 
-  setSelectedListingId = id => this.setState({selectedListingId: id})
+  setSelectedListingId = id => (id ? this.setState({selectedListingId: id}) : this.state.selectedListingId = id)
 
   setSideBarVisible = val => this.setState({ sideBarVisible: val });
 
