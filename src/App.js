@@ -1,16 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import {allRoutes} from './config/routes';
-import { Route, Switch } from "react-router-dom";
-import { Message, Container } from 'semantic-ui-react';
-import Navbar from './components/Navbar';
 import API from "./adapters/API";
-import SideBarMenu from './components/SideBarMenu';
+import MainContainer from './containers/MainContainer';
 
 
 const App = props => {
   const [user, setUser] = useState(null);
-  const [sideBarVisible, setSideBarVisible] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(null)
 
   const login = user => {
@@ -35,7 +30,6 @@ const App = props => {
     props.history.push('/')
   }
 
-  const handleMenuClick = () => setSideBarVisible(!sideBarVisible)
 
   useEffect(() => {
     API.validateUser().then(user => {
@@ -51,39 +45,10 @@ const App = props => {
   }, []);
 
 
-  const notFoundMessage = () => <Message negative>Not Found</Message>
 
   return (
     <div className="App">
-      <Navbar user={user} handleMenuClick={handleMenuClick}/>
-      <Container>
-        <SideBarMenu onHide={setSideBarVisible} visible={sideBarVisible} user={user}/>
-        <Switch>
-          {
-            allRoutes.map(route => (
-              <Route
-                key={route.path}
-                exact={route.exact}
-                path={route.path}
-                component={routerProps => route.component ? (
-                  <route.component
-                    {...routerProps}
-                    login={login}
-                    logout={logout}
-                    user={user}
-                    isAuthenticated={isAuthenticated}
-                    setIsAuthenticated={setIsAuthenticated}
-                    updateUser={updateUser}
-                    addVenueToCurrentUser={addVenueToCurrentUser}
-                  />
-                ) : (
-                  notFoundMessage()
-                )}
-              />
-            ))
-          }
-        </Switch>
-      </Container>
+      <MainContainer user={user} login={login} logout={logout} updateUser={updateUser} isAuthenticated={isAuthenticated} addVenueToCurrentUser={addVenueToCurrentUser} setIsAuthenticated={setIsAuthenticated}/>
     </div>
   );
 }
