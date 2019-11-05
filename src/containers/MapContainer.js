@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ShowMap from "../components/ShowMap";
 
 export class MapContainer extends Component {
+  
   render() {
     const { listings, location, selectedListingId, setSelectedListingId } = this.props;
     return (
