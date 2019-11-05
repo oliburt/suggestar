@@ -4,12 +4,14 @@ import Home from '../components/Home';
 
 export class HomeContainer extends Component {
     state = {
-        listings: []
+        listings: [],
+        location: []
     }
 
     componentDidMount() {
         if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition(position => {
+                this.setState({location: [position.coords.latitude, position.coords.longitude]})
                 API.getNearbyListings(position.coords.latitude, position.coords.longitude, 2000).then(listings => {
                     if (listings && listings[0].errors) {
                         console.log('errors:', listings[0].errors)
@@ -31,7 +33,7 @@ export class HomeContainer extends Component {
         const filteredListings = this.filterListings(this.state.listings)
         return (
             <div>
-                <Home listings={filteredListings} />
+                <Home listings={filteredListings} location={this.state.location}/>
             </div>
         );
     }
