@@ -1,10 +1,15 @@
 import React from "react";
 import { Card, Icon } from "semantic-ui-react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
-const ListingCard = ({ title, categories, description, id, venue }) => {
+const ListingCard = ({ title, categories, description, id, venue, distance }) => {
   const history = useHistory()
+  
+  const convertDistance = (distance) => {
+      return (distance/1000).toFixed(1)
+  }
+  
   return (
     <Card>
       <Card.Content onClick={() => history.push(`/listings/${id}`)}>
@@ -12,11 +17,9 @@ const ListingCard = ({ title, categories, description, id, venue }) => {
         <Card.Meta>{categories.map(c => c.name).join(", ")}</Card.Meta>
         <Card.Description>{description}</Card.Description>
       </Card.Content>
-      <Card.Content extra>
-        <Link to={`/venues/${venue.id}`}>
+      <Card.Content extra onClick={() => history.push(`/venues/${venue.id}`)}>
           <Icon name="map pin" />
-          {venue.name}
-        </Link>
+          {venue.name} - {convertDistance(distance)}km
       </Card.Content>
     </Card>
   );
