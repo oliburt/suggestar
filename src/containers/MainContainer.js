@@ -11,8 +11,8 @@ class MainContainer extends Component {
     sideBarVisible: false,
     location: [],
     listings: [],
-    selectedVenue: null
-  };
+    selectedListingId: null
+    };
 
   componentDidMount() {
     if ("geolocation" in navigator) {
@@ -36,6 +36,14 @@ class MainContainer extends Component {
       console.log("geolocation not available");
     }
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.selectedListingId === -1) return false
+    return true
+  }
+  
+
+  setSelectedListingId = id => this.setState({selectedListingId: id})
 
   setSideBarVisible = val => this.setState({ sideBarVisible: val });
 
@@ -81,7 +89,8 @@ class MainContainer extends Component {
                       addVenueToCurrentUser={addVenueToCurrentUser}
                       listings={this.state.listings}
                       location={this.state.location}
-                      selectedVenue={this.state.selectedVenue}
+                      selectedListingId={this.state.selectedListingId}
+                      setSelectedListingId={this.setSelectedListingId}
                     />
                   ) : (
                     this.notFoundMessage()
