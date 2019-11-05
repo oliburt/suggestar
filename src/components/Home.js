@@ -1,13 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Card } from "semantic-ui-react";
+import ListingCard from './ListingCard';
+import UserPlaceHolder from './UserPlaceHolder';
 
-export class Home extends Component {
-    render() {
-        return (
-            <div>
-                <p>Home</p>
-            </div>
-        );
-    }
+
+const Home = ({listings}) => {
+    const renderCards = listings => listings.map(listing => <ListingCard key={listing.id} {...listing} />)
+    
+    return (
+        
+            (listings.length > 0) ? 
+            <Card.Group centered>
+                {renderCards(listings)}
+            </Card.Group> :
+            <UserPlaceHolder/>
+    );
 }
 
 export default Home;
