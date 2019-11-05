@@ -29,7 +29,7 @@ export class ListingShow extends Component {
         const { title, description, venue, categories, ticket_url, age_restriction, end_datetime, begin_datetime} = this.props
         const startDate = new Date(begin_datetime)
         const endDate = new Date(end_datetime)
-        console.log(startDate.get)
+
         return (
             <div>
                 <Header as='h1' >{title}</Header>
@@ -52,8 +52,6 @@ export class ListingShow extends Component {
                 <Header as='h3'>Venue</Header>
                 <p>{venue.title} - Todo Venue Card</p>
                 <Link to={`/venues/${venue.id}`}>Click Here to see Venue</Link>
-                
-
 
             </div>
         );
