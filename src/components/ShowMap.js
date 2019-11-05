@@ -12,7 +12,7 @@ import mapStyles from "../styles/mapStyles";
 const ShowMap = withGoogleMap(
   ({ listings, location, selectedListingId, setSelectedListingId }) => {
     const [selectedListing, setSelectedListing] = useState(
-      selectedListingId === -1 ? null : listings.find(l => l.id === selectedListingId)
+      listings.find(l => l.id === selectedListingId)
     );
 
     return (
@@ -46,7 +46,7 @@ const ShowMap = withGoogleMap(
             }}
             onCloseClick={() => {
               setSelectedListing(null);
-              setSelectedListingId(-1);
+              setSelectedListingId(null);
             }}
           >
             <div>
