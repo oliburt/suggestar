@@ -1,4 +1,4 @@
-import Home from '../components/Home';
+import HomeContainer from '../containers/HomeContainer';
 import Registration from '../components/auth/Registration'
 import Login from '../components/auth/Login'
 import UserEdit from '../components/UserEdit';
@@ -49,7 +49,7 @@ export const menuRoutes = [
         exact: true,
         path: '/',
         icon: 'home',
-        component: Home
+        component: HomeContainer
     },
     {
         title: "Login",
