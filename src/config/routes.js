@@ -8,6 +8,7 @@ import React from "react";
 import VenueShowContainer from '../containers/VenueShowContainer';
 import NewListingForm from '../components/NewListingForm';
 import ListingShowContainer from '../containers/ListingShowContainer';
+import MapContainer from '../containers/MapContainer';
 
 
 const Logout = props => {
@@ -50,6 +51,13 @@ export const menuRoutes = [
         path: '/',
         icon: 'home',
         component: HomeContainer
+    },
+    {
+        title: 'Map',
+        exact: true,
+        path: '/map',
+        icon: 'map',
+        component: MapContainer
     },
     {
         title: "Login",
