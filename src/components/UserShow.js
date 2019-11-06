@@ -8,7 +8,7 @@ const UserShow = ({user, history}) => {
     return (
         <div>
             <Header as='h1'>{user.full_name}</Header>
-            <Button as={Link} to="/users/edit">Edit</Button>
+            <Button as={Link} to="/user/edit">Edit</Button>
             <p>Email: {user.email}</p>
             <p>Venues:</p>
             <ul>
