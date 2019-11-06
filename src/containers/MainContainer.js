@@ -3,7 +3,6 @@ import { allRoutes } from "../config/routes";
 import { Route, Switch } from "react-router-dom";
 import { Message, Container } from "semantic-ui-react";
 import API from "../adapters/API";
-import Navigation from "./Navigation";
 import { getDistance } from "../helpers/helperFunctions";
 
 
@@ -12,8 +11,13 @@ class MainContainer extends Component {
     location: [],
     listings: [],
     selectedListingId: null,
-    currentRadius: 2000
+    currentRadius: 2000,
+    filter: "All"
     };
+
+    changeFilter = filter => this.setState({filter})
+
+  setRadius = radius => this.setState({currentRadius: radius})
 
   componentDidMount() {
     if ("geolocation" in navigator) {
@@ -24,7 +28,7 @@ class MainContainer extends Component {
         API.getNearbyListings(
           position.coords.latitude,
           position.coords.longitude,
-          this.state.currentRadius
+          10000
         ).then(listings => {
           if (listings && listings.errors) {
             console.log("errors:", listings.errors);
@@ -69,7 +73,6 @@ class MainContainer extends Component {
     } = this.props;
     return (
       <div>
-        <Navigation user={user} />
         <Container>
           <Switch>
             {allRoutes.map(route => (
@@ -94,6 +97,10 @@ class MainContainer extends Component {
                       setSelectedListingId={this.setSelectedListingId}
                       removeVenueFromUser={removeVenueFromUser}
                       addListing={this.addListing}
+                      radius={this.state.currentRadius}
+                      setRadius={this.setRadius}
+                      filter={this.state.filter}
+                      changeFilter={this.changeFilter}
                     />
                   ) : (
                     this.notFoundMessage()
