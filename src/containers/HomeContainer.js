@@ -1,35 +1,24 @@
 import React, { Component } from "react";
 import Home from "../components/Home";
 import { Link } from "react-router-dom";
-import HomeFilterForm from "../components/HomeFilterForm";
+import FilterForm from "../components/FilterForm";
+import { filterByRadius, filterListingsByEvent } from "../helpers/helperFunctions";
 
 export class HomeContainer extends Component {
-  state = {
-      options: {
-          filter: 'All'
-      }
-  }
-
-  changeFilter = newFilter => this.setState({options: {
-      ...this.state.options,
-      filter: newFilter
-  }})
   
-  filterListings = (listings, filter) => {
-      if (filter === "All") return listings;
-      return listings.filter(listing => {
-          return listing.categories.find(cat => cat.name === filter)
-      })
-  };
+  
+
 
   render() {
-    const { listings, location } = this.props;
-    const filteredListings = this.filterListings(listings, this.state.options.filter);
+    const { listings, location, radius, filter } = this.props;
+    const radiusFilteredListings = filterByRadius(listings, location, radius)
+    const eventFilteredListings = filterListingsByEvent(radiusFilteredListings, filter);
+    
     return listings.length > 0 ? (
       <div>
-        <HomeFilterForm listings={listings} changeFilter={this.changeFilter} filter={this.state.options.filter}/>
+        <FilterForm listings={listings} changeFilter={this.props.changeFilter} filter={this.props.filter} radius={this.props.radius} setRadius={this.props.setRadius}/>
         <Link to={"/map"}>>>View Map</Link>
-        <Home listings={filteredListings} location={location} />
+        <Home listings={eventFilteredListings} location={location} />
       </div>
     ) : (
       <div>No Listings...</div>
