@@ -59,6 +59,26 @@ const postVenue = venue => {
     .catch(handleError);
 };
 
+const patchVenue = venue => {
+  let config = {
+    method: "PATCH",
+    headers: jsonHeaders(authHeader()),
+    body: JSON.stringify({ venue })
+  };
+  return fetch(`${VENUES_URL}/${venue.id}`, config)
+    .then(handleServerResponse)
+    .catch(handleError);
+};
+
+const destroyVenue = id => {
+  let config = {
+    method: "DELETE"
+  };
+  return fetch(`${VENUES_URL}/${id}`, config)
+    .then(handleServerResponse)
+    .catch(handleError);
+};
+
 const register = userDetails =>
   fetch(REGISTER_URL, {
     method: "POST",
@@ -132,6 +152,15 @@ const postListing = listing => {
   return fetch(LISTINGS_URL, config).then(handleServerResponse).catch(handleError)
 }
 
+const patchListing = listing => {
+  let config = {
+    method: "PATCH",
+    headers: jsonHeaders(authHeader()),
+    body: JSON.stringify({listing, category_ids: listing.category_ids})
+  }
+  return fetch(`${LISTINGS_URL}/${listing.id}`, config).then(handleServerResponse).catch(handleError)
+}
+
 const getListing = id => fetch(`${LISTINGS_URL}/${id}`).then(handleServerResponse).catch(handleError)
 
 const getNearbyListings = (latitude, longitude, radius) => {
@@ -145,9 +174,12 @@ export default {
   login,
   updateUser,
   postVenue,
+  patchVenue,
+  destroyVenue,
   getVenue,
   getCategories,
   postListing,
+  patchListing,
   getListing,
   getNearbyListings
 };
