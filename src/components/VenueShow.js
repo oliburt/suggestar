@@ -1,6 +1,8 @@
 import React from "react";
 import { Header, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import ListingCard from "./ListingCard";
+import { getDistance, renderCards } from "../helpers/helperFunctions";
 
 const VenueShow = ({
   name,
@@ -9,8 +11,21 @@ const VenueShow = ({
   current_listings,
   id,
   user_id,
-  user
+  user,
+  location,
+  latitude,
+  longitude
 }) => {
+  // const renderCards = listings => 
+  //   listings.map(listing => (
+  //     <ListingCard
+  //       key={listing.id}
+  //       {...listing}
+  //       distance={getDistance({latitude, longitude}, location)}
+  //       user={user}
+  //     />
+  //   ));
+
   return (
     <div>
       <Header as="h1">{name}</Header>
@@ -32,13 +47,7 @@ const VenueShow = ({
         </Link>
       ) : null}
       <Header as="h4">Upcoming Listings:</Header>
-      <ul>
-        {current_listings.map(listing => (
-          <Link to={`/listings/${listing.id}`} key={listing.id}>
-            <li>{listing.title}</li>
-          </Link>
-        ))}
-      </ul>
+      {renderCards(current_listings, location, user)}
     </div>
   );
 };

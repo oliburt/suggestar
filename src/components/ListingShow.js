@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Header, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import { handleLikeButtonClick } from "../helpers/helperFunctions";
 
 export class ListingShow extends Component {
   formatDate = datetime => {
@@ -50,7 +51,9 @@ export class ListingShow extends Component {
       begin_datetime,
       id,
       likes,
-      user
+      user,
+      updateListingShow,
+      updateListings
     } = this.props;
     const startDate = new Date(begin_datetime);
     const endDate = new Date(end_datetime);
@@ -58,7 +61,16 @@ export class ListingShow extends Component {
     return (
       <div>
         <Header as="h1">{title}</Header>
-        <div><span>Likes: {likes.length}</span><Button>Like</Button></div>
+        <div>
+          <span>Likes: {likes.length}</span>
+          {user && user.id ? (
+            <Button
+              onClick={() => handleLikeButtonClick(user.id, id, updateListingShow, updateListings)}
+            >
+              {likes.find(l => l.user_id === user.id) ? "Unlike" : "Like"}
+            </Button>
+          ) : null}
+        </div>
         <span
           style={{ color: "blue" }}
           onClick={() => this.handleViewOnMapClick(id)}

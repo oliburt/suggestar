@@ -1,8 +1,18 @@
-export const getDistance = (listing, location) => {
+import API from "../adapters/API";
+import ListingCard from "../components/ListingCard";
+import React from 'react';
+
+
+export const getDistance = (listing_or_venue, location) => {
   if (!location) return "Calculating...";
 
   const loc1 = [...location];
-  const loc2 = [listing.venue.latitude, listing.venue.longitude];
+  let loc2;
+  // if (listing_or_venue.latitude) {
+  //   loc2 = [listing_or_venue.latitude, listing_or_venue.longitude];
+  // } else {
+    loc2 = [listing_or_venue.venue.latitude, listing_or_venue.venue.longitude];
+  // }
   const rad_per_deg = Math.PI / 180;
   const rkm = 6371;
   const rm = rkm * 1000;
@@ -20,17 +30,61 @@ export const getDistance = (listing, location) => {
   return rm * c;
 };
 
-export const filterByRadius = (listings, location, radius) => listings.filter(listing => getDistance(listing, location) <= radius)
+export const filterByRadius = (listings, location, radius) =>
+  listings.filter(listing => getDistance(listing, location) <= radius);
 
-export const filterListingsByEvent = (listings, filter) => {  
-    if (filter === "All") return listings;
-      return listings.filter(listing => {
-          return listing.categories.find(cat => cat.name === filter)
-      })
+export const filterListingsByEvent = (listings, filter) => {
+  if (filter === "All") return listings;
+  return listings.filter(listing => {
+    return listing.categories.find(cat => cat.name === filter);
+  });
+};
+
+export const handleLikeButtonClick = (user_id, listing_id, updateListingShow, updateListings) => {
+  const like = {
+    user_id,
+    listing_id
   };
+  API.likeListing(like).then(like => {
+    if (like && like.errors) {
+      console.log(like.errors);
+    } else if (like && like.error) {
+      console.log(like);
+    } else if (like && (like.deleted || like.id)) {
+      updateListingShow(like)
+      updateListings(like)
+    } else {
+      console.log("Return Value:", like);
+    }
+  });
+};
+
+const getAddress = (venue, obj) => {
+  let map = new window.google.maps.Map(document.getElementById("map"), {
+    center: { lat: venue.latitude, lng: venue.longitude }
+  });
+
+  let service = new window.google.maps.places.PlacesService(map);
+
+  service.getDetails(
+    {
+      placeId: venue.place_id
+    },
+    (place, status) => {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+        obj.setState({ address: place.formatted_address });
+      }
+    }
+  );
+};
+
+export  const renderCards = (listings, location, user) =>
+listings.map(listing => <ListingCard key={listing.id} {...listing} distance={getDistance(listing, location)} user={user}/>);
 
 export default {
   getDistance,
   filterByRadius,
-  filterListingsByEvent
+  filterListingsByEvent,
+  getAddress,
+  renderCards
 };
