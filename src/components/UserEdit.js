@@ -100,7 +100,7 @@ export class UserEdit extends Component {
           <Button type="submit">Submit</Button>
           <Button
             as={Link}
-            to={`/users/${this.props.user ? this.props.user.id : ""}`}
+            to={`/user`}
           >
             Back
           </Button>
