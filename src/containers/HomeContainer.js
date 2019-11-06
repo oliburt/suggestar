@@ -6,11 +6,9 @@ import { filterByRadius, filterListingsByEvent } from "../helpers/helperFunction
 
 export class HomeContainer extends Component {
   
-  
-
 
   render() {
-    const { listings, location, radius, filter } = this.props;
+    const { listings, location, radius, filter, user } = this.props;
     const radiusFilteredListings = filterByRadius(listings, location, radius)
     const eventFilteredListings = filterListingsByEvent(radiusFilteredListings, filter);
     
@@ -18,7 +16,7 @@ export class HomeContainer extends Component {
       <div>
         <FilterForm listings={listings} changeFilter={this.props.changeFilter} filter={this.props.filter} radius={this.props.radius} setRadius={this.props.setRadius}/>
         <Link to={"/map"}>>>View Map</Link>
-        <Home listings={eventFilteredListings} location={location} />
+        <Home listings={eventFilteredListings} location={location} user={user}/>
       </div>
     ) : (
       <div>No Listings...</div>
