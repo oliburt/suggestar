@@ -16,13 +16,32 @@ const App = props => {
 
   const updateUser = user => {
     setUser(user)
-    props.history.push(`/users/${user.id}`)
+    props.history.push(`/user`)
   }
 
-  const addVenueToCurrentUser = (user, venue) => setUser({
-    ...user,
-    venues: [...user.venues, venue]
-  })
+  const addVenueToCurrentUser = (user, venue) =>{
+    if (user.venues.find(v => v.id === venue.id)) {
+      setUser({
+        ...user,
+        venues: user.venues.map(v => {
+          if (v.id === venue.id) return venue
+          return v
+        })
+      })
+    } else {
+      setUser({
+        ...user,
+        venues: [...user.venues, venue]
+      })
+    }
+  }
+
+  const removeVenueFromUser = (user, venue) => {
+    setUser({
+      ...user,
+      venues: user.venues.filter(v => v.id !== venue.id)
+    })
+  }
 
   const logout = () => {
     API.logout()
@@ -48,7 +67,7 @@ const App = props => {
 
   return (
     <div className="App">
-      <MainContainer user={user} login={login} logout={logout} updateUser={updateUser} isAuthenticated={isAuthenticated} addVenueToCurrentUser={addVenueToCurrentUser} setIsAuthenticated={setIsAuthenticated}/>
+      <MainContainer user={user} login={login} logout={logout} updateUser={updateUser} isAuthenticated={isAuthenticated} addVenueToCurrentUser={addVenueToCurrentUser} setIsAuthenticated={setIsAuthenticated} removeVenueFromUser={removeVenueFromUser}/>
     </div>
   );
 }
