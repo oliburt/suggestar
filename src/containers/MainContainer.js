@@ -15,7 +15,35 @@ class MainContainer extends Component {
     filter: "All"
     };
 
-    changeFilter = filter => this.setState({filter})
+    updateListings = returnObj => {
+      if (returnObj.deleted) {
+        this.setState({
+          listings: this.state.listings.map(listing => {
+            if (listing.id === returnObj.like.listing_id) {
+              return {
+                ...listing,
+                likes: listing.likes.filter(like => like.id !== returnObj.like.id)
+              }
+            }
+            return listing
+          })
+        })
+      } else {
+        this.setState({
+          listings: this.state.listings.map(listing => {
+            if (listing.id === returnObj.listing_id) {
+              return {
+                ...listing,
+                likes: [...listing.likes, returnObj]
+              }
+            }
+            return listing
+          })
+        })
+      }
+    }
+
+  changeFilter = filter => this.setState({filter})
 
   setRadius = radius => this.setState({currentRadius: radius})
 
@@ -101,6 +129,7 @@ class MainContainer extends Component {
                       setRadius={this.setRadius}
                       filter={this.state.filter}
                       changeFilter={this.changeFilter}
+                      updateListings={this.updateListings}
                     />
                   ) : (
                     this.notFoundMessage()
