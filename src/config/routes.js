@@ -9,6 +9,9 @@ import VenueShowContainer from '../containers/VenueShowContainer';
 import NewListingForm from '../components/NewListingForm';
 import ListingShowContainer from '../containers/ListingShowContainer';
 import MapContainer from '../containers/MapContainer';
+import VenueEdit from '../components/VenueEdit';
+import VenueDestroy from '../components/VenueDestroy';
+import ListingEdit from '../components/ListingEdit';
 
 
 const Logout = props => {
@@ -16,11 +19,12 @@ const Logout = props => {
     return <></>
 }
 
+
 export const beforeRoutes = [
     {
         title: 'UserEdit',
         exact: true,
-        path: '/users/edit',
+        path: '/user/edit',
         icon: 'edit',
         component: UserEdit
     },
@@ -36,11 +40,31 @@ export const afterRoutes = [
         component: VenueShowContainer
     },
     {
+        title: 'Venue Delete',
+        exact: true,
+        path: '/venues/:id/destroy',
+        component: VenueDestroy
+    },
+    {
+        title: 'Venue Edit',
+        exact: true,
+        path: '/venues/:id/edit',
+        component: VenueEdit
+    },
+    {
         title: 'Listing Show',
         exact: true,
         path: '/listings/:id',
         component: ListingShowContainer
     },
+    {
+        title: 'Listing Edit',
+        exact: true,
+        path: '/listings/:id/edit',
+        component: ListingEdit
+    },
+    
+
 ]
 
 
@@ -76,7 +100,7 @@ export const menuRoutes = [
     {
         title: "My Profile",
         exact: true,
-        path: '/users/:id',
+        path: '/user',
         icon: 'user',
         component: UserShowContainer
     },
