@@ -5,6 +5,8 @@ import { filterByRadius, filterListingsByEvent } from "../helpers/helperFunction
 
 
 export class MapContainer extends Component {
+
+  
   
   render() {
     const { listings, location, selectedListingId, setSelectedListingId, radius, filter } = this.props;
