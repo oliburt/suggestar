@@ -46,7 +46,7 @@ const ShowMap = withGoogleMap(
             }}
             onCloseClick={() => {
               setSelectedListing(null);
-              setSelectedListingId(null);
+              setSelectedListingId(null)
             }}
           >
             <div>
