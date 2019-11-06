@@ -20,6 +20,17 @@ export const getDistance = (listing, location) => {
   return rm * c;
 };
 
+export const filterByRadius = (listings, location, radius) => listings.filter(listing => getDistance(listing, location) <= radius)
+
+export const filterListingsByEvent = (listings, filter) => {  
+    if (filter === "All") return listings;
+      return listings.filter(listing => {
+          return listing.categories.find(cat => cat.name === filter)
+      })
+  };
+
 export default {
-  getDistance
+  getDistance,
+  filterByRadius,
+  filterListingsByEvent
 };
