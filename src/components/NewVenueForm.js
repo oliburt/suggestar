@@ -31,6 +31,7 @@ const NewVenueForm = ({history, addVenueToCurrentUser, user}) => {
     e.preventDefault();
     const venue = {
         name,
+        address,
         description,
         place_id: placeId,
         latitude: coordinates.lat,
