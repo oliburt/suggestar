@@ -30,7 +30,7 @@ export class ListingShowContainer extends Component {
     render() {
         return (
             <div>
-                {this.state.listing ? <ListingShow {...this.state.listing} setSelectedListingId={this.props.setSelectedListingId} history={this.props.history} /> : <UserPlaceHolder />}
+                {this.state.listing ? <ListingShow {...this.state.listing} setSelectedListingId={this.props.setSelectedListingId} history={this.props.history} user={this.props.user}/> : <UserPlaceHolder />}
             </div>
         );
     }
