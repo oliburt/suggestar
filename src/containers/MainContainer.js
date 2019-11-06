@@ -2,16 +2,17 @@ import React, { Component } from "react";
 import { allRoutes } from "../config/routes";
 import { Route, Switch } from "react-router-dom";
 import { Message, Container } from "semantic-ui-react";
-import Navbar from "../components/Navbar";
-import SideBarMenu from "../components/SideBarMenu";
 import API from "../adapters/API";
+import Navigation from "./Navigation";
+import { getDistance } from "../helpers/helperFunctions";
+
 
 class MainContainer extends Component {
   state = {
-    sideBarVisible: false,
     location: [],
     listings: [],
-    selectedListingId: null
+    selectedListingId: null,
+    currentRadius: 2000
     };
 
   componentDidMount() {
@@ -23,10 +24,10 @@ class MainContainer extends Component {
         API.getNearbyListings(
           position.coords.latitude,
           position.coords.longitude,
-          2000
+          this.state.currentRadius
         ).then(listings => {
-          if (listings && listings[0].errors) {
-            console.log("errors:", listings[0].errors);
+          if (listings && listings.errors) {
+            console.log("errors:", listings.errors);
           } else {
             this.setState({ listings });
           }
@@ -41,13 +42,17 @@ class MainContainer extends Component {
   //   if (nextState.selectedListingId === -1) return false
   //   return true
   // }
+
+  addListing = listing => {
+    if (getDistance(listing, this.state.location) < this.state.currentRadius) {
+      this.setState({listings: [...this.state.listings, listing]})
+    }
+  }
   
 
   setSelectedListingId = id => (id ? this.setState({selectedListingId: id}) : this.state.selectedListingId = id)
 
-  setSideBarVisible = val => this.setState({ sideBarVisible: val });
 
-  handleMenuClick = () => this.setSideBarVisible(!this.state.sideBarVisible);
 
   notFoundMessage = () => <Message negative>Not Found</Message>;
 
@@ -59,17 +64,13 @@ class MainContainer extends Component {
       isAuthenticated,
       updateUser,
       addVenueToCurrentUser,
-      setIsAuthenticated
+      setIsAuthenticated,
+      removeVenueFromUser
     } = this.props;
     return (
       <div>
-        <Navbar user={user} handleMenuClick={this.handleMenuClick} />
+        <Navigation user={user} />
         <Container>
-          <SideBarMenu
-            onHide={this.setSideBarVisible}
-            visible={this.state.sideBarVisible}
-            user={user}
-          />
           <Switch>
             {allRoutes.map(route => (
               <Route
@@ -91,6 +92,8 @@ class MainContainer extends Component {
                       location={this.state.location}
                       selectedListingId={this.state.selectedListingId}
                       setSelectedListingId={this.setSelectedListingId}
+                      removeVenueFromUser={removeVenueFromUser}
+                      addListing={this.addListing}
                     />
                   ) : (
                     this.notFoundMessage()
