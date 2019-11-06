@@ -6,6 +6,7 @@ const USER_URL = id => `${API_ENDPOINT}/users/${id}`;
 const VENUES_URL = `${API_ENDPOINT}/venues`;
 const CATEGORIES_URL = `${API_ENDPOINT}/categories`;
 const LISTINGS_URL = `${API_ENDPOINT}/listings`;
+const LIKES_URL = `${API_ENDPOINT}/like`;
 
 const jsonHeaders = (more = {}) => ({
   "Content-Type": "application/json",
@@ -167,6 +168,15 @@ const getNearbyListings = (latitude, longitude, radius) => {
   return fetch(`${LISTINGS_URL}?latitude=${latitude}&longitude=${longitude}&radius=${radius}`).then(handleServerResponse).catch(handleError)
 }
 
+const likeListing = like => {
+  let config = {
+    method: "POST",
+    headers: jsonHeaders(authHeader()),
+    body: JSON.stringify({like})
+  }
+  return fetch(LIKES_URL, config).then(handleServerResponse).catch(handleError)
+}
+
 export default {
   register,
   validateUser,
@@ -181,5 +191,6 @@ export default {
   postListing,
   patchListing,
   getListing,
-  getNearbyListings
+  getNearbyListings,
+  likeListing
 };
