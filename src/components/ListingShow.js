@@ -49,6 +49,7 @@ export class ListingShow extends Component {
       end_datetime,
       begin_datetime,
       id,
+      likes,
       user
     } = this.props;
     const startDate = new Date(begin_datetime);
@@ -57,6 +58,7 @@ export class ListingShow extends Component {
     return (
       <div>
         <Header as="h1">{title}</Header>
+        <div><span>Likes: {likes.length}</span><Button>Like</Button></div>
         <span
           style={{ color: "blue" }}
           onClick={() => this.handleViewOnMapClick(id)}
