@@ -5,7 +5,7 @@ import PlacesAutocomplete from "react-places-autocomplete";
 const AutoComplete = ({ address, setAddress, handleSelect }) => {
   return (
     <PlacesAutocomplete
-      value={address}
+      value={address ? address : ''}
       onChange={setAddress}
       onSelect={handleSelect}
     >
