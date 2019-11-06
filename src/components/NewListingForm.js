@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../adapters/API";
 
-const NewListingForm = ({ user }) => {
+const NewListingForm = ({ user, addListing }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [ticketURL, setTicketURL] = useState("");
@@ -34,7 +34,7 @@ const NewListingForm = ({ user }) => {
           }))
         })
       }
-  }, [user]);
+  }, [user, categoryOptions.length]);
 
   const handleBeginDateTimeChange = date => {
     setBeginDateTime(date);
@@ -65,6 +65,7 @@ const NewListingForm = ({ user }) => {
     }
     API.postListing(listing).then(listing => {
       if (listing && listing.id) {
+        addListing(listing)
         history.push(`/listings/${listing.id}`)
       } else {
         console.log('todo: error handling')
