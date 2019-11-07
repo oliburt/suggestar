@@ -8,24 +8,12 @@ const VenueShow = ({
   name,
   description,
   address,
-  current_listings,
+  listings,
   id,
   user_id,
   user,
-  location,
-  latitude,
-  longitude
+  location
 }) => {
-  // const renderCards = listings => 
-  //   listings.map(listing => (
-  //     <ListingCard
-  //       key={listing.id}
-  //       {...listing}
-  //       distance={getDistance({latitude, longitude}, location)}
-  //       user={user}
-  //     />
-  //   ));
-
   return (
     <div>
       <Header as="h1">{name}</Header>
@@ -46,8 +34,14 @@ const VenueShow = ({
           <Button>Add New Listing</Button>
         </Link>
       ) : null}
-      <Header as="h4">Upcoming Listings:</Header>
-      {renderCards(current_listings, location, user)}
+      {listings.length > 0 ? (
+        <div>
+          <Header as="h4">Upcoming Listings:</Header>
+          {renderCards(listings, location, user)}
+        </div>
+      ) : (
+        <Header as="h4">No Upcoming Listings</Header>
+      )}
     </div>
   );
 };

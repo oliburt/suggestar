@@ -5,14 +5,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../adapters/API";
 
-const NewListingForm = ({ user, addListing }) => {
+const NewListingForm = ({ user, addListing, venues }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [ticketURL, setTicketURL] = useState("");
   const [ageRestriction, setAgeRestriction] = useState("");
   const [beginDateTime, setBeginDateTime] = useState(new Date());
   const [endDateTime, setEndDateTime] = useState(new Date());
-  const [venueOptions, setVenueOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedVenue, setSelectedVenue] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -21,12 +20,6 @@ const NewListingForm = ({ user, addListing }) => {
   
 
   useEffect(() => {
-    if (user)
-      setVenueOptions(
-        user.venues.map(venue => {
-          return { key: venue.id, text: venue.name, value: venue.id };
-        })
-      );
       if (categoryOptions.length === 0) {
         API.getCategories().then(categories => {
           setCategoryOptions(categories.map(category => {
@@ -34,7 +27,7 @@ const NewListingForm = ({ user, addListing }) => {
           }))
         })
       }
-  }, [user, categoryOptions.length]);
+  }, [categoryOptions.length]);
 
   const handleBeginDateTimeChange = date => {
     setBeginDateTime(date);
@@ -73,10 +66,12 @@ const NewListingForm = ({ user, addListing }) => {
     })
   };
 
+  const getVenueOptions = venues => venues.filter(v => v.user_id === user.id).map(v => ({ key: v.id, text: v.name, value: v.id}))
+
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Select
-        options={venueOptions}
+        options={getVenueOptions(venues)}
         label="Select Venue"
         placeholder="Venue"
         value={selectedVenue}

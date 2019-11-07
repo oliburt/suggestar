@@ -17,12 +17,17 @@ const ListingCard = ({ title, categories, description, id, venue, distance, like
         <Card.Meta>{categories.map(c => c.name).join(", ")}</Card.Meta>
         <Card.Description>{description}</Card.Description>
       </Card.Content>
+      {
+        venue ? 
       <Card.Content extra onClick={() => history.push(`/venues/${venue.id}`)}>
           <Icon name="map pin" />
           {venue.name} - {convertDistance(distance)}km
       </Card.Content>
+      : null
+
+      }
       <Card.Content extra>
-          <Icon name="thumbs up" color={likes.find(l => l.id === user.id) ? 'blue' : null} size="large" />
+          <Icon name="thumbs up" color={likes.find(l => user && l.user_id === user.id) ? 'blue' : null} size="large" />
           <span>{likes.length} Likes</span>
       </Card.Content>
     </Card>

@@ -4,31 +4,16 @@ import VenueShow from "../components/VenueShow";
 import API from "../adapters/API";
 
 class VenueShowContainer extends React.Component {
-  state = {
-    venue: null
-  }
 
-  componentDidMount() {
-    const id = this.props.match.params.id
-    API.getVenue(id).then(venue => {
-      console.log(venue)
-      if (venue && venue.id) {
-        this.setState({venue})
-      } else {
-        console.log("error")
-        console.log("Server response", venue)
-      }
-    })
-    
-  }
 
   
-  
-
   render() {
+    const venue = this.props.venues.find(v => v.id === parseInt(this.props.match.params.id))
+    const venuesListings = this.props.listings.filter(l => l.venue_id === venue.id)
+
     return (
       <div>
-        {this.state.venue ? <VenueShow {...this.state.venue} user={this.props.user} location={this.props.location}/> : <UserPlaceHolder />}
+        {venue ? <VenueShow {...venue} user={this.props.user} location={this.props.location} listings={venuesListings}/> : <UserPlaceHolder />}
         <div id='map'></div>
       </div>
     );

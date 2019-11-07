@@ -12,6 +12,7 @@ import MapContainer from '../containers/MapContainer';
 import VenueEdit from '../components/VenueEdit';
 import VenueDestroy from '../components/VenueDestroy';
 import ListingEdit from '../components/ListingEdit';
+import ListingDestroy from '../components/ListingDestroy';
 
 
 const Logout = props => {
@@ -62,6 +63,12 @@ export const afterRoutes = [
         exact: true,
         path: '/listings/:id/edit',
         component: ListingEdit
+    },
+    {
+        title: 'Listing Destroy',
+        exact: true,
+        path: '/listings/:id/destroy',
+        component: ListingDestroy
     },
     
 

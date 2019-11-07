@@ -5,99 +5,69 @@ import { Message, Container } from "semantic-ui-react";
 import API from "../adapters/API";
 import { getDistance } from "../helpers/helperFunctions";
 
-
 class MainContainer extends Component {
   state = {
-    location: [],
-    listings: [],
     selectedListingId: null,
-    currentRadius: 2000,
-    filter: "All"
-    };
+    filter: "All",
+    currentRadius: 2000
+  };
 
-    updateListings = returnObj => {
-      if (returnObj.deleted) {
-        this.setState({
-          listings: this.state.listings.map(listing => {
-            if (listing.id === returnObj.like.listing_id) {
-              return {
-                ...listing,
-                likes: listing.likes.filter(like => like.id !== returnObj.like.id)
-              }
-            }
-            return listing
-          })
-        })
-      } else {
-        this.setState({
-          listings: this.state.listings.map(listing => {
-            if (listing.id === returnObj.listing_id) {
-              return {
-                ...listing,
-                likes: [...listing.likes, returnObj]
-              }
-            }
-            return listing
-          })
-        })
-      }
-    }
-
-  changeFilter = filter => this.setState({filter})
-
-  setRadius = radius => this.setState({currentRadius: radius})
-
-  componentDidMount() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.setState({
-          location: [position.coords.latitude, position.coords.longitude]
-        });
-        API.getNearbyListings(
-          position.coords.latitude,
-          position.coords.longitude,
-          10000
-        ).then(listings => {
-          if (listings && listings.errors) {
-            console.log("errors:", listings.errors);
-          } else {
-            this.setState({ listings });
-          }
-        });
-      });
-    } else {
-      console.log("geolocation not available");
-    }
-  }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (nextState.selectedListingId === -1) return false
-  //   return true
-  // }
-
-  addListing = listing => {
-    if (getDistance(listing, this.state.location) < this.state.currentRadius) {
-      this.setState({listings: [...this.state.listings, listing]})
-    }
-  }
   
 
-  setSelectedListingId = id => (id ? this.setState({selectedListingId: id}) : this.state.selectedListingId = id)
+  changeFilter = filter => this.setState({ filter });
+
+  setRadius = radius => this.setState({ currentRadius: radius });
+
+  // componentDidMount() {
+  //   if ("geolocation" in navigator) {
+  //     navigator.geolocation.getCurrentPosition(position => {
+  //       API.getNearbyListings(
+  //         position.coords.latitude,
+  //         position.coords.longitude,
+  //         10000
+  //       ).then(listings => {
+  //         if (listings && listings.errors) {
+  //           console.log("errors:", listings.errors);
+  //         } else {
+  //           this.setState({
+  //             listings,
+  //             location: [position.coords.latitude, position.coords.longitude]
+  //           });
+  //         }
+  //       });
+  //     });
+  //   } else {
+  //     console.log("geolocation not available");
+  //   }
+  // }
 
 
+ 
+
+  setSelectedListingId = id =>
+    id
+      ? this.setState({ selectedListingId: id })
+      : (this.state.selectedListingId = id);
 
   notFoundMessage = () => <Message negative>Not Found</Message>;
 
   render() {
     const {
       user,
+      listings,
+      venues,
+      location,
       login,
       logout,
       isAuthenticated,
       updateUser,
       addVenueToCurrentUser,
       setIsAuthenticated,
-      removeVenueFromUser
+      removeVenue,
+      updateLikeOnListing,
+      updateListing,
+      addListing,
+      removeListing
     } = this.props;
     return (
       <div>
@@ -119,17 +89,20 @@ class MainContainer extends Component {
                       setIsAuthenticated={setIsAuthenticated}
                       updateUser={updateUser}
                       addVenueToCurrentUser={addVenueToCurrentUser}
-                      listings={this.state.listings}
-                      location={this.state.location}
+                      listings={listings}
+                      location={location}
+                      venues={venues}
                       selectedListingId={this.state.selectedListingId}
                       setSelectedListingId={this.setSelectedListingId}
-                      removeVenueFromUser={removeVenueFromUser}
-                      addListing={this.addListing}
+                      removeVenue={removeVenue}
+                      addListing={addListing}
                       radius={this.state.currentRadius}
                       setRadius={this.setRadius}
                       filter={this.state.filter}
                       changeFilter={this.changeFilter}
-                      updateListings={this.updateListings}
+                      updateLikeOnListing={updateLikeOnListing}
+                      updateListing={updateListing}
+                      removeListing={removeListing}
                     />
                   ) : (
                     this.notFoundMessage()

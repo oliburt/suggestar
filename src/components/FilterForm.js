@@ -59,7 +59,32 @@ const FilterForm = ({
       key: 5,
       text: "5km",
       value: 5000
-    }
+    },
+    {
+      key: 6,
+      text: "6km",
+      value: 6000
+    },
+    {
+      key: 7,
+      text: "7km",
+      value: 7000
+    },
+    {
+      key: 8,
+      text: "8km",
+      value: 8000
+    },
+    {
+      key: 9,
+      text: "9km",
+      value: 9000
+    },
+    {
+      key: 10,
+      text: "10km",
+      value: 10000
+    },
   ]
 
   return (

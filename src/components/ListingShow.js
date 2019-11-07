@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Header, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import { handleLikeButtonClick } from "../helpers/helperFunctions";
+import { handleLikeButtonClick, isListingInNext24hours } from "../helpers/helperFunctions";
 
 export class ListingShow extends Component {
   formatDate = datetime => {
@@ -52,12 +52,10 @@ export class ListingShow extends Component {
       id,
       likes,
       user,
-      updateListingShow,
-      updateListings
+      updateLikeOnListing
     } = this.props;
     const startDate = new Date(begin_datetime);
     const endDate = new Date(end_datetime);
-
     return (
       <div>
         <Header as="h1">{title}</Header>
@@ -65,18 +63,18 @@ export class ListingShow extends Component {
           <span>Likes: {likes.length}</span>
           {user && user.id ? (
             <Button
-              onClick={() => handleLikeButtonClick(user.id, id, updateListingShow, updateListings)}
+              onClick={() => handleLikeButtonClick(user.id, id, updateLikeOnListing)}
             >
               {likes.find(l => l.user_id === user.id) ? "Unlike" : "Like"}
             </Button>
           ) : null}
         </div>
-        <span
+        {isListingInNext24hours({begin_datetime, end_datetime}) ? <span
           style={{ color: "blue" }}
           onClick={() => this.handleViewOnMapClick(id)}
         >
           >>View on Map
-        </span>
+        </span> : null}
         {user && user.id === venue.user_id ? (
           <div>
             <Link to={`/listings/${id}/edit`}>

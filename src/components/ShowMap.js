@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   GoogleMap,
@@ -10,11 +10,13 @@ import { Header } from "semantic-ui-react";
 import mapStyles from "../styles/mapStyles";
 
 const ShowMap = withGoogleMap(
-  ({ listings, location, selectedListingId, setSelectedListingId }) => {
+  ({ listings, location, selectedListingId, setSelectedListingId, venues }) => {
     const [selectedListing, setSelectedListing] = useState(
       listings.find(l => l.id === selectedListingId)
     );
 
+    const getVenue = (listing, venues) => venues.find(v => v.id === listing.venue_id)
+    
     return (
       <GoogleMap
         defaultZoom={14}
@@ -32,8 +34,8 @@ const ShowMap = withGoogleMap(
           <Marker
             key={listing.id}
             position={{
-              lat: listing.venue.latitude,
-              lng: listing.venue.longitude
+              lat: getVenue(listing, venues).latitude,
+              lng: getVenue(listing, venues).longitude
             }}
             onClick={() => setSelectedListing(listing)}
           />
@@ -41,8 +43,8 @@ const ShowMap = withGoogleMap(
         {selectedListing && (
           <InfoWindow
             position={{
-              lat: selectedListing.venue.latitude,
-              lng: selectedListing.venue.longitude
+              lat: getVenue(selectedListing, venues).latitude,
+              lng: getVenue(selectedListing, venues).longitude
             }}
             onCloseClick={() => {
               setSelectedListing(null);
@@ -54,8 +56,8 @@ const ShowMap = withGoogleMap(
               <Link to={`/listings/${selectedListing.id}`}>>>View Details</Link>
 
               <p>{selectedListing.description}</p>
-              <Link to={`/venues/${selectedListing.venue.id}`}>
-                {selectedListing.venue.name}
+              <Link to={`/venues/${getVenue(selectedListing, venues).id}`}>
+                {getVenue(selectedListing, venues).name}
               </Link>
             </div>
           </InfoWindow>

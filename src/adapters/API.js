@@ -80,6 +80,15 @@ const destroyVenue = id => {
     .catch(handleError);
 };
 
+const destroyListing = id => {
+  let config = {
+    method: "DELETE"
+  };
+  return fetch(`${LISTINGS_URL}/${id}`, config)
+    .then(handleServerResponse)
+    .catch(handleError);
+};
+
 const register = userDetails =>
   fetch(REGISTER_URL, {
     method: "POST",
@@ -95,20 +104,24 @@ const register = userDetails =>
     })
     .catch(handleError);
 
-const validateUser = () =>
+const initialCall = (latitude, longitude, radius) =>
   fetch(VALIDATE_URL, {
     method: "POST",
-    headers: jsonHeaders(authHeader())
-  })
-    .then(handleServerResponse)
-    .then(userDetails => {
-      if (!userDetails) {
-        return { errors: ["No user Found"] };
+    headers: jsonHeaders(authHeader()),
+    body: JSON.stringify({
+      latitude,
+      longitude,
+      radius
+    })
+  }).then(handleServerResponse)
+    .then(returnObj => {
+      if (!returnObj) {
+        return { errors: ["Server Issue. Please try again later"] };
       }
-      if (userDetails.token) {
-        localStorage.setItem("token", userDetails.token);
+      if (returnObj.token) {
+        localStorage.setItem("token", returnObj.token);
       }
-      return userDetails.user || userDetails;
+      return returnObj;
     })
     .catch(handleError);
 
@@ -177,9 +190,11 @@ const likeListing = like => {
   return fetch(LIKES_URL, config).then(handleServerResponse).catch(handleError)
 }
 
+
+
 export default {
   register,
-  validateUser,
+  initialCall,
   logout,
   login,
   updateUser,
@@ -192,5 +207,6 @@ export default {
   patchListing,
   getListing,
   getNearbyListings,
-  likeListing
+  likeListing,
+  destroyListing
 };

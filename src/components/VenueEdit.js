@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Message } from "semantic-ui-react";
 import API from "../adapters/API";
 import AutoComplete from "./AutoComplete";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
@@ -11,17 +11,23 @@ export class VenueEdit extends Component {
     coordinates: {
       lat: null,
       lng: null
-    }
+    },
+    errors: []
   };
 
-  _isMounted = false
+  _isMounted = false;
 
   componentDidMount() {
-    this._isMounted = true
-    API.getVenue(this.props.match.params.id).then(venue => {
-      if (venue && this.props.user && venue.user_id !== this.props.user.id) {
-        this.props.history.push('/')
-      } else if (venue && venue.id && this._isMounted) {
+    this._isMounted = true;
+
+    const venue = this.props.venues.find(
+      v => v.id === parseInt(this.props.match.params.id)
+    );
+
+    if (this.props.user && venue.user_id !== this.props.user.id) {
+      this.props.history.push("/");
+    } else {
+      if (venue && venue.id && this._isMounted) {
         this.setState({
           venue: {
             id: venue.id,
@@ -35,40 +41,16 @@ export class VenueEdit extends Component {
             lng: venue.longitude
           }
         });
-      } else if (venue && venue.errors) {
-        console.log("errors:", venue.errors);
       } else if (!this._isMounted) {
-        
       } else {
-        console.log(venue);
+        return this.setState({ errors: ["Venue not found"] });
       }
-    });
+    }
   }
+
   componentWillUnmount() {
-    this._isMounted = false
+    this._isMounted = false;
   }
-
-    // getAddress = venue => {
-    //   let map = new window.google.maps.Map(document.getElementById("map"), {
-    //     center: { lat: venue.latitude, lng: venue.longitude }
-    //   });
-
-    //   let service = new window.google.maps.places.PlacesService(map);
-
-    //   service.getDetails(
-    //     {
-    //       placeId: venue.place_id
-    //     },
-    //     (place, status) => {
-    //       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-    //         this.setState({ venue: {
-    //             ...this.state.venue,
-    //             address: place.formatted_address
-    //         }});
-    //       }
-    //     }
-    //   );
-    // };
 
   handleAutocompleteSelect = async value => {
     const results = await geocodeByAddress(value);
@@ -138,7 +120,14 @@ export class VenueEdit extends Component {
     const { name, description, address } = this.state.venue;
     const { placeId } = this.state;
 
-    return (
+    return this.state.errors.length > 0 ? (
+      <Message warning>
+        <Message.Header>Something went Wrong!</Message.Header>
+        {this.state.errors.map(error => (
+          <p>{error}</p>
+        ))}
+      </Message>
+    ) : (
       <Form onSubmit={this.handleSubmit}>
         <Form.Input
           placeholder="name..."

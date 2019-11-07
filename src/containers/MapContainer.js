@@ -9,8 +9,8 @@ export class MapContainer extends Component {
   
   
   render() {
-    const { listings, location, selectedListingId, setSelectedListingId, radius, filter } = this.props;
-    const radiusFilteredListings = filterByRadius(listings, location, radius)
+    const { listings, location, selectedListingId, setSelectedListingId, radius, filter, venues } = this.props;
+    const radiusFilteredListings = filterByRadius(listings, venues, location, radius)
     const eventFilteredListings = filterListingsByEvent(radiusFilteredListings, filter);
 
     return (
@@ -27,6 +27,7 @@ export class MapContainer extends Component {
           listings={eventFilteredListings}
           setSelectedListingId={setSelectedListingId}
           selectedListingId={selectedListingId}
+          venues={venues}
         /> : 
         
         <div>Loading</div>

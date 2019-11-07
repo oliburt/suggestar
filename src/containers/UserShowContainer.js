@@ -10,11 +10,15 @@ class UserShowContainer extends React.Component {
     if (this.props.isAuthenticated === false) return this.props.history.push("/");
   }
   
+  componentWillUnmount() {
+    console.log('unmount')
+  }
+  
 
   render() {
     return (
       <div>
-        {this.props.isAuthenticated ? <UserShow user={this.props.user} history={this.props.history} />: <UserPlaceHolder />}
+        {this.props.user ? <UserShow user={this.props.user} history={this.props.history} venues={this.props.venues} />: <UserPlaceHolder />}
       </div>
     );
   }

@@ -1,18 +1,15 @@
 import API from "../adapters/API";
 import ListingCard from "../components/ListingCard";
-import React from 'react';
+import React from "react";
 
-
-export const getDistance = (listing_or_venue, location) => {
+export const getDistance = (venue, location) => {
   if (!location) return "Calculating...";
 
   const loc1 = [...location];
   let loc2;
-  // if (listing_or_venue.latitude) {
-  //   loc2 = [listing_or_venue.latitude, listing_or_venue.longitude];
-  // } else {
-    loc2 = [listing_or_venue.venue.latitude, listing_or_venue.venue.longitude];
-  // }
+
+  loc2 = [venue.latitude, venue.longitude];
+
   const rad_per_deg = Math.PI / 180;
   const rkm = 6371;
   const rm = rkm * 1000;
@@ -30,8 +27,11 @@ export const getDistance = (listing_or_venue, location) => {
   return rm * c;
 };
 
-export const filterByRadius = (listings, location, radius) =>
-  listings.filter(listing => getDistance(listing, location) <= radius);
+export const filterByRadius = (listings, venues, location, radius) =>
+  listings.filter(listing => {
+    const venue = venues.find(v => v.id === listing.venue_id);
+    return getDistance(venue, location) <= radius;
+  });
 
 export const filterListingsByEvent = (listings, filter) => {
   if (filter === "All") return listings;
@@ -40,24 +40,36 @@ export const filterListingsByEvent = (listings, filter) => {
   });
 };
 
-export const handleLikeButtonClick = (user_id, listing_id, updateListingShow, updateListings) => {
+export const handleLikeButtonClick = (
+  user_id,
+  listing_id,
+  updateLikeOnListing
+) => {
   const like = {
     user_id,
     listing_id
   };
+  updateLikeOnListing(like)
   API.likeListing(like).then(like => {
     if (like && like.errors) {
       console.log(like.errors);
     } else if (like && like.error) {
       console.log(like);
     } else if (like && (like.deleted || like.id)) {
-      updateListingShow(like)
-      updateListings(like)
+      // updateLikeOnListing(like);
     } else {
       console.log("Return Value:", like);
     }
   });
 };
+
+export const isListingInNext24hours = listing => {
+  const dateNow = new Date()
+  const datePlus24Hours = new Date(dateNow.getTime() + 24*60*60*1000)
+  const listingBegin = new Date(listing.begin_datetime)
+  const listingEnd = new Date(listing.end_datetime)
+  return (dateNow <= listingBegin && listingBegin <= datePlus24Hours) || (dateNow > listingBegin && dateNow <= listingEnd)
+}
 
 const getAddress = (venue, obj) => {
   let map = new window.google.maps.Map(document.getElementById("map"), {
@@ -78,8 +90,34 @@ const getAddress = (venue, obj) => {
   );
 };
 
-export  const renderCards = (listings, location, user) =>
-listings.map(listing => <ListingCard key={listing.id} {...listing} distance={getDistance(listing, location)} user={user}/>);
+export const renderCards = (listings, location, user, venues) => {
+  if (venues) {
+    return listings.map(listing => {
+      const venue = venues.find(v => v.id === listing.venue_id);
+
+      return (
+        <ListingCard
+          key={listing.id}
+          {...listing}
+          distance={getDistance(venue, location)}
+          user={user}
+          venue={venue}
+        />
+      );
+    });
+  } else {
+    return listings.map(listing => {
+
+      return (
+        <ListingCard
+          key={listing.id}
+          {...listing}
+          user={user}
+        />
+      );
+    });
+  }
+};
 
 export default {
   getDistance,
