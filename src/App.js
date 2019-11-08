@@ -14,6 +14,33 @@ class App extends React.Component {
     errors: []
   };
 
+  addReview = review => this.setState({venues: this.venues.map(venue => {
+    if (venue.id === review.venue_id) return {
+      ...venue,
+      reviews: [...venue.reviews, review]
+    }
+    return venue
+  })})
+
+  updateReview = review => this.setState({ venues: this.venues.map(venue => {
+    if (venue.id === review.venue_id) return {
+      ...venue,
+      reviews: venue.reviews.map(rev => {
+        if (rev.id === review.id) return review
+        return rev
+      })
+    }
+    return venue
+  })})
+
+  removeReview = review => this.setState({ venues: this.venues.map(venue => {
+    if (venue.id === review.venue_id) return {
+      ...venue,
+      reviews: venue.reviews.filter(rev => rev.id !== review.id)
+    }
+    return venue
+  })})
+
   addListing = listing => {
     this.setState({ listings: [...this.state.listings, listing] });
   };
@@ -198,6 +225,9 @@ class App extends React.Component {
           updateListing={this.updateListing}
           addListing={this.addListing}
           removeListing={this.removeListing}
+          addReview={this.addReview}
+          updateReview={this.updateReview}
+          removeReview={this.removeReview}
         />
       </div>
     );
