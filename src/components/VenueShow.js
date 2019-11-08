@@ -44,7 +44,7 @@ const VenueShow = ({
       ) : (
         <Header as="h4">No Upcoming Listings</Header>
       )}
-      <ReviewForm />
+      <ReviewForm venue_id={id} user_id={user.id}/>
 
       {reviews.length > 0 ? (
         <Card fluid>
