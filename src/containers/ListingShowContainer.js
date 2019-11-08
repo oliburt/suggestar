@@ -1,7 +1,5 @@
-import React, { Component, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import ListingShow from "../components/ListingShow";
-import API from "../adapters/API";
-import UserPlaceHolder from "../components/UserPlaceHolder";
 import { Message } from "semantic-ui-react";
 
 export class ListingShowContainer extends PureComponent {

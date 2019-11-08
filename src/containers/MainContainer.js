@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { allRoutes } from "../config/routes";
 import { Route, Switch } from "react-router-dom";
 import { Message, Container } from "semantic-ui-react";
-import API from "../adapters/API";
-import { getDistance } from "../helpers/helperFunctions";
 
 class MainContainer extends Component {
   state = {
@@ -12,37 +10,9 @@ class MainContainer extends Component {
     currentRadius: 2000
   };
 
-  
-
   changeFilter = filter => this.setState({ filter });
 
   setRadius = radius => this.setState({ currentRadius: radius });
-
-  // componentDidMount() {
-  //   if ("geolocation" in navigator) {
-  //     navigator.geolocation.getCurrentPosition(position => {
-  //       API.getNearbyListings(
-  //         position.coords.latitude,
-  //         position.coords.longitude,
-  //         10000
-  //       ).then(listings => {
-  //         if (listings && listings.errors) {
-  //           console.log("errors:", listings.errors);
-  //         } else {
-  //           this.setState({
-  //             listings,
-  //             location: [position.coords.latitude, position.coords.longitude]
-  //           });
-  //         }
-  //       });
-  //     });
-  //   } else {
-  //     console.log("geolocation not available");
-  //   }
-  // }
-
-
- 
 
   setSelectedListingId = id =>
     id
@@ -67,7 +37,10 @@ class MainContainer extends Component {
       updateLikeOnListing,
       updateListing,
       addListing,
-      removeListing
+      removeListing,
+      addReview,
+      updateReview,
+      removeReview
     } = this.props;
     return (
       <div>
@@ -103,6 +76,9 @@ class MainContainer extends Component {
                       updateLikeOnListing={updateLikeOnListing}
                       updateListing={updateListing}
                       removeListing={removeListing}
+                      addReview={addReview}
+                      updateReview={updateReview}
+                      removeReview={removeReview}
                     />
                   ) : (
                     this.notFoundMessage()
