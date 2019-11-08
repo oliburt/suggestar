@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React from "react";
 import "./App.css";
 import API from "./adapters/API";
 import MainContainer from "./containers/MainContainer";
 import Navigation from "./containers/Navigation";
-import { getDistance } from "./helpers/helperFunctions";
 
 class App extends React.Component {
   state = {
@@ -67,7 +66,6 @@ class App extends React.Component {
   };
 
   removeListing = (listing) => {
-    console.log('hit')
     this.setState({
       listings: this.state.listings.filter(l => l.id !== listing.id)
     });
@@ -79,50 +77,64 @@ class App extends React.Component {
     this.props.history.push("/");
   };
 
+  handleOfflineNavigator = () => {
+    const { lat, lng } = JSON.parse(localStorage.getItem('last-known-position'))
+        this.initialCall(lat, lng)
+  }
+
   componentDidMount() {
-    if ("geolocation" in navigator) {
+    if (navigator.onLine) {
       navigator.geolocation.getCurrentPosition(position => {
-        API.initialCall(
-          position.coords.latitude,
-          position.coords.longitude,
-          10000
-        ).then(returnObj => {
-          if (returnObj && returnObj.user && returnObj.user.errors) {
-            this.setState({
-              errors: returnObj.user.errors,
-              location: [position.coords.latitude, position.coords.longitude],
-              venues: returnObj.venues,
-              listings: returnObj.listings,
-              isAuthenticated: false
-            });
-          } else if (returnObj && returnObj.user && returnObj.user.id) {
-            this.setState({
-              location: [position.coords.latitude, position.coords.longitude],
-              user: returnObj.user,
-              isAuthenticated: true,
-              venues: returnObj.venues,
-              listings: returnObj.listings
-            });
-          } else if (returnObj && returnObj.errors && returnObj.venues) {
-            API.logout();
-            this.setState({
-              location: [position.coords.latitude, position.coords.longitude],
-              errors: returnObj.errors,
-              venues: returnObj.venues,
-              listings: returnObj.listings,
-              isAuthenticated: false
-            });
-          } else {
-            this.setState({
-              location: [position.coords.latitude, position.coords.longitude],
-              errors: returnObj.errors
-            });
-          }
-        });
+        localStorage.setItem("last-known-position", JSON.stringify({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }))
+        this.initialCall(position.coords.latitude,
+          position.coords.longitude,)
       });
     } else {
-      console.log("geolocation not available");
+        this.handleOfflineNavigator()
     }
+  }
+
+  initialCall = (lat, lng) => {
+    API.initialCall(
+      lat,
+      lng,
+      10000
+    ).then(returnObj => {
+      if (returnObj && returnObj.user && returnObj.user.errors) {
+        this.setState({
+          errors: returnObj.user.errors,
+          location: [lat, lng],
+          venues: returnObj.venues,
+          listings: returnObj.listings,
+          isAuthenticated: false
+        });
+      } else if (returnObj && returnObj.user && returnObj.user.id) {
+        this.setState({
+          location: [lat, lng],
+          user: returnObj.user,
+          isAuthenticated: true,
+          venues: returnObj.venues,
+          listings: returnObj.listings
+        });
+      } else if (returnObj && returnObj.errors && returnObj.venues) {
+        API.logout();
+        this.setState({
+          location: [lat, lng],
+          errors: returnObj.errors,
+          venues: returnObj.venues,
+          listings: returnObj.listings,
+          isAuthenticated: false
+        });
+      } else {
+        this.setState({
+          location: [lat, lng],
+          errors: returnObj.errors
+        });
+      }
+    });
   }
 
   updateListing = listing =>
