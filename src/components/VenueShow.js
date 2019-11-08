@@ -1,8 +1,9 @@
 import React from "react";
-import { Header, Button } from "semantic-ui-react";
+import { Header, Button, Card, Feed } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import ListingCard from "./ListingCard";
-import { getDistance, renderCards } from "../helpers/helperFunctions";
+import { renderCards } from "../helpers/helperFunctions";
+import ReviewShow from "./ReviewShow";
+import ReviewForm from "./ReviewForm";
 
 const VenueShow = ({
   name,
@@ -12,7 +13,8 @@ const VenueShow = ({
   id,
   user_id,
   user,
-  location
+  location,
+  reviews
 }) => {
   return (
     <div>
@@ -41,6 +43,23 @@ const VenueShow = ({
         </div>
       ) : (
         <Header as="h4">No Upcoming Listings</Header>
+      )}
+      <ReviewForm />
+
+      {reviews.length > 0 ? (
+        <Card fluid>
+          <Card.Content>
+            <Card.Header>Venue Reviews:</Card.Header>
+          </Card.Content>
+          <Feed>
+            {reviews.map(rev => (
+              <ReviewShow {...rev} />
+            ))}
+
+          </Feed>
+        </Card>
+      ) : (
+        <Header as="h4">No Reviews</Header>
       )}
     </div>
   );
