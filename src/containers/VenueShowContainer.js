@@ -1,7 +1,6 @@
 import React from "react";
 import UserPlaceHolder from "../components/UserPlaceHolder";
 import VenueShow from "../components/VenueShow";
-import API from "../adapters/API";
 
 class VenueShowContainer extends React.Component {
 
