@@ -7,6 +7,7 @@ const VENUES_URL = `${API_ENDPOINT}/venues`;
 const CATEGORIES_URL = `${API_ENDPOINT}/categories`;
 const LISTINGS_URL = `${API_ENDPOINT}/listings`;
 const LIKES_URL = `${API_ENDPOINT}/like`;
+const REVIEWS_URL = `${API_ENDPOINT}/reviews`;
 
 const jsonHeaders = (more = {}) => ({
   "Content-Type": "application/json",
@@ -182,12 +183,21 @@ const getNearbyListings = (latitude, longitude, radius) => {
 }
 
 const likeListing = like => {
-  let config = {
+  const config = {
     method: "POST",
     headers: jsonHeaders(authHeader()),
     body: JSON.stringify({like})
   }
   return fetch(LIKES_URL, config).then(handleServerResponse).catch(handleError)
+}
+
+const postReview = review => {
+  const config = {
+    method: "POST",
+    headers: jsonHeaders(authHeader()),
+    body: JSON.stringify({review})
+  }
+  return fetch(REVIEWS_URL, config).then(handleServerResponse).catch(handleError)
 }
 
 
@@ -208,5 +218,6 @@ export default {
   getListing,
   getNearbyListings,
   likeListing,
-  destroyListing
+  destroyListing,
+  postReview
 };
