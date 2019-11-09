@@ -11,10 +11,13 @@ class App extends React.Component {
     listings: [],
     location: [],
     venues: [],
-    errors: []
+    errors: [],
+    activeVenueMenuItem: "About"
   };
 
-  addReview = review => this.setState({venues: this.venues.map(venue => {
+  setActiveVenueMenuItem = activeVenueMenuItem => this.setState({activeVenueMenuItem})
+
+  addReview = review => this.setState({venues: this.state.venues.map(venue => {
     if (venue.id === review.venue_id) return {
       ...venue,
       reviews: [...venue.reviews, review]
@@ -22,7 +25,7 @@ class App extends React.Component {
     return venue
   })})
 
-  updateReview = review => this.setState({ venues: this.venues.map(venue => {
+  updateReview = review => this.setState({ venues: this.state.venues.map(venue => {
     if (venue.id === review.venue_id) return {
       ...venue,
       reviews: venue.reviews.map(rev => {
@@ -33,7 +36,7 @@ class App extends React.Component {
     return venue
   })})
 
-  removeReview = review => this.setState({ venues: this.venues.map(venue => {
+  removeReview = review => this.setState({ venues: this.state.venues.map(venue => {
     if (venue.id === review.venue_id) return {
       ...venue,
       reviews: venue.reviews.filter(rev => rev.id !== review.id)
@@ -228,6 +231,8 @@ class App extends React.Component {
           addReview={this.addReview}
           updateReview={this.updateReview}
           removeReview={this.removeReview}
+          activeVenueMenuItem={this.state.activeVenueMenuItem}
+          setActiveVenueMenuItem={this.setActiveVenueMenuItem}
         />
       </div>
     );
