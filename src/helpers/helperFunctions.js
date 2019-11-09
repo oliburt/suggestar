@@ -119,10 +119,17 @@ export const renderCards = (listings, location, user, venues) => {
   }
 };
 
+export const getAverageRating = reviews => {
+  const numOfReviews = reviews.length
+  if (numOfReviews > 0) return reviews.map(r => r.rating).reduce((acc, rating) => acc + rating) / numOfReviews
+  return 0
+}
+ 
 export default {
   getDistance,
   filterByRadius,
   filterListingsByEvent,
   getAddress,
-  renderCards
+  renderCards,
+  getAverageRating
 };
