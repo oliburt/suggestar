@@ -9,6 +9,7 @@ const NewVenueForm = ({history, addVenueToCurrentUser, user}) => {
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [placeId, setPlaceId] = React.useState(null);
+  const [imageUrl, setImageUrl] = React.useState('');
   const [coordinates, setCoordinates] = React.useState({
     lat: null,
     lng: null
@@ -35,7 +36,8 @@ const NewVenueForm = ({history, addVenueToCurrentUser, user}) => {
         description,
         place_id: placeId,
         latitude: coordinates.lat,
-        longitude: coordinates.lng
+        longitude: coordinates.lng,
+        image_url: imageUrl
     }
     API.postVenue(venue).then(venue => {
       if (venue && venue.id) {
@@ -46,6 +48,22 @@ const NewVenueForm = ({history, addVenueToCurrentUser, user}) => {
       }
     })
   };
+
+  let widget = window.cloudinary.createUploadWidget({
+    cloudName: 'dx4iys6gu',
+    uploadPreset: 'ml_default'
+  }, (error, result) => {
+    checkUploadResult(result)
+  })
+
+  const showWidget = (widget) => widget.open()
+
+  const checkUploadResult = resultEvent => {
+    if (resultEvent.event === 'success') {
+      console.log(user.id)
+      setImageUrl(resultEvent.info.secure_url)
+    }
+  }
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -61,6 +79,9 @@ const NewVenueForm = ({history, addVenueToCurrentUser, user}) => {
         name="description"
         onChange={e => setDescription(e.target.value)}
       />
+      <div id='photo-form-container'>
+        <Button onClick={() => showWidget(widget)}>Upload Photo</Button>
+      </div>
       {!placeId ? (
         <AutoComplete
           address={address}
