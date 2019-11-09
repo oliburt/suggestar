@@ -1,14 +1,50 @@
 import React from "react";
-import { Feed } from "semantic-ui-react";
+import StarRatingComponent from "react-star-rating-component";
+import { Feed, Icon } from "semantic-ui-react";
 
-const ReviewShow = () => {
+const ReviewShow = ({ content, rating, created_at, users_name }) => {
+  const convertTimeCreated = datetime => {
+    const createdAt = new Date(datetime);
+    const timeNow = new Date();
+
+    const diffTime = Math.abs(timeNow - createdAt);
+    const diffMins = Math.round(diffTime / (1000 * 60));
+    const diffHours = Math.round(diffTime / (1000 * 60 * 60));
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffMins < 1) return "a few seconds ago...";
+    if (diffMins >= 1 && diffHours < 1) return `${diffMins} minutes ago`;
+    if (diffHours >= 1 && diffDays < 1) return `${diffHours} hours ago`;
+    return `${diffDays} days ago`;
+  };
+
+  const iconColor = rating => {
+    if (rating === 5) return "green"
+    if (rating === 4) return "olive"
+    if (rating === 3) return "yellow"
+    if (rating === 2) return "orange"
+    if (rating === 1) return "red"
+    return 'grey'
+  }
+
   return (
     <Feed.Event>
-      <Feed.Content>
-        <Feed.Summary>
-          You added <a>Jenny Hess</a> to your <a>coworker</a> group.
-        </Feed.Summary>
-        <Feed.Date content="1 day ago" />
+      <Feed.Label>
+        <Icon name="star" color={iconColor(rating)} />
+      </Feed.Label>
+      <Feed.Content style={{borderBottom: '1px solid black'}}>
+
+        <StarRatingComponent
+          name="rating"
+          value={rating}
+          starCount={5}
+          starColor={"#ffb400"}
+          emptyStarColor={"#333"}
+          editing={false}
+        />
+        <Feed.Summary>{content}</Feed.Summary>
+        <Feed.Meta>by {users_name}</Feed.Meta>
+        <Feed.Date content={convertTimeCreated(created_at)} />
       </Feed.Content>
     </Feed.Event>
   );
