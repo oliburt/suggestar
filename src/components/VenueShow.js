@@ -1,9 +1,9 @@
-import React from "react";
-import { Header, Button, Card, Feed } from "semantic-ui-react";
-import { Link } from "react-router-dom";
-import { renderCards } from "../helpers/helperFunctions";
-import ReviewShow from "./ReviewShow";
-import ReviewForm from "./ReviewForm";
+import React, { useState } from "react";
+import { Header } from "semantic-ui-react";
+import VenueShowMenu from "./VenueShowMenu";
+import VenueReviews from "./VenueReviews";
+import VenueUpcomingListings from "./VenueUpcomingListings";
+import VenueAbout from "./VenueAbout";
 
 const VenueShow = ({
   name,
@@ -14,53 +14,28 @@ const VenueShow = ({
   user_id,
   user,
   location,
-  reviews
+  reviews,
+  addReview,
+  updateReview,
+  removeReview,
+  activeMenuItem,
+  setActiveVenueMenuItem
+
 }) => {
+
+  const renderContent = activeMenuItem => {
+    if (activeMenuItem === "About") return <VenueAbout user={user} user_id={user_id} id={id} description={description} address={address} reviews={reviews} />
+    if (activeMenuItem === "Upcoming Listings") return <VenueUpcomingListings user={user} listings={listings} user_id={user_id} location={location} />
+    return <VenueReviews id={id} reviews={reviews} user={user} addReview={addReview} updateReview={updateReview} />
+  };
+
   return (
     <div>
       <Header as="h1">{name}</Header>
-      {user && user.id === user_id ? (
-        <div>
-          <Link to={`/venues/${id}/edit`}>
-            <Button>Edit</Button>
-          </Link>
-          <Link to={`/venues/${id}/destroy`}>
-            <Button>Delete</Button>
-          </Link>
-        </div>
-      ) : null}
-      <p>Description: {description}</p>
-      <p>Address: {address}</p>
-      {user && user.id === user_id ? (
-        <Link to="/listings/new">
-          <Button>Add New Listing</Button>
-        </Link>
-      ) : null}
-      {listings.length > 0 ? (
-        <div>
-          <Header as="h4">Upcoming Listings:</Header>
-          {renderCards(listings, location, user)}
-        </div>
-      ) : (
-        <Header as="h4">No Upcoming Listings</Header>
-      )}
-      <ReviewForm venue_id={id} user_id={user.id}/>
-
-      {reviews.length > 0 ? (
-        <Card fluid>
-          <Card.Content>
-            <Card.Header>Venue Reviews:</Card.Header>
-          </Card.Content>
-          <Feed>
-            {reviews.map(rev => (
-              <ReviewShow {...rev} />
-            ))}
-
-          </Feed>
-        </Card>
-      ) : (
-        <Header as="h4">No Reviews</Header>
-      )}
+      <VenueShowMenu activeMenuItem={activeMenuItem} handleItemClick={setActiveVenueMenuItem}/>
+      
+      {renderContent(activeMenuItem)}
+      
     </div>
   );
 };
