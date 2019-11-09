@@ -40,7 +40,10 @@ class MainContainer extends Component {
       removeListing,
       addReview,
       updateReview,
-      removeReview
+      removeReview,
+      activeVenueMenuItem,
+      setActiveVenueMenuItem
+
     } = this.props;
     return (
       <div>
@@ -79,6 +82,8 @@ class MainContainer extends Component {
                       addReview={addReview}
                       updateReview={updateReview}
                       removeReview={removeReview}
+                      activeVenueMenuItem={activeVenueMenuItem}
+                      setActiveVenueMenuItem={setActiveVenueMenuItem}
                     />
                   ) : (
                     this.notFoundMessage()
