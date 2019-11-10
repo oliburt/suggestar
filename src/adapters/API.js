@@ -199,6 +199,21 @@ const postReview = review => {
   }
   return fetch(REVIEWS_URL, config).then(handleServerResponse).catch(handleError)
 }
+const patchReview = review => {
+  const config = {
+    method: "PATCH",
+    headers: jsonHeaders(authHeader()),
+    body: JSON.stringify({review})
+  }
+  return fetch(`${REVIEWS_URL}/${review.id}`, config).then(handleServerResponse).catch(handleError)
+}
+const destroyReview = review => {
+  const config = {
+    method: "DELETE",
+    headers: jsonHeaders(authHeader())
+  }
+  return fetch(`${REVIEWS_URL}/${review.id}`, config).then(handleServerResponse).catch(handleError)
+}
 
 
 
@@ -219,5 +234,7 @@ export default {
   getNearbyListings,
   likeListing,
   destroyListing,
-  postReview
+  postReview,
+  patchReview,
+  destroyReview
 };
