@@ -45,6 +45,7 @@ export const handleLikeButtonClick = (
   listing_id,
   updateLikeOnListing
 ) => {
+  if (!user_id) return
   const like = {
     user_id,
     listing_id
@@ -90,7 +91,7 @@ const getAddress = (venue, obj) => {
   );
 };
 
-export const renderCards = (listings, location, user, venues) => {
+export const renderCards = (listings, location, user, updateLikeOnListing, venues) => {
   if (venues) {
     return listings.map(listing => {
       const venue = venues.find(v => v.id === listing.venue_id);
@@ -102,6 +103,7 @@ export const renderCards = (listings, location, user, venues) => {
           distance={getDistance(venue, location)}
           user={user}
           venue={venue}
+          updateLikeOnListing={updateLikeOnListing}
         />
       );
     });
@@ -113,6 +115,7 @@ export const renderCards = (listings, location, user, venues) => {
           key={listing.id}
           {...listing}
           user={user}
+          updateLikeOnListing={updateLikeOnListing}
         />
       );
     });
@@ -124,6 +127,9 @@ export const getAverageRating = reviews => {
   if (numOfReviews > 0) return reviews.map(r => r.rating).reduce((acc, rating) => acc + rating) / numOfReviews
   return 0
 }
+
+export const getVenue = (listing, venues) => venues.find(v => v.id === listing.venue_id)
+
  
 export default {
   getDistance,
