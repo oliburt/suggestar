@@ -7,12 +7,15 @@ class MainContainer extends Component {
   state = {
     selectedListingId: null,
     filter: "All",
-    currentRadius: 2000
+    currentRadius: localStorage.getItem('search-radius') ? parseInt(localStorage.getItem('search-radius')) : 2000
   };
 
   changeFilter = filter => this.setState({ filter });
 
-  setRadius = radius => this.setState({ currentRadius: radius });
+  setRadius = radius => {
+    localStorage.setItem("search-radius", radius);
+    this.setState({ currentRadius: radius });
+  };
 
   setSelectedListingId = id =>
     id
@@ -43,7 +46,6 @@ class MainContainer extends Component {
       removeReview,
       activeVenueMenuItem,
       setActiveVenueMenuItem
-
     } = this.props;
     return (
       <div>
