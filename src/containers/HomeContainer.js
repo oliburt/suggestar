@@ -8,7 +8,8 @@ export class HomeContainer extends Component {
   
 
   render() {
-    const { listings, location, radius, filter, user, venues } = this.props;
+    const { listings, location, radius, filter, user, venues, updateLikeOnListing } = this.props;
+    
     const currentListings = listings.filter(l => isListingInNext24hours(l))
     const radiusFilteredListings = filterByRadius(currentListings, venues, location, radius)
     const eventFilteredListings = filterListingsByEvent(radiusFilteredListings, filter);
@@ -17,7 +18,7 @@ export class HomeContainer extends Component {
       <div>
         <FilterForm listings={listings} changeFilter={this.props.changeFilter} filter={this.props.filter} radius={this.props.radius} setRadius={this.props.setRadius}/>
         <Link to={"/map"}>>>View Map</Link>
-        <Home listings={eventFilteredListings} location={location} user={user} venues={venues}/>
+        <Home listings={eventFilteredListings} location={location} user={user} venues={venues} updateLikeOnListing={updateLikeOnListing}/>
       </div>
     ) : (
       <div>No Listings...</div>
