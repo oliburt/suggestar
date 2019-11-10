@@ -2,7 +2,7 @@ import React from "react";
 import StarRatingComponent from "react-star-rating-component";
 import { Feed, Icon } from "semantic-ui-react";
 
-const ReviewShow = ({ content, rating, created_at, users_name }) => {
+const ReviewShow = ({ content, rating, created_at, users_name, id, setReviewToEdit }) => {
   const convertTimeCreated = datetime => {
     const createdAt = new Date(datetime);
     const timeNow = new Date();
@@ -19,21 +19,25 @@ const ReviewShow = ({ content, rating, created_at, users_name }) => {
   };
 
   const iconColor = rating => {
-    if (rating === 5) return "green"
-    if (rating === 4) return "olive"
-    if (rating === 3) return "yellow"
-    if (rating === 2) return "orange"
-    if (rating === 1) return "red"
-    return 'grey'
-  }
+    if (rating === 5) return "green";
+    if (rating === 4) return "olive";
+    if (rating === 3) return "yellow";
+    if (rating === 2) return "orange";
+    if (rating === 1) return "red";
+    return "grey";
+  };
 
   return (
+    <>
+      <div style={{textAlign: 'right'}}>
+        <Icon name="edit" onClick={() => setReviewToEdit(id)}/>
+        <Icon name="trash alternate" />
+      </div>
     <Feed.Event>
       <Feed.Label>
         <Icon name="star" color={iconColor(rating)} />
       </Feed.Label>
-      <Feed.Content style={{borderBottom: '1px solid black'}}>
-
+      <Feed.Content style={{ borderBottom: "1px solid black" }}>
         <StarRatingComponent
           name="rating"
           value={rating}
@@ -47,6 +51,7 @@ const ReviewShow = ({ content, rating, created_at, users_name }) => {
         <Feed.Date content={convertTimeCreated(created_at)} />
       </Feed.Content>
     </Feed.Event>
+    </>
   );
 };
 
