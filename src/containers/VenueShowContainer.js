@@ -10,12 +10,14 @@ class VenueShowContainer extends React.Component {
     const venuesListings = this.props.listings.filter(
       l => l.venue_id === venue.id
     );
+    
 
     return (
       <div>
         {venue ? (
           <VenueShow
             {...venue}
+            venues={this.props.venues}
             user={this.props.user}
             location={this.props.location}
             listings={venuesListings}
@@ -24,6 +26,7 @@ class VenueShowContainer extends React.Component {
             removeReview={this.props.removeReview}
             activeMenuItem={this.props.activeVenueMenuItem}
             setActiveVenueMenuItem={this.props.setActiveVenueMenuItem}
+            updateLikeOnListing={this.props.updateLikeOnListing}
           />
         ) : (
           <UserPlaceHolder />
