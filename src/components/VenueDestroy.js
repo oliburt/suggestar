@@ -4,8 +4,7 @@ import { Icon } from "semantic-ui-react";
 
 const VenueDestroy = ({ match, removeVenue, user, history, venues }) => {
   const venue = venues.find(v => v.id === parseInt(match.params.id));
-
-  if (user && user.id === venue.user_id) {
+  if (user && venue && user.id === venue.user_id) {
       API.destroyVenue(match.params.id).then(venue => {
           if (venue && venue.error) {
             console.log("error:", venue.error);
@@ -13,7 +12,6 @@ const VenueDestroy = ({ match, removeVenue, user, history, venues }) => {
             console.log("errors:", venue.errors);
           } else if (venue && venue.id) {
             removeVenue(user, venue);
-            history.push("/");
           } else {
             console.log("Return Value:", venue);
           }
