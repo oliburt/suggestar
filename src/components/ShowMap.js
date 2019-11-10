@@ -6,8 +6,9 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
-import { Header } from "semantic-ui-react";
+import { Header, Image } from "semantic-ui-react";
 import mapStyles from "../styles/mapStyles";
+import { getVenue } from "../helpers/helperFunctions";
 
 const ShowMap = withGoogleMap(
   ({ listings, location, selectedListingId, setSelectedListingId, venues }) => {
@@ -15,8 +16,7 @@ const ShowMap = withGoogleMap(
       listings.find(l => l.id === selectedListingId)
     );
 
-    const getVenue = (listing, venues) => venues.find(v => v.id === listing.venue_id)
-    
+    const selectedListingVenue = selectedListing ? getVenue(selectedListing, venues) : null
     return (
       <GoogleMap
         defaultZoom={14}
@@ -43,8 +43,8 @@ const ShowMap = withGoogleMap(
         {selectedListing && (
           <InfoWindow
             position={{
-              lat: getVenue(selectedListing, venues).latitude,
-              lng: getVenue(selectedListing, venues).longitude
+              lat: selectedListingVenue.latitude,
+              lng: selectedListingVenue.longitude
             }}
             onCloseClick={() => {
               setSelectedListing(null);
@@ -53,11 +53,11 @@ const ShowMap = withGoogleMap(
           >
             <div>
               <Header as="h2">{selectedListing.title}</Header>
+              {selectedListingVenue.image_url ? <Image style={{width: '60px', height:"60px"}} src={selectedListingVenue.image_url} centered/> : null}
               <Link to={`/listings/${selectedListing.id}`}>>>View Details</Link>
-
               <p>{selectedListing.description}</p>
-              <Link to={`/venues/${getVenue(selectedListing, venues).id}`}>
-                {getVenue(selectedListing, venues).name}
+              <Link to={`/venues/${selectedListingVenue.id}`}>
+                {selectedListingVenue.name}
               </Link>
             </div>
           </InfoWindow>
