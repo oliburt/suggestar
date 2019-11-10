@@ -1,27 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import StarRatingComponent from "react-star-rating-component";
 import { Form, Button, Header, Message } from "semantic-ui-react";
 import API from "../adapters/API";
 
-const ReviewForm = ({ venue_id, user_id, addReview, id }) => {
+const ReviewForm = ({
+  venue_id,
+  user_id,
+  addReview,
+  id,
+  ratingToEdit,
+  contentToEdit,
+  updateReview
+}) => {
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState([]);
 
+  useEffect(() => {
+    if (id) {
+      setRating(ratingToEdit);
+      setContent(contentToEdit);
+    }
+  }, [id, ratingToEdit, contentToEdit]);
+
   const handleSubmit = e => {
     e.preventDefault();
-    const review = {
-      rating,
-      content,
-      venue_id,
-      user_id
-    };
-    API.postReview(review).then(review => {
-      if (review && review.error) return setErrors([review.error])
-      if (review && review.errors) return setErrors([...review.errors])
-      if (review && review.id) return addReview(review)
-      return setErrors(["Server Error, please try again later"])
-    });
+    if (!id) {
+      const review = {
+        rating,
+        content,
+        venue_id,
+        user_id
+      };
+      API.postReview(review).then(review => {
+        if (review && review.error) return setErrors([review.error]);
+        if (review && review.errors) return setErrors([...review.errors]);
+        if (review && review.id) return addReview(review);
+        return setErrors(["Server Error, please try again later"]);
+      });
+    } else {
+      const review = {
+        id,
+        rating,
+        content,
+        venue_id,
+        user_id
+      };
+      API.patchReview(review).then(review => {
+        if (review && review.error) return setErrors([review.error]);
+        if (review && review.errors) return setErrors([...review.errors]);
+        if (review && review.id) return updateReview(review);
+        return setErrors(["Server Error, please try again later"]);
+    }) }
   };
 
   return (
