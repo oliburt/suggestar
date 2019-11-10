@@ -161,7 +161,7 @@ class App extends React.Component {
       } else {
         this.setState({
           location: [lat, lng],
-          errors: returnObj.errors
+          errors: ['Cannot Connect to the server at this time. Please try again later!']
         });
       }
     });
