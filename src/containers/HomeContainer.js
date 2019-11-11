@@ -1,29 +1,95 @@
-import React, { Component } from "react";
-import Home from "../components/Home";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Grid } from "semantic-ui-react";
+import HomeMenu from "../components/HomeMenu";
+import HomeListingContainer from "./HomeListingContainer";
+import MapContainer from "./MapContainer";
 import FilterForm from "../components/FilterForm";
-import { filterByRadius, filterListingsByEvent, isListingInNext24hours } from "../helpers/helperFunctions";
 
-export class HomeContainer extends Component {
-  
+const HomeContainer = ({
+  windowWidth,
+  user,
+  activeHomeMenuItem,
+  setActiveHomeMenuItem,
+  listings,
+  location,
+  radius,
+  filter,
+  venues,
+  updateLikeOnListing,
+  selectedListingId,
+  setSelectedListingId,
+  changeFilter,
+  setRadius
+}) => {
+  const renderContent = activeMenuItem => {
+    if (activeMenuItem === "Listings")
+      return (
+        <HomeListingContainer
+          listings={listings}
+          location={location}
+          radius={radius}
+          filter={filter}
+          user={user}
+          venues={venues}
+          updateLikeOnListing={updateLikeOnListing}
+        />
+      );
+    if (activeMenuItem === "Map")
+      return (
+        <MapContainer
+          listings={listings}
+          location={location}
+          selectedListingId={selectedListingId}
+          setSelectedListingId={setSelectedListingId}
+          radius={radius}
+          filter={filter}
+          venues={venues}
+          windowWidth={windowWidth}
+        />
+      );
+  };
 
-  render() {
-    const { listings, location, radius, filter, user, venues, updateLikeOnListing } = this.props;
-    
-    const currentListings = listings.filter(l => isListingInNext24hours(l))
-    const radiusFilteredListings = filterByRadius(currentListings, venues, location, radius)
-    const eventFilteredListings = filterListingsByEvent(radiusFilteredListings, filter);
-    
-    return listings.length > 0 ? (
-      <div>
-        <FilterForm listings={listings} changeFilter={this.props.changeFilter} filter={this.props.filter} radius={this.props.radius} setRadius={this.props.setRadius}/>
-        <Link to={"/map"}>>>View Map</Link>
-        <Home listings={eventFilteredListings} location={location} user={user} venues={venues} updateLikeOnListing={updateLikeOnListing}/>
-      </div>
-    ) : (
-      <div>No Listings...</div>
-    );
-  }
-}
+  return (
+    <div>
+      {windowWidth > 600 ? (
+        <Grid>
+          <Grid.Column width={6}>
+            <HomeMenu
+              activeMenuItem={activeHomeMenuItem}
+              handleItemClick={setActiveHomeMenuItem}
+              windowWidth={windowWidth}
+            />
+            <FilterForm
+              listings={listings}
+              changeFilter={changeFilter}
+              filter={filter}
+              radius={radius}
+              setRadius={setRadius}
+            />
+          </Grid.Column>
+          <Grid.Column width={10}>
+            {renderContent(activeHomeMenuItem)}
+          </Grid.Column>
+        </Grid>
+      ) : (
+        <>
+          <HomeMenu
+            activeMenuItem={activeHomeMenuItem}
+            handleItemClick={setActiveHomeMenuItem}
+            windowWidth={windowWidth}
+          />
+          <FilterForm
+            listings={listings}
+            changeFilter={changeFilter}
+            filter={filter}
+            radius={radius}
+            setRadius={setRadius}
+          />
+          {renderContent(activeHomeMenuItem)}
+        </>
+      )}
+    </div>
+  );
+};
 
 export default HomeContainer;

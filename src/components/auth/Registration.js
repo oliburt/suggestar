@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, Button, Message, Header } from "semantic-ui-react";
 import API from "../../adapters/API";
+import FormWrapper from "../FormWrapper";
 
 export class Registration extends Component {
   state = {
@@ -26,16 +27,19 @@ export class Registration extends Component {
       first_name,
       last_name
     } = this.state;
-    API.register({ email, password, password_confirmation, first_name, last_name })
-        .then(user => {
-            if (user.errors) {
-                this.setState({ registrationErrors: user.errors });
-              } else {
-                this.props.login(user);
-              }
-        })
-
-    
+    API.register({
+      email,
+      password,
+      password_confirmation,
+      first_name,
+      last_name
+    }).then(user => {
+      if (user.errors) {
+        this.setState({ registrationErrors: user.errors });
+      } else {
+        this.props.login(user);
+      }
+    });
   };
 
   render() {
@@ -48,8 +52,8 @@ export class Registration extends Component {
       registrationErrors
     } = this.state;
     return (
-      <>
-      <Header as='h1'>Register</Header>
+      <FormWrapper windowWidth={this.props.windowWidth}>
+        <Header as="h1">Register</Header>
         {registrationErrors ? (
           <Message negative>
             <ul>
@@ -102,7 +106,7 @@ export class Registration extends Component {
           />
           <Button type="submit">Submit</Button>
         </Form>
-      </>
+      </FormWrapper>
     );
   }
 }

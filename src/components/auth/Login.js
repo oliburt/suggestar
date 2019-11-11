@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, Button, Message, Header } from "semantic-ui-react";
 import API from "../../adapters/API";
+import FormWrapper from "../FormWrapper";
 
 export class Login extends Component {
   state = {
@@ -32,7 +33,7 @@ export class Login extends Component {
   render() {
     const { email, password, errors } = this.state;
     return (
-      <>
+      <FormWrapper windowWidth={this.props.windowWidth}>
         <Header as='h1'>Login</Header>
 
         {errors ? (
@@ -63,7 +64,7 @@ export class Login extends Component {
           />
           <Button type="submit">Submit</Button>
         </Form>
-      </>
+      </FormWrapper>
     );
   }
 }

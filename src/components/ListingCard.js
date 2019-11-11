@@ -1,16 +1,14 @@
 import React, {useState} from "react";
 import { Card, Icon, Image } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
-import { handleLikeButtonClick } from "../helpers/helperFunctions";
+import { handleLikeButtonClick, convertDistance } from "../helpers/helperFunctions";
 
 
 const ListingCard = ({ title, categories, description, id, venue, distance, likes, user, updateLikeOnListing }) => {
   const history = useHistory()
   const [likeError, setLikeError] = useState(null);
   
-  const convertDistance = (distance) => {
-      return (distance/1000).toFixed(1)
-  }
+
 
   const handleLikeClick = () => {
     if (!user) return setLikeError('Must be signed in to like a listing!')
@@ -29,7 +27,7 @@ const ListingCard = ({ title, categories, description, id, venue, distance, like
       {
         venue ? 
       <Card.Content extra onClick={() => history.push(`/venues/${venue.id}`)}>
-          <Icon name="map pin" />
+          <Icon name="map pin" color="red" />
           {venue.name} - {convertDistance(distance)}km
       </Card.Content>
       : null

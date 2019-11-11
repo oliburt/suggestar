@@ -91,6 +91,37 @@ const getAddress = (venue, obj) => {
   );
 };
 
+export const formatDate = datetime => {
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+
+  const day = datetime.getDate();
+  const month = monthNames[datetime.getMonth()];
+  const year = datetime.getFullYear();
+  let hours = datetime.getHours();
+  let minutes = datetime.getMinutes();
+  const ampm = hours >= 12 ? "pm" : "am";
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+  const fullTime = `${hours}:${minutes} ${ampm}`;
+
+  return [`${day} ${month} ${year}`, `${fullTime}`];
+};
+
+
 export const renderCards = (listings, location, user, updateLikeOnListing, venues) => {
   if (venues) {
     return listings.map(listing => {
@@ -130,6 +161,17 @@ export const getAverageRating = reviews => {
 
 export const getVenue = (listing, venues) => venues.find(v => v.id === listing.venue_id)
 
+export const convertDistance = (distance) => {
+  return (distance/1000).toFixed(1)
+}
+
+export const formatAddress = address => {
+  const slitAddress = address.split(', ')
+  return <p>
+    {slitAddress.map(part => <span>{part}<br/></span>)}
+  </p>
+
+}
  
 export default {
   getDistance,

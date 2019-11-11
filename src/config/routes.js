@@ -9,8 +9,6 @@ import VenueShowContainer from '../containers/VenueShowContainer';
 import NewListingForm from '../components/NewListingForm';
 import ListingShowContainer from '../containers/ListingShowContainer';
 import MapContainer from '../containers/MapContainer';
-import VenueEdit from '../components/VenueEdit';
-import VenueDestroy from '../components/VenueDestroy';
 import ListingEdit from '../components/ListingEdit';
 import ListingDestroy from '../components/ListingDestroy';
 
@@ -39,18 +37,6 @@ export const afterRoutes = [
         exact: true,
         path: '/venues/:id',
         component: VenueShowContainer
-    },
-    {
-        title: 'Venue Delete',
-        exact: true,
-        path: '/venues/:id/destroy',
-        component: VenueDestroy
-    },
-    {
-        title: 'Venue Edit',
-        exact: true,
-        path: '/venues/:id/edit',
-        component: VenueEdit
     },
     {
         title: 'Listing Show',
@@ -82,13 +68,6 @@ export const menuRoutes = [
         path: '/',
         icon: 'home',
         component: HomeContainer
-    },
-    {
-        title: 'Map',
-        exact: true,
-        path: '/map',
-        icon: 'map',
-        component: MapContainer
     },
     {
         title: "Login",

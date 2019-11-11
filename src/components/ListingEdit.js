@@ -25,9 +25,7 @@ export class ListingEdit extends Component {
   componentDidMount() {
     this._isMounted = true
 
-    const listing = this.props.listings.find(
-      l => l.id === parseInt(this.props.match.params.id)
-    );
+    const listing = this.props.listing
 
     if (this.props.user && this.props.user.id === listing.user_id) {
       if (listing && this._isMounted) {
@@ -108,7 +106,7 @@ export class ListingEdit extends Component {
     API.patchListing(listing).then(listing => {
       if (listing && listing.id) {
         this.props.updateListing(listing)
-        this.props.history.push(`/listings/${listing.id}`);
+        this.props.setActiveListingMenuItem('Details')
       } else {
         console.log("todo: error handling");
       }
@@ -128,7 +126,7 @@ export class ListingEdit extends Component {
       categoryOptions,
       venueOptions,
       end_datetime,
-      begin_datetime
+      begin_datetime,
     } = this.state;
     return this.state.errors.length > 0 ? (
       <Message warning>
@@ -204,6 +202,7 @@ export class ListingEdit extends Component {
         />
         <br />
         <Button type="submit">Save</Button>
+        <Button type="button" onClick={() => this.props.setActiveListingMenuItem('Details')}>Back</Button>
       </Form>
     );
   }

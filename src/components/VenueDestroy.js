@@ -1,26 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import API from "../adapters/API";
-import { Icon } from "semantic-ui-react";
+import { Icon, Button, Header, Message } from "semantic-ui-react";
 
-const VenueDestroy = ({ match, removeVenue, user, history, venues }) => {
-  const venue = venues.find(v => v.id === parseInt(match.params.id));
-  if (user && venue && user.id === venue.user_id) {
-      API.destroyVenue(match.params.id).then(venue => {
-          if (venue && venue.error) {
-            console.log("error:", venue.error);
-          } else if (venue && venue.errors) {
-            console.log("errors:", venue.errors);
-          } else if (venue && venue.id) {
-            removeVenue(user, venue);
-          } else {
-            console.log("Return Value:", venue);
-          }
-        })
-  } else {
-      history.push("/");
-  }
+const VenueDestroy = ({ match, removeVenue, user, setActiveVenueMenuItem }) => {
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
 
-  return <Icon loading size='big' name='spinner' />;
+  const handleDeleteClick = () => {
+    setLoading(true);
+    // const venue = venues.find(v => v.id === parseInt(match.params.id));
+    API.destroyVenue(match.params.id).then(venue => {
+      if (venue && venue.error) {
+        setErrors([venue.error]);
+        setLoading(false);
+      } else if (venue && venue.errors) {
+        setErrors([...venue.errors]);
+        setLoading(false);
+      } else if (venue && venue.id) {
+        removeVenue(user, venue);
+      } else {
+        console.log("Return Value:", venue);
+      }
+    });
+  };
+
+  return !loading ? (
+    <div>
+      {errors.length > 0 ? (
+        <Message warning>
+          <Message.Header>Something went Wrong!</Message.Header>
+          {this.state.errors.map(error => (
+            <p>{error}</p>
+          ))}
+        </Message>
+      ) : null}
+      <Header as="h4">Are you sure?</Header>
+      <Button onClick={handleDeleteClick}>Delete</Button>
+      <Button onClick={() => setActiveVenueMenuItem('About')}>Cancel</Button>
+    </div>
+  ) : (
+    <Icon loading size="big" name="spinner" />
+  );
 };
 
 export default VenueDestroy;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Feed } from 'semantic-ui-react';
 import ReviewShow from '../components/ReviewShow';
 
-const ReviewListContainer = ({reviews, setReviewToEdit}) => {
+const ReviewListContainer = ({reviews, setReviewToEdit, removeReview}) => {
     const sortReviewsByMostRecent = reviews => reviews.sort((a, b) => {
         const date1 = new Date(a.created_at)
         const date2 = new Date(b.created_at)
@@ -16,7 +16,7 @@ const ReviewListContainer = ({reviews, setReviewToEdit}) => {
           </Card.Content>
           <Feed>
             {sortReviewsByMostRecent(reviews).map(rev => (
-              <ReviewShow key={rev.id} {...rev} setReviewToEdit={setReviewToEdit}/>
+              <ReviewShow key={rev.id} {...rev} setReviewToEdit={setReviewToEdit} removeReview={removeReview}/>
             ))}
 
           </Feed>

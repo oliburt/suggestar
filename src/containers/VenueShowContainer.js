@@ -1,6 +1,6 @@
 import React from "react";
-import UserPlaceHolder from "../components/UserPlaceHolder";
 import VenueShow from "../components/VenueShow";
+import { Icon } from "semantic-ui-react";
 
 class VenueShowContainer extends React.Component {
   render() {
@@ -27,9 +27,14 @@ class VenueShowContainer extends React.Component {
             activeMenuItem={this.props.activeVenueMenuItem}
             setActiveVenueMenuItem={this.props.setActiveVenueMenuItem}
             updateLikeOnListing={this.props.updateLikeOnListing}
+            windowWidth={this.props.windowWidth}
+            history={this.props.history}
+            match={this.props.match}
+            addVenueToCurrentUser={this.props.addVenueToCurrentUser}
+            removeVenue={this.props.removeVenue}
           />
         ) : (
-          <UserPlaceHolder />
+          <Icon loading size="huge" name="spinner" />
         )}
         <div id="map"></div>
       </div>

@@ -1,39 +1,12 @@
 import React, { Component } from "react";
-import { Header, Button } from "semantic-ui-react";
-import { Link } from "react-router-dom";
-import { handleLikeButtonClick, isListingInNext24hours } from "../helpers/helperFunctions";
+import ListingShowMenu from "./ListingShowMenu";
+import ListingDetails from "./ListingDetails";
+import ListingVenue from "./ListingVenue";
+import ListingEdit from "./ListingEdit";
+import ListingDestroy from "./ListingDestroy";
+import { Grid } from "semantic-ui-react";
 
 export class ListingShow extends Component {
-  formatDate = datetime => {
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
-    ];
-
-    const day = datetime.getDate();
-    const month = monthNames[datetime.getMonth()];
-    const year = datetime.getFullYear();
-    let hours = datetime.getHours();
-    let minutes = datetime.getMinutes();
-    const ampm = hours >= 12 ? "pm" : "am";
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes < 10 ? `0${minutes}` : minutes;
-    const fullTime = `${hours}:${minutes} ${ampm}`;
-
-    return `${day} ${month} ${year} - ${fullTime}`;
-  };
-
   handleViewOnMapClick = id => {
     this.props.setSelectedListingId(id);
     this.props.history.push("/map");
@@ -52,63 +25,98 @@ export class ListingShow extends Component {
       id,
       likes,
       user,
-      updateLikeOnListing
+      updateLikeOnListing,
+      windowWidth,
+      history,
+      match,
+      setActiveListingMenuItem,
+      activeListingMenuItem,
+      listing,
+      venues,
+      updateListing,
+      removeListing
     } = this.props;
-    const startDate = new Date(begin_datetime);
-    const endDate = new Date(end_datetime);
+
+    const renderContent = activeMenuItem => {
+      if (activeMenuItem === "Details")
+        return (
+          <ListingDetails
+            begin_datetime={begin_datetime}
+            end_datetime={end_datetime}
+            title={title}
+            description={description}
+            user={user}
+            categories={categories}
+            likes={likes}
+            ticket_url={ticket_url}
+            age_restriction={age_restriction}
+            id={id}
+            updateLikeOnListing={updateLikeOnListing}
+          />
+        );
+      if (activeMenuItem === "Venue")
+        return (
+          <ListingVenue
+            venue={venue}
+            history={history}
+            windowWidth={windowWidth}
+          />
+        );
+      if (activeMenuItem === "Edit")
+        return (
+          <ListingEdit
+            user={user}
+            listing={listing}
+            venues={venues}
+            history={history}
+            updateListing={updateListing}
+            match={match}
+            setActiveListingMenuItem={setActiveListingMenuItem}
+          />
+        );
+      if (activeMenuItem === "Delete Listing")
+        return (
+          <ListingDestroy
+            match={match}
+            removeListing={removeListing}
+            user={user}
+            history={history}
+            listing={listing}
+            venues={venues}
+            setActiveListingMenuItem={setActiveListingMenuItem}
+          />
+        );
+    };
+
     return (
       <div>
-        <Header as="h1">{title}</Header>
-        <div>
-          <span>Likes: {likes.length}</span>
-          {user && user.id ? (
-            <Button
-              onClick={() => handleLikeButtonClick(user.id, id, updateLikeOnListing)}
-            >
-              {likes.find(l => l.user_id === user.id) ? "Unlike" : "Like"}
-            </Button>
-          ) : null}
-        </div>
-        {isListingInNext24hours({begin_datetime, end_datetime}) ? <span
-          style={{ color: "blue" }}
-          onClick={() => this.handleViewOnMapClick(id)}
-        >
-          >>View on Map
-        </span> : null}
-        {user && user.id === venue.user_id ? (
-          <div>
-            <Link to={`/listings/${id}/edit`}>
-              <Button>Edit</Button>
-            </Link>
-            <Link to={`/listings/${id}/destroy`}>
-              <Button>Delete</Button>
-            </Link>
-          </div>
-        ) : null}
-        <Header as="h3">Description</Header>
-        <p>{description}</p>
-
-        <Header as="h3">Categories</Header>
-        <p>
-          {categories.map((category, index) =>
-            index === categories.length - 1
-              ? category.name
-              : `${category.name}, `
-          )}
-        </p>
-
-        <Header as="h3">Tickets</Header>
-        <p>{ticket_url}</p>
-        <Header as="h3">Age Restriction</Header>
-        <p>{age_restriction}</p>
-        <Header as="h3">Start Date</Header>
-        <p>{this.formatDate(startDate)}</p>
-        <Header as="h3">End Date</Header>
-        <p>{this.formatDate(endDate)}</p>
-
-        <Header as="h3">Venue</Header>
-        <p>{venue.title} - Todo Venue Card</p>
-        <Link to={`/venues/${venue.id}`}>Click Here to see Venue</Link>
+        {windowWidth > 600 ? (
+          <Grid>
+            <Grid.Column width={6}>
+              <ListingShowMenu
+                activeMenuItem={activeListingMenuItem}
+                handleItemClick={setActiveListingMenuItem}
+                windowWidth={windowWidth}
+                user={user}
+                listing_user_id={venue.user_id}
+              />
+            </Grid.Column>
+            <Grid.Column width={10}>
+              {renderContent(activeListingMenuItem)}
+            </Grid.Column>
+          </Grid>
+        ) : (
+          <>
+            <ListingShowMenu
+              activeMenuItem={activeListingMenuItem}
+              handleItemClick={setActiveListingMenuItem}
+              windowWidth={windowWidth}
+              user={user}
+              listing_user_id={venue.user_id}
+            />
+            {renderContent(activeListingMenuItem)}
+          </>
+        )}
       </div>
     );
   }

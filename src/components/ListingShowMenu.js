@@ -1,13 +1,7 @@
 import React from "react";
 import { Menu } from "semantic-ui-react";
 
-const VenueShowMenu = ({
-  activeMenuItem,
-  handleItemClick,
-  windowWidth,
-  user,
-  venue_user_id
-}) => {
+const ListingShowMenu = ({windowWidth, handleItemClick, activeMenuItem, user, listing_user_id}) => {
   const handleClick = (e, data) => {
     handleItemClick(data.name);
   };
@@ -15,21 +9,16 @@ const VenueShowMenu = ({
   return windowWidth > 600 ? (
     <Menu secondary tabular fluid vertical>
       <Menu.Item
-        name="About"
-        active={activeMenuItem === "About"}
+        name="Details"
+        active={activeMenuItem === "Details"}
         onClick={handleClick}
       />
       <Menu.Item
-        name="Upcoming Listings"
-        active={activeMenuItem === "Upcoming Listings"}
+        name="Venue"
+        active={activeMenuItem === "Venue"}
         onClick={handleClick}
       />
-      <Menu.Item
-        name="Reviews"
-        active={activeMenuItem === "Reviews"}
-        onClick={handleClick}
-      />
-      {user && user.id === venue_user_id ? (
+      {user && user.id === listing_user_id ? (
         <>
           <Menu.Item
             name="Edit"
@@ -37,8 +26,8 @@ const VenueShowMenu = ({
             onClick={handleClick}
           />
           <Menu.Item
-            name="Delete Venue"
-            active={activeMenuItem === "Delete Venue"}
+            name="Delete Listing"
+            active={activeMenuItem === "Delete Listing"}
             onClick={handleClick}
           />
         </>
@@ -46,22 +35,17 @@ const VenueShowMenu = ({
     </Menu>
   ) : (
     <Menu secondary tabular fluid>
-      <Menu.Item
-        name="About"
-        active={activeMenuItem === "About"}
+    <Menu.Item
+        name="Details"
+        active={activeMenuItem === "Details"}
         onClick={handleClick}
       />
       <Menu.Item
-        name="Upcoming Listings"
-        active={activeMenuItem === "Upcoming Listings"}
+        name="Venue"
+        active={activeMenuItem === "Venue"}
         onClick={handleClick}
       />
-      <Menu.Item
-        name="Reviews"
-        active={activeMenuItem === "Reviews"}
-        onClick={handleClick}
-      />
-      {user && user.id === venue_user_id ? (
+      {user && user.id === listing_user_id ? (
         <>
           <Menu.Item
             name="Edit"
@@ -69,8 +53,8 @@ const VenueShowMenu = ({
             onClick={handleClick}
           />
           <Menu.Item
-            name="Delete Venue"
-            active={activeMenuItem === "Delete Venue"}
+            name="Delete Listing"
+            active={activeMenuItem === "Delete Listing"}
             onClick={handleClick}
           />
         </>
@@ -79,4 +63,4 @@ const VenueShowMenu = ({
   );
 };
 
-export default VenueShowMenu;
+export default ListingShowMenu;

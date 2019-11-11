@@ -1,8 +1,11 @@
 import React, { Component } from "react";
-import { Form, Button, Message } from "semantic-ui-react";
+import { Form, Button, Message, Icon, Image } from "semantic-ui-react";
 import API from "../adapters/API";
 import AutoComplete from "./AutoComplete";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+import Cloudinary from "../adapters/Cloudinary";
+import ImageUploader from "./ImageUploader";
+import { formatAddress } from "../helpers/helperFunctions";
 
 export class VenueEdit extends Component {
   state = {
@@ -12,6 +15,9 @@ export class VenueEdit extends Component {
       lat: null,
       lng: null
     },
+    imageUrl: "",
+    imagePublicId: "",
+    loadingImage: false,
     errors: []
   };
 
@@ -39,7 +45,9 @@ export class VenueEdit extends Component {
           coordinates: {
             lat: venue.latitude,
             lng: venue.longitude
-          }
+          },
+          imageUrl: venue.image_url ? venue.image_url : "",
+          imagePublicId: venue.image_public_id ? venue.image_public_id : ""
         });
       } else if (!this._isMounted) {
       } else {
@@ -88,7 +96,7 @@ export class VenueEdit extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { name, description, id, address } = this.state.venue;
-    const { placeId, coordinates } = this.state;
+    const { placeId, coordinates, imageUrl, imagePublicId } = this.state;
     const venue = {
       id,
       name,
@@ -96,12 +104,14 @@ export class VenueEdit extends Component {
       address,
       place_id: placeId,
       latitude: coordinates.lat,
-      longitude: coordinates.lng
+      longitude: coordinates.lng,
+      image_url: imageUrl,
+      image_public_id: imagePublicId
     };
     API.patchVenue(venue).then(venue => {
       if (venue && venue.id) {
         this.props.addVenueToCurrentUser(this.props.user, venue);
-        this.props.history.push(`/venues/${venue.id}`);
+        this.props.setActiveVenueMenuItem("About");
       } else {
         console.log("todo: handle errors for edit venue");
       }
@@ -115,6 +125,20 @@ export class VenueEdit extends Component {
         [e.target.name]: e.target.value
       }
     });
+
+  setImageUrl = imageUrl => this.setState({ imageUrl });
+  setImagePublicId = imagePublicId => this.setState({ imagePublicId });
+  setLoadingImage = value => this.setState({ loadingImage: value });
+
+  uploadImage = async e => {
+    Cloudinary.uploadImage(
+      e,
+      this.setImageUrl,
+      this.setImagePublicId,
+      this.setLoadingImage
+    );
+  };
+  handleChangeImage = () => this.setState({ imagePublicId: "", imageUrl: "" });
 
   render() {
     const { name, description, address } = this.state.venue;
@@ -141,6 +165,23 @@ export class VenueEdit extends Component {
           name="description"
           onChange={this.handleChange}
         />
+        {this.state.loadingImage ? (
+          <Icon loading size="big" name="spinner" />
+        ) : this.state.imageUrl.length > 0 ? (
+          <>
+            <Image
+              src={this.state.imageUrl}
+              style={{ width: "200px" }}
+              centered
+            />
+            <Button type="button" onClick={this.handleChangeImage}>
+              Change Image
+            </Button>
+          </>
+        ) : null}
+        {this.state.imageUrl.length > 0 ? null : (
+          <ImageUploader handleChange={this.uploadImage} />
+        )}
         {!placeId ? (
           <AutoComplete
             address={address}
@@ -149,11 +190,15 @@ export class VenueEdit extends Component {
           />
         ) : (
           <div>
-            <p>{address}</p>
+            {formatAddress(address)}
             <Button onClick={this.handleChangeAddress}>Change address</Button>
           </div>
         )}
         <Button type="submit">Save</Button>
+        <Button type="button" onClick={() => this.props.setActiveVenueMenuItem("About")}>
+          Back
+        </Button>
+
         <div id="map"></div>
       </Form>
     );

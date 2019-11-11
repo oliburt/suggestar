@@ -1,40 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import API from "../adapters/API";
-import { Icon } from "semantic-ui-react";
+import { Icon, Message, Button, Header } from "semantic-ui-react";
 
 const ListingDestroy = ({
   match,
   removeListing,
-  user,
-  history,
-  listings,
-  venues
+  setActiveListingMenuItem
 }) => {
-  const listing = listings.find(l => l.id === parseInt(match.params.id));
-  if (listing) {
-    const venue = venues.find(v => v.id === listing.venue_id);
-    if (user && user.id === venue.user_id) {
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
+
+  const handleDeleteClick = () => {
       API.destroyListing(match.params.id).then(listing => {
-        console.log(listing);
         if (listing && listing.error) {
-          console.log("error:", listing.error);
+          setErrors([listing.error]);
+          setLoading(false);
         } else if (listing && listing.errors) {
-          console.log("errors:", listing.errors);
+          setErrors([...listing.errors]);
+          setLoading(false);
         } else if (listing && listing.id) {
           removeListing(listing);
-          history.push("/");
         } else {
           console.log("Return Value:", listing);
         }
       });
-    } else {
-      history.push("/");
-    }
-  } else {
-    history.push("/");
-  }
+  };
 
-  return <Icon loading size='big' name='spinner' />;
+  return !loading ? (
+    <div>
+      {errors.length > 0 ? (
+        <Message warning>
+          <Message.Header>Something went Wrong!</Message.Header>
+          {this.state.errors.map(error => (
+            <p>{error}</p>
+          ))}
+        </Message>
+      ) : null}
+      <Header as="h4">Are you sure?</Header>
+      <Button onClick={handleDeleteClick}>Delete</Button>
+      <Button onClick={() => setActiveListingMenuItem("Details")}>Cancel</Button>
+    </div>
+  ) : (
+    <Icon loading size="big" name="spinner" />
+  );
 };
 
 export default ListingDestroy;

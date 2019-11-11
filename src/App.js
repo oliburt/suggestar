@@ -3,46 +3,71 @@ import "./App.css";
 import API from "./adapters/API";
 import MainContainer from "./containers/MainContainer";
 import Navigation from "./containers/Navigation";
+import { Container, Icon } from "semantic-ui-react";
 
 class App extends React.Component {
   state = {
+    loading: true,
     user: null,
     isAuthenticated: null,
     listings: [],
     location: [],
     venues: [],
     errors: [],
-    activeVenueMenuItem: "About"
+    activeVenueMenuItem: "About",
+    activeHomeMenuItem: 'Listings',
+    activeListingMenuItem: 'Details',
+    windowWidth: window.innerWidth,
+    windowHeight: window.innerHeight
   };
 
-  setActiveVenueMenuItem = activeVenueMenuItem => this.setState({activeVenueMenuItem})
+  setActiveListingMenuItem = activeListingMenuItem =>
+    this.setState({ activeListingMenuItem });
 
-  addReview = review => this.setState({venues: this.state.venues.map(venue => {
-    if (venue.id === review.venue_id) return {
-      ...venue,
-      reviews: [...venue.reviews, review]
-    }
-    return venue
-  })})
+  setActiveVenueMenuItem = activeVenueMenuItem =>
+    this.setState({ activeVenueMenuItem });
 
-  updateReview = review => this.setState({ venues: this.state.venues.map(venue => {
-    if (venue.id === review.venue_id) return {
-      ...venue,
-      reviews: venue.reviews.map(rev => {
-        if (rev.id === review.id) return review
-        return rev
+  setActiveHomeMenuItem = activeHomeMenuItem =>
+    this.setState({ activeHomeMenuItem });
+
+  addReview = review =>
+    this.setState({
+      venues: this.state.venues.map(venue => {
+        if (venue.id === review.venue_id)
+          return {
+            ...venue,
+            reviews: [...venue.reviews, review]
+          };
+        return venue;
       })
-    }
-    return venue
-  })})
+    });
 
-  removeReview = review => this.setState({ venues: this.state.venues.map(venue => {
-    if (venue.id === review.venue_id) return {
-      ...venue,
-      reviews: venue.reviews.filter(rev => rev.id !== review.id)
-    }
-    return venue
-  })})
+  updateReview = review =>
+    this.setState({
+      venues: this.state.venues.map(venue => {
+        if (venue.id === review.venue_id)
+          return {
+            ...venue,
+            reviews: venue.reviews.map(rev => {
+              if (rev.id === review.id) return review;
+              return rev;
+            })
+          };
+        return venue;
+      })
+    });
+
+  removeReview = review =>
+    this.setState({
+      venues: this.state.venues.map(venue => {
+        if (venue.id === review.venue_id)
+          return {
+            ...venue,
+            reviews: venue.reviews.filter(rev => rev.id !== review.id)
+          };
+        return venue;
+      })
+    });
 
   addListing = listing => {
     this.setState({ listings: [...this.state.listings, listing] });
@@ -85,20 +110,23 @@ class App extends React.Component {
   };
 
   removeVenue = (user, venue) => {
-    this.setState({
-      user: {
-        ...user,
-        venues: user.venues.filter(v_id => v_id !== venue.id)
+    this.setState(
+      {
+        user: {
+          ...user,
+          venues: user.venues.filter(v_id => v_id !== venue.id)
+        },
+        venues: this.state.venues.filter(v => v.id !== venue.id),
+        listings: this.state.listings.filter(l => l.venue_id !== venue.id)
       },
-      venues: this.state.venues.filter(v => v.id !== venue.id),
-      listings: this.state.listings.filter(l => l.venue_id !== venue.id)
-    });
+      this.props.history.push("/")
+    );
   };
 
-  removeListing = (listing) => {
+  removeListing = listing => {
     this.setState({
       listings: this.state.listings.filter(l => l.id !== listing.id)
-    });
+    }, this.props.history.push('/'));
   };
 
   logout = () => {
@@ -108,38 +136,41 @@ class App extends React.Component {
   };
 
   handleOfflineNavigator = () => {
-    const { lat, lng } = JSON.parse(localStorage.getItem('last-known-position'))
-        this.initialCall(lat, lng)
-  }
+    const { lat, lng } = JSON.parse(
+      localStorage.getItem("last-known-position")
+    );
+    this.initialCall(lat, lng);
+  };
 
   componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions);
+
     if (navigator.onLine) {
       navigator.geolocation.getCurrentPosition(position => {
-        localStorage.setItem("last-known-position", JSON.stringify({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }))
-        this.initialCall(position.coords.latitude,
-          position.coords.longitude,)
+        localStorage.setItem(
+          "last-known-position",
+          JSON.stringify({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          })
+        );
+        this.initialCall(position.coords.latitude, position.coords.longitude);
       });
     } else {
-        this.handleOfflineNavigator()
+      this.handleOfflineNavigator();
     }
   }
 
   initialCall = (lat, lng) => {
-    API.initialCall(
-      lat,
-      lng,
-      10000
-    ).then(returnObj => {
+    API.initialCall(lat, lng, 10000).then(returnObj => {
       if (returnObj && returnObj.user && returnObj.user.errors) {
         this.setState({
           errors: returnObj.user.errors,
           location: [lat, lng],
           venues: returnObj.venues,
           listings: returnObj.listings,
-          isAuthenticated: false
+          isAuthenticated: false,
+          loading: false
         });
       } else if (returnObj && returnObj.user && returnObj.user.id) {
         this.setState({
@@ -147,7 +178,8 @@ class App extends React.Component {
           user: returnObj.user,
           isAuthenticated: true,
           venues: returnObj.venues,
-          listings: returnObj.listings
+          listings: returnObj.listings,
+          loading: false
         });
       } else if (returnObj && returnObj.errors && returnObj.venues) {
         API.logout();
@@ -156,16 +188,20 @@ class App extends React.Component {
           errors: returnObj.errors,
           venues: returnObj.venues,
           listings: returnObj.listings,
-          isAuthenticated: false
+          isAuthenticated: false,
+          loading: false
         });
       } else {
         this.setState({
           location: [lat, lng],
-          errors: ['Cannot Connect to the server at this time. Please try again later!']
+          errors: [
+            "Cannot Connect to the server at this time. Please try again later!"
+          ],
+          loading: false
         });
       }
     });
-  }
+  };
 
   updateListing = listing =>
     this.setState({
@@ -176,9 +212,10 @@ class App extends React.Component {
     });
 
   updateLikeOnListing = theLike => {
-    const theListing = this.state.listings.find(l => l.id === theLike.listing_id);
+    const theListing = this.state.listings.find(
+      l => l.id === theLike.listing_id
+    );
     if (theListing.likes.find(l => l.user_id === theLike.user_id)) {
-
       this.setState({
         listings: this.state.listings.map(listing => {
           if (listing.id === theLike.listing_id) {
@@ -207,33 +244,58 @@ class App extends React.Component {
     }
   };
 
+  updateDimensions = () => {
+    this.setState({
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight
+    });
+  };
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions);
+  }
+
   render() {
     return (
       <div className="App">
-        <Navigation user={this.state.user} />
-
-        <MainContainer
+        <Navigation
           user={this.state.user}
-          location={this.state.location}
-          listings={this.state.listings}
-          venues={this.state.venues}
-          login={this.login}
-          logout={this.logout}
-          updateUser={this.updateUser}
-          updateLikeOnListing={this.updateLikeOnListing}
-          isAuthenticated={this.isAuthenticated}
-          addVenueToCurrentUser={this.addVenueToCurrentUser}
-          setIsAuthenticated={this.setIsAuthenticated}
-          removeVenue={this.removeVenue}
-          updateListing={this.updateListing}
-          addListing={this.addListing}
-          removeListing={this.removeListing}
-          addReview={this.addReview}
-          updateReview={this.updateReview}
-          removeReview={this.removeReview}
-          activeVenueMenuItem={this.state.activeVenueMenuItem}
-          setActiveVenueMenuItem={this.setActiveVenueMenuItem}
+          windowWidth={this.state.windowWidth}
         />
+
+        <Container>
+          {this.state.loading ? (
+            <Icon loading size="huge" name="spinner" />
+          ) : (
+            <MainContainer
+              user={this.state.user}
+              location={this.state.location}
+              listings={this.state.listings}
+              venues={this.state.venues}
+              login={this.login}
+              logout={this.logout}
+              updateUser={this.updateUser}
+              updateLikeOnListing={this.updateLikeOnListing}
+              isAuthenticated={this.isAuthenticated}
+              addVenueToCurrentUser={this.addVenueToCurrentUser}
+              setIsAuthenticated={this.setIsAuthenticated}
+              removeVenue={this.removeVenue}
+              updateListing={this.updateListing}
+              addListing={this.addListing}
+              removeListing={this.removeListing}
+              addReview={this.addReview}
+              updateReview={this.updateReview}
+              removeReview={this.removeReview}
+              activeVenueMenuItem={this.state.activeVenueMenuItem}
+              setActiveVenueMenuItem={this.setActiveVenueMenuItem}
+              windowWidth={this.state.windowWidth}
+              setActiveHomeMenuItem={this.setActiveHomeMenuItem}
+              activeHomeMenuItem={this.state.activeHomeMenuItem}
+              setActiveListingMenuItem={this.setActiveListingMenuItem}
+              activeListingMenuItem={this.state.activeListingMenuItem}
+            />
+          )}
+        </Container>
       </div>
     );
   }

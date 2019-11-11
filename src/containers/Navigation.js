@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Navbar from "../components/Navbar";
 import SideBarMenu from "../components/SideBarMenu";
+import DesktopNavbar from "../components/DesktopNavbar";
 
 export class Navigation extends Component {
   state = {
@@ -13,6 +14,7 @@ export class Navigation extends Component {
 
   render() {
     return (
+      this.props.windowWidth < 600 ?
       <>
         <Navbar user={this.props.user} handleMenuClick={this.handleMenuClick} />
         <SideBarMenu
@@ -21,6 +23,9 @@ export class Navigation extends Component {
           user={this.props.user}
         />
       </>
+      :
+      <DesktopNavbar user={this.props.user}/>
+      
     );
   }
 }

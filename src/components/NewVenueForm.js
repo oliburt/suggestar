@@ -5,14 +5,16 @@ import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import API from "../adapters/API";
 import ImageUploader from "./ImageUploader";
 import Cloudinary from "../adapters/Cloudinary";
+import { formatAddress } from "../helpers/helperFunctions";
+import FormWrapper from "./FormWrapper";
 
-const NewVenueForm = ({ history, addVenueToCurrentUser, user }) => {
+const NewVenueForm = ({ history, addVenueToCurrentUser, user, windowWidth }) => {
   const [address, setAddress] = React.useState("");
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [placeId, setPlaceId] = React.useState(null);
   const [imageUrl, setImageUrl] = React.useState("");
-  const [imagePublicId, setImagePublicId] = React.useState('')
+  const [imagePublicId, setImagePublicId] = React.useState("");
   const [loadingImage, setLoadingImage] = React.useState(false);
   const [coordinates, setCoordinates] = React.useState({
     lat: null,
@@ -54,11 +56,12 @@ const NewVenueForm = ({ history, addVenueToCurrentUser, user }) => {
     });
   };
 
- 
-
   const uploadImage = async e => {
-    Cloudinary.uploadImage(e, setImageUrl, setImagePublicId, setLoadingImage)
-  }
+    Cloudinary.uploadImage(e, setImageUrl, setImagePublicId, setLoadingImage);
+  };
+
+  const handleChangeImage = () =>
+    this.setState({ imagePublicId: "", imageUrl: "" });
 
   // const changeImage = async e => {
   //   setImageUrl('')
@@ -73,49 +76,53 @@ const NewVenueForm = ({ history, addVenueToCurrentUser, user }) => {
   // }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Input
-        placeholder="name..."
-        value={name}
-        name="name"
-        onChange={e => setName(e.target.value)}
-      />
-      <Form.TextArea
-        placeholder="description..."
-        value={description}
-        name="description"
-        onChange={e => setDescription(e.target.value)}
-      />
-      {loadingImage ? 
-        <Icon loading size='big' name='spinner' /> :
-        (imageUrl.length > 0 ? <Image src={imageUrl} style={{width: '200px'}} /> : null)
-      }
-      {imageUrl.length > 0 ? null : <ImageUploader handleChange={uploadImage} />}
-      
-      {!placeId ? (
-        <AutoComplete
-          address={address}
-          setAddress={setAddress}
-          handleSelect={handleAutocompleteSelect}
+    <FormWrapper windowWidth={windowWidth}>
+      <Form onSubmit={handleSubmit}>
+        <Form.Input
+          placeholder="name..."
+          value={name}
+          name="name"
+          onChange={e => setName(e.target.value)}
         />
-      ) : (
-        <div>
-          <p>{address}</p>
-          <Button onClick={handleChangeAddress}>Change address</Button>
-        </div>
-      )}
-      <Button type="submit">Create Venue</Button>
-    </Form>
+        <Form.TextArea
+          placeholder="description..."
+          value={description}
+          name="description"
+          onChange={e => setDescription(e.target.value)}
+        />
+        {loadingImage ? (
+          <Icon loading size="big" name="spinner" />
+        ) : imageUrl.length > 0 ? (
+          <>
+            <Image src={imageUrl} style={{ width: "200px" }} centered/>
+            <Button type="button" onClick={handleChangeImage}>
+              Change Image
+            </Button>
+          </>
+        ) : null}
+        {imageUrl.length > 0 ? null : (
+          <ImageUploader handleChange={uploadImage} />
+        )}
+
+        {!placeId ? (
+          <AutoComplete
+            address={address}
+            setAddress={setAddress}
+            handleSelect={handleAutocompleteSelect}
+          />
+        ) : (
+          <div>
+            {formatAddress(address)}
+            <Button onClick={handleChangeAddress}>Change address</Button>
+          </div>
+        )}
+        <Button type="submit">Create Venue</Button>
+        <Button type="button" onClick={() => history.push("/")}>
+          Cancel
+        </Button>
+      </Form>
+    </FormWrapper>
   );
 };
 
 export default NewVenueForm;
-/* <div id="photo-form-container">
-        {imageUrl.length > 0 ? (
-          <Image src={imageUrl} alt="image to upload" />
-        ) : (
-          <Button type="button" onClick={() => showWidget(widget)}>
-            Upload Photo
-          </Button>
-        )}
-      </div> */

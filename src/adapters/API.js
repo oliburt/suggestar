@@ -207,12 +207,12 @@ const patchReview = review => {
   }
   return fetch(`${REVIEWS_URL}/${review.id}`, config).then(handleServerResponse).catch(handleError)
 }
-const destroyReview = review => {
+const destroyReview = id => {
   const config = {
     method: "DELETE",
     headers: jsonHeaders(authHeader())
   }
-  return fetch(`${REVIEWS_URL}/${review.id}`, config).then(handleServerResponse).catch(handleError)
+  return fetch(`${REVIEWS_URL}/${id}`, config).then(handleServerResponse).catch(handleError)
 }
 
 

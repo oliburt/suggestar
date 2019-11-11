@@ -9,14 +9,13 @@ export class MapContainer extends Component {
   
   
   render() {
-    const { listings, location, selectedListingId, setSelectedListingId, radius, filter, venues } = this.props;
+    const { listings, location, selectedListingId, setSelectedListingId, radius, filter, venues, windowWidth } = this.props;
     const radiusFilteredListings = filterByRadius(listings, venues, location, radius)
     const eventFilteredListings = filterListingsByEvent(radiusFilteredListings, filter);
 
     return (
       <>
-      <FilterForm listings={listings} changeFilter={this.props.changeFilter} filter={this.props.filter} radius={this.props.radius} setRadius={this.props.setRadius}/>
-      <div style={{width: '90vw', height: '80vh', maxWidth: '1127px'}}>
+      <div style={{width: windowWidth < 600 ? '90vw' : '45vw', height: '80vh', maxWidth: '1127px'}}>
         { location[0] && location[1] ? 
         <ShowMap
           googleMapUrl={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places`}

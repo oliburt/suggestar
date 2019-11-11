@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Dropdown } from "semantic-ui-react";
+import { Dropdown, Header } from "semantic-ui-react";
 
 const FilterForm = ({
   listings,
@@ -89,9 +89,10 @@ const FilterForm = ({
 
   return (
     <div>
+      <Header as='h4'>Filters</Header>
       <span>Filter by category:</span>
       <Dropdown
-        fluid
+        
         onChange={handleChange}
         value={filter}
         options={[
@@ -103,6 +104,7 @@ const FilterForm = ({
           ...categoryOptions
         ]}
       />
+      <br/>
       <span>Change search radius:</span>
       <Dropdown
         

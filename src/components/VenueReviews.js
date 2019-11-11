@@ -3,7 +3,7 @@ import ReviewForm from "./ReviewForm";
 import { Header } from "semantic-ui-react";
 import ReviewListContainer from "../containers/ReviewListContainer";
 
-const VenueReviews = ({ id, user, addReview, updateReview, reviews }) => {
+const VenueReviews = ({ id, user, addReview, updateReview, reviews, removeReview }) => {
   const [reviewToEdit, setReviewToEdit] = useState(null);
   
   const getReview = (reviews, id) => reviews.find(r => r.id === id)
@@ -26,7 +26,7 @@ const VenueReviews = ({ id, user, addReview, updateReview, reviews }) => {
       )}
 
       {reviews.length > 0 ? (
-        <ReviewListContainer reviews={reviews} setReviewToEdit={setReviewToEdit}/>
+        <ReviewListContainer reviews={reviews} setReviewToEdit={setReviewToEdit} removeReview={removeReview}/>
       ) : (
         <Header as="h4">No Reviews</Header>
       )}
