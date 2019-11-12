@@ -31,9 +31,9 @@ export class ListingShowContainer extends PureComponent {
         {this.state.errors.length > 0 ? (
           <Message warning>
             <Message.Header warning>Something went Wrong!</Message.Header>
-            {this.state.errors.map(error => (
-              <p>{error}</p>
-            ))}
+            {this.state.errors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
           </Message>
         ) : listing ? (
           <ListingShow

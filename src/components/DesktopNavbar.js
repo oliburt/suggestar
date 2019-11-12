@@ -1,8 +1,10 @@
 import React from "react";
 import { Menu, Dropdown } from "semantic-ui-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
+import '../styles/DesktopNav.css'
 
 const DesktopNavbar = ({ user }) => {
+  const history = useHistory()
   return (
     <Menu>
       <Menu.Item key={"/"} as={NavLink} to={"/"} exact>
@@ -65,6 +67,7 @@ const DesktopNavbar = ({ user }) => {
           </Dropdown.Menu>
         </Dropdown>
       )}
+      {user ? <Menu.Item position='right' onClick={() => history.push('/')}>Welcome {user.full_name}</Menu.Item> : null}
     </Menu>
   );
 };

@@ -1,14 +1,16 @@
 import React from "react";
 import { Form } from "semantic-ui-react";
 
-const ImageUploader = ({handleChange}) => {
-  
-  
+const ImageUploader = ({ handleChange }) => {
   return (
     <div>
-      <h1>Upload Image</h1>
-      <Form.Input type="file" name="file" placeholder="Upload an Image" onChange={handleChange}/>
-      
+      <Form.Input
+        type="file"
+        label="Image Upload (optional)"
+        name="file"
+        placeholder="Upload an Image"
+        onChange={handleChange}
+      />
     </div>
   );
 };

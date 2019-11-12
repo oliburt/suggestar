@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Form, Button, Message, Header } from "semantic-ui-react";
-import { Link } from "react-router-dom";
 import API from "../adapters/API";
 
 export class UserEdit extends Component {
@@ -13,13 +12,9 @@ export class UserEdit extends Component {
   };
 
   componentDidMount() {
-    if (this.props.isAuthenticated === false) {
-      this.props.history.push("/");
-    } else {
-      if (this.props.user) {
-        const { email, first_name, last_name } = this.props.user;
-        this.setState({ email, first_name, last_name });
-      }
+    if (this.props.user) {
+      const { email, first_name, last_name } = this.props.user;
+      this.setState({ email, first_name, last_name });
     }
   }
 
@@ -50,11 +45,9 @@ export class UserEdit extends Component {
         <Header as="h1">Edit Details Below</Header>
         {errors ? (
           <Message negative>
-            <ul>
-              {errors.map(error => (
-                <li key={error}>{error}</li>
-              ))}
-            </ul>
+            {errors.map(error => (
+              <p key={error}>{error}</p>
+            ))}
           </Message>
         ) : null}
         <Form
@@ -98,10 +91,7 @@ export class UserEdit extends Component {
           />
 
           <Button type="submit">Submit</Button>
-          <Button
-            as={Link}
-            to={`/user`}
-          >
+          <Button onClick={() => this.props.setActiveUserMenuItem("Details")}>
             Back
           </Button>
         </Form>

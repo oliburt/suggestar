@@ -4,6 +4,7 @@ import HomeMenu from "../components/HomeMenu";
 import HomeListingContainer from "./HomeListingContainer";
 import MapContainer from "./MapContainer";
 import FilterForm from "../components/FilterForm";
+import '../styles/Grids.css'
 
 const HomeContainer = ({
   windowWidth,
@@ -65,6 +66,7 @@ const HomeContainer = ({
               filter={filter}
               radius={radius}
               setRadius={setRadius}
+              windowWidth={windowWidth}
             />
           </Grid.Column>
           <Grid.Column width={10}>

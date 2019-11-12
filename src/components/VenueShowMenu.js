@@ -1,5 +1,6 @@
 import React from "react";
 import { Menu } from "semantic-ui-react";
+import '../styles/Menus.css'
 
 const VenueShowMenu = ({
   activeMenuItem,
@@ -45,7 +46,7 @@ const VenueShowMenu = ({
       ) : null}
     </Menu>
   ) : (
-    <Menu secondary tabular fluid>
+    <Menu secondary tabular fluid className="small-screen-menu">
       <Menu.Item
         name="About"
         active={activeMenuItem === "About"}

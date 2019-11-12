@@ -1,0 +1,16 @@
+div.ui.menu > .item:first-child {
+    border-radius: 0;
+}
+
+div.ui.menu {
+    border-radius: 0;
+}
+
+div.ui.menu .active.item {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+div.ui.menu {
+    width: 100vw;
+}

@@ -1,5 +1,26 @@
 /*******************************
      User Global Variables
 *******************************/
-@primaryColor: #002f4e;
-@pageBackground: #eefbfb;
+
+@blue: #118AB2;
+@yellow: #FFD166;
+@green: #06D6A0;
+@red: #EF476F;
+@black: #111111;
+
+@darkBlue: #073B4C;
+
+@primaryColor: #118AB2;
+
+@pageBackground: #F3F4F5;
+
+
+
+
+@emSize: 15px;
+@fontSize: @emSize;
+
+@fontName: "PT Sans";
+@fontFamily: @fontName;
+@defaultBorderRadius: 10px;
+

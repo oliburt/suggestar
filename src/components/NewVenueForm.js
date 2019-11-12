@@ -8,7 +8,12 @@ import Cloudinary from "../adapters/Cloudinary";
 import { formatAddress } from "../helpers/helperFunctions";
 import FormWrapper from "./FormWrapper";
 
-const NewVenueForm = ({ history, addVenueToCurrentUser, user, windowWidth }) => {
+const NewVenueForm = ({
+  history,
+  addVenueToCurrentUser,
+  user,
+  windowWidth
+}) => {
   const [address, setAddress] = React.useState("");
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -79,22 +84,26 @@ const NewVenueForm = ({ history, addVenueToCurrentUser, user, windowWidth }) => 
     <FormWrapper windowWidth={windowWidth}>
       <Form onSubmit={handleSubmit}>
         <Form.Input
-          placeholder="name..."
+          placeholder="Name..."
           value={name}
           name="name"
+          label="Venue Name"
+          required
           onChange={e => setName(e.target.value)}
         />
         <Form.TextArea
-          placeholder="description..."
+          placeholder="Description..."
           value={description}
           name="description"
+          label="Description"
+          required
           onChange={e => setDescription(e.target.value)}
         />
         {loadingImage ? (
           <Icon loading size="big" name="spinner" />
         ) : imageUrl.length > 0 ? (
           <>
-            <Image src={imageUrl} style={{ width: "200px" }} centered/>
+            <Image src={imageUrl} centered />
             <Button type="button" onClick={handleChangeImage}>
               Change Image
             </Button>
@@ -103,19 +112,22 @@ const NewVenueForm = ({ history, addVenueToCurrentUser, user, windowWidth }) => 
         {imageUrl.length > 0 ? null : (
           <ImageUploader handleChange={uploadImage} />
         )}
+        <div className='required field'>
+          <label>Address (Please Select from the Suggestions)</label>
+          {!placeId ? (
+            <AutoComplete
+              address={address}
+              setAddress={setAddress}
+              handleSelect={handleAutocompleteSelect}
+            />
+          ) : (
+            <div>
+              {formatAddress(address)}
+              <Button onClick={handleChangeAddress}>Change address</Button>
+            </div>
+          )}
+        </div>
 
-        {!placeId ? (
-          <AutoComplete
-            address={address}
-            setAddress={setAddress}
-            handleSelect={handleAutocompleteSelect}
-          />
-        ) : (
-          <div>
-            {formatAddress(address)}
-            <Button onClick={handleChangeAddress}>Change address</Button>
-          </div>
-        )}
         <Button type="submit">Create Venue</Button>
         <Button type="button" onClick={() => history.push("/")}>
           Cancel

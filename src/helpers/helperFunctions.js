@@ -166,9 +166,9 @@ export const convertDistance = (distance) => {
 }
 
 export const formatAddress = address => {
-  const slitAddress = address.split(', ')
+  const splitAddress = address.split(', ')
   return <p>
-    {slitAddress.map(part => <span>{part}<br/></span>)}
+    {splitAddress.map(part => <span key={part}>{part}<br/></span>)}
   </p>
 
 }

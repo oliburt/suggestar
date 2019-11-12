@@ -1,6 +1,5 @@
 import React from "react";
-import { Button, Image, Header } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Image, Header } from "semantic-ui-react";
 import StarRatingComponent from "react-star-rating-component";
 import { getAverageRating, formatAddress } from "../helpers/helperFunctions";
 

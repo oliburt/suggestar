@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { allRoutes } from "../config/routes";
 import { Route, Switch } from "react-router-dom";
-import { Message, Container } from "semantic-ui-react";
+import { Message } from "semantic-ui-react";
 
 class MainContainer extends Component {
   state = {
@@ -52,7 +52,10 @@ class MainContainer extends Component {
       setActiveHomeMenuItem,
       activeHomeMenuItem,
       setActiveListingMenuItem,
-      activeListingMenuItem
+      activeListingMenuItem,
+      setActiveUserMenuItem,
+      activeUserMenuItem,
+      removeUser
     } = this.props;
     return (
       <>
@@ -97,6 +100,9 @@ class MainContainer extends Component {
                     activeHomeMenuItem={activeHomeMenuItem}
                     setActiveListingMenuItem={setActiveListingMenuItem}
                     activeListingMenuItem={activeListingMenuItem}
+                    activeUserMenuItem={activeUserMenuItem}
+                    setActiveUserMenuItem={setActiveUserMenuItem}
+                    removeUser={removeUser}
                   />
                 ) : (
                   this.notFoundMessage()

@@ -1,0 +1,11 @@
+.ui.tabular.menu.small-screen-menu > a.item {
+    font-size: 0.8em;
+}
+
+.ui.secondary.vertical.tabular.menu .active.item {
+    background-color: #118AB2;
+}
+
+.ui.secondary.vertical.menu > a.item {
+    margin: 0;
+}

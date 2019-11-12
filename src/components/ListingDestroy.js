@@ -31,8 +31,8 @@ const ListingDestroy = ({
       {errors.length > 0 ? (
         <Message warning>
           <Message.Header>Something went Wrong!</Message.Header>
-          {this.state.errors.map(error => (
-            <p>{error}</p>
+          {errors.map((error, index) => (
+            <p key={index}>{error}</p>
           ))}
         </Message>
       ) : null}

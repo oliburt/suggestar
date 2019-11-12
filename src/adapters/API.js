@@ -155,6 +155,15 @@ const updateUser = (userDetails, id) => {
     .then(handleServerResponse)
     .catch(handleError);
 };
+const destroyUser = id => {
+  let config = {
+    method: "DELETE",
+    headers: jsonHeaders(authHeader())
+  };
+  return fetch(USER_URL(id), config)
+    .then(handleServerResponse)
+    .catch(handleError);
+};
 
 const getCategories = () => fetch(CATEGORIES_URL).then(handleServerResponse).catch(handleError)
 
@@ -236,5 +245,6 @@ export default {
   destroyListing,
   postReview,
   patchReview,
-  destroyReview
+  destroyReview,
+  destroyUser
 };

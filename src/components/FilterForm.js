@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Dropdown, Header } from "semantic-ui-react";
+import '../styles/FilterForm.css'
 
 const FilterForm = ({
   listings,
   changeFilter,
   filter,
   radius,
-  setRadius
+  setRadius,
+  windowWidth
 }) => {
   const [categoryOptions, setCategoryOptions] = useState([]);
 
@@ -88,9 +90,9 @@ const FilterForm = ({
   ]
 
   return (
-    <div>
-      <Header as='h4'>Filters</Header>
-      <span>Filter by category:</span>
+    <div id={windowWidth > 600 ? 'filter-box' : 'filter-box-small'}>
+      <Header as='h3'>Filters</Header>
+      <span>Category</span>
       <Dropdown
         
         onChange={handleChange}
@@ -104,8 +106,8 @@ const FilterForm = ({
           ...categoryOptions
         ]}
       />
-      <br/>
-      <span>Change search radius:</span>
+      {windowWidth > 600 ? <><br/><br/></> : null}
+      <span>Distance</span>
       <Dropdown
         
         onChange={handleRadiusChange}

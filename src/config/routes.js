@@ -1,16 +1,13 @@
 import HomeContainer from '../containers/HomeContainer';
 import Registration from '../components/auth/Registration'
 import Login from '../components/auth/Login'
-import UserEdit from '../components/UserEdit';
 import NewVenueForm from '../components/NewVenueForm';
 import UserShowContainer from '../containers/UserShowContainer'
 import React from "react";
 import VenueShowContainer from '../containers/VenueShowContainer';
 import NewListingForm from '../components/NewListingForm';
 import ListingShowContainer from '../containers/ListingShowContainer';
-import MapContainer from '../containers/MapContainer';
-import ListingEdit from '../components/ListingEdit';
-import ListingDestroy from '../components/ListingDestroy';
+
 
 
 const Logout = props => {
@@ -20,13 +17,6 @@ const Logout = props => {
 
 
 export const beforeRoutes = [
-    {
-        title: 'UserEdit',
-        exact: true,
-        path: '/user/edit',
-        icon: 'edit',
-        component: UserEdit
-    },
     
 
 ]
@@ -43,18 +33,6 @@ export const afterRoutes = [
         exact: true,
         path: '/listings/:id',
         component: ListingShowContainer
-    },
-    {
-        title: 'Listing Edit',
-        exact: true,
-        path: '/listings/:id/edit',
-        component: ListingEdit
-    },
-    {
-        title: 'Listing Destroy',
-        exact: true,
-        path: '/listings/:id/destroy',
-        component: ListingDestroy
     },
     
 

@@ -86,6 +86,7 @@ const NewListingForm = ({ user, addListing, venues, windowWidth }) => {
           placeholder="Venue"
           value={selectedVenue}
           onChange={(e, data) => setSelectedVenue(data.value)}
+          required
         />
         <Form.Dropdown
           options={categoryOptions}
@@ -96,54 +97,65 @@ const NewListingForm = ({ user, addListing, venues, windowWidth }) => {
           fluid
           multiple
           selection
+          required
         />
         <Form.Input
-          placeholder="title..."
+          placeholder="Title..."
           value={title}
+          label="Title"
+          required
           name="name"
           onChange={e => setTitle(e.target.value)}
         />
         <Form.TextArea
-          placeholder="description..."
+          placeholder="Description..."
+          required
+          label="Description"
           value={description}
           name="description"
           onChange={e => setDescription(e.target.value)}
         />
         <Form.Input
-          placeholder="ticket url (if necessary)..."
+          placeholder="Ticket Url..."
           value={ticketURL}
+          label="Ticket Url (optional)"
           name="ticketURL"
           onChange={e => setTicketURL(e.target.value)}
         />
         <Form.Input
-          placeholder="age restriction...?"
+          placeholder="Age Restriction..."
+          label="Age Restriction (optional)"
           value={ageRestriction}
           name="ageRestriction"
           onChange={e => setAgeRestriction(e.target.value)}
         />
-        <p>Begin Date:</p>
-        <DatePicker
-          selected={beginDateTime}
-          onChange={handleBeginDateTimeChange}
-          showTimeSelect
-          timeFormat="HH:mm"
-          timeIntervals={30}
-          timeCaption="Time"
-          dateFormat="MMM d, yyyy h:mm aa"
-        />
-        <p>End Date:</p>
-        <DatePicker
-          selected={endDateTime}
-          onChange={handleEndDateTimeChange}
-          showTimeSelect
-          timeFormat="HH:mm"
-          timeIntervals={30}
-          timeCaption="Time"
-          dateFormat="MMM d, yyyy h:mm aa"
-        />
+        <div className="required field">
+          <label>Begin Date:</label>
+          <DatePicker
+            selected={beginDateTime}
+            onChange={handleBeginDateTimeChange}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={30}
+            timeCaption="Time"
+            dateFormat="MMM d, yyyy h:mm aa"
+          />
+        </div>
+        <div className="required field">
+          <label>End Date:</label>
+          <DatePicker
+            selected={endDateTime}
+            onChange={handleEndDateTimeChange}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={30}
+            timeCaption="Time"
+            dateFormat="MMM d, yyyy h:mm aa"
+          />
+        </div>
         <br />
-        <Button type="submit">Create Listing</Button>
-        <Button type="button" onClick={() => history.push("/")}>
+        <Button primary type="submit">Create Listing</Button>
+        <Button secondary type="button" onClick={() => history.push("/")}>
           Cancel
         </Button>
       </Form>

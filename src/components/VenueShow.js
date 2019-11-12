@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Header, Grid } from "semantic-ui-react";
+import React from "react";
+import { Grid } from "semantic-ui-react";
 import VenueShowMenu from "./VenueShowMenu";
 import VenueReviews from "./VenueReviews";
 import VenueUpcomingListings from "./VenueUpcomingListings";

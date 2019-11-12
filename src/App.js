@@ -15,12 +15,14 @@ class App extends React.Component {
     venues: [],
     errors: [],
     activeVenueMenuItem: "About",
-    activeHomeMenuItem: 'Listings',
-    activeListingMenuItem: 'Details',
+    activeHomeMenuItem: "Listings",
+    activeListingMenuItem: "Details",
+    activeUserMenuItem: "My Venues",
     windowWidth: window.innerWidth,
     windowHeight: window.innerHeight
   };
-
+  setActiveUserMenuItem = activeUserMenuItem =>
+    this.setState({ activeUserMenuItem });
   setActiveListingMenuItem = activeListingMenuItem =>
     this.setState({ activeListingMenuItem });
 
@@ -89,6 +91,13 @@ class App extends React.Component {
     this.setUser(user);
     this.props.history.push(`/user`);
   };
+  removeUser = (user) => {
+    this.setState({
+      venues: this.state.venues.filter(ven => ven.user_id !== user.id),
+      listings: this.state.listings.filter(list => list.user_id !== user.id)
+    }, () => this.logout())
+
+  }
 
   addVenueToCurrentUser = (user, venue) => {
     if (user.venues.find(v_id => v_id === venue.id)) {
@@ -124,9 +133,12 @@ class App extends React.Component {
   };
 
   removeListing = listing => {
-    this.setState({
-      listings: this.state.listings.filter(l => l.id !== listing.id)
-    }, this.props.history.push('/'));
+    this.setState(
+      {
+        listings: this.state.listings.filter(l => l.id !== listing.id)
+      },
+      this.props.history.push("/")
+    );
   };
 
   logout = () => {
@@ -263,7 +275,7 @@ class App extends React.Component {
           windowWidth={this.state.windowWidth}
         />
 
-        <Container>
+        <Container className={this.state.windowWidth > 600 ? 'main-container' : 'main-container small-screen'}>
           {this.state.loading ? (
             <Icon loading size="huge" name="spinner" />
           ) : (
@@ -293,6 +305,9 @@ class App extends React.Component {
               activeHomeMenuItem={this.state.activeHomeMenuItem}
               setActiveListingMenuItem={this.setActiveListingMenuItem}
               activeListingMenuItem={this.state.activeListingMenuItem}
+              activeUserMenuItem={this.state.activeUserMenuItem}
+              setActiveUserMenuItem={this.setActiveUserMenuItem}
+              removeUser={this.removeUser}
             />
           )}
         </Container>

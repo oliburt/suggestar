@@ -1,5 +1,6 @@
 import React from "react";
 import { Menu } from "semantic-ui-react";
+import '../styles/Menus.css'
 
 const HomeMenu = ({ windowWidth, activeMenuItem, handleItemClick }) => {
   const handleClick = (e, data) => {
@@ -20,7 +21,7 @@ const HomeMenu = ({ windowWidth, activeMenuItem, handleItemClick }) => {
       />
     </Menu>
   ) : (
-    <Menu secondary tabular fluid>
+    <Menu secondary tabular fluid className="small-screen-menu">
       <Menu.Item
         name="Listings"
         active={activeMenuItem === "Listings"}

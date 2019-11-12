@@ -1,30 +1,71 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Header, Button, Item, Icon } from "semantic-ui-react";
-import VenueItem from "./VenueItem";
+import { Grid } from "semantic-ui-react";
+import UserVenues from "./UserVenues";
+import UserListings from "./UserListings";
+import UserEdit from "./UserEdit";
+import UserDestroy from "./UserDestroy";
+import UserShowMenu from "./UserShowMenu";
 
-const UserShow = ({ user, history, venues }) => {
+const UserShow = ({
+  user,
+  history,
+  venues,
+  windowWidth,
+  activeUserMenuItem,
+  setActiveUserMenuItem,
+  updateUser,
+  updateLikeOnListing,
+  location,
+  listings,
+  removeUser
+}) => {
   const userVenues = venues.filter(ven => ven.user_id === user.id);
+  const userListings = listings.filter(l => l.user_id === user.id)
+  const renderContent = activeMenuItem => {
+    if (activeMenuItem === "My Venues")
+      return <UserVenues userVenues={userVenues} history={history} />;
+    if (activeMenuItem === "My Upcoming Listings") return <UserListings listings={userListings}
+    location={location}
+    user={user}
+    updateLikeOnListing={updateLikeOnListing}
+    venues={venues}/>;
+    if (activeMenuItem === "Edit")
+      return <UserEdit user={user} updateUser={updateUser} setActiveUserMenuItem={setActiveUserMenuItem}/>;
+    if (activeMenuItem === "Delete")
+      return (
+        <UserDestroy
+          user={user}
+          setActiveUserMenuItem={setActiveUserMenuItem}
+          removeUser={removeUser}
+        />
+      );
+  };
+
   return (
     <div>
-      <Header as="h1">{user.full_name}</Header>
-      <p>
-        {user.email}
-        <Icon
-          name="edit"
-          style={{ marginLeft: "5px" }}
-          onClick={() => history.push("/user/edit")}
-        />
-      </p>
-      <Header as='h3'>My Venues</Header>
-      <Item.Group divided>
-        {userVenues.map(v => (
-          <VenueItem key={v.id} {...v} history={history} />
-        ))}
-      </Item.Group>
-      <Button as={Link} to="/venues/new">
-        New Venue
-      </Button>
+      {windowWidth > 600 ? (
+        <Grid>
+          <Grid.Column width={6}>
+            <UserShowMenu
+              activeMenuItem={activeUserMenuItem}
+              handleItemClick={setActiveUserMenuItem}
+              windowWidth={windowWidth}
+            />
+          </Grid.Column>
+          <Grid.Column width={10}>
+            {renderContent(activeUserMenuItem)}
+          </Grid.Column>
+        </Grid>
+      ) : (
+        <>
+          <UserShowMenu
+            activeMenuItem={activeUserMenuItem}
+            handleItemClick={setActiveUserMenuItem}
+            windowWidth={windowWidth}
+          />
+          {renderContent(activeUserMenuItem)}
+        </>
+      )}
     </div>
   );
 };

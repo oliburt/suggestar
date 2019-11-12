@@ -17,7 +17,7 @@ const ListingCard = ({ title, categories, description, id, venue, distance, like
   
   return (
     <Card fluid>
-      {venue && venue.image_url ? <Image src={venue.image_url} wrapped ui={false}/> : null}
+      {venue && venue.image_url ? <Image src={venue.image_url} wrapped ui={false} onClick={() => history.push(`/listings/${id}`)}/> : null}
       
       <Card.Content onClick={() => history.push(`/listings/${id}`)}>
         <Card.Header>{title}</Card.Header>
