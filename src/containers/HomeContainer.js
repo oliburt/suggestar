@@ -11,12 +11,10 @@ const HomeContainer = ({
   user,
   activeHomeMenuItem,
   setActiveHomeMenuItem,
-  listings,
   location,
   radius,
   filter,
   venues,
-  updateLikeOnListing,
   selectedListingId,
   setSelectedListingId,
   changeFilter,
@@ -26,19 +24,16 @@ const HomeContainer = ({
     if (activeMenuItem === "Listings")
       return (
         <HomeListingContainer
-          listings={listings}
           location={location}
           radius={radius}
           filter={filter}
           user={user}
           venues={venues}
-          updateLikeOnListing={updateLikeOnListing}
         />
       );
     if (activeMenuItem === "Map")
       return (
         <MapContainer
-          listings={listings}
           location={location}
           selectedListingId={selectedListingId}
           setSelectedListingId={setSelectedListingId}
@@ -61,7 +56,6 @@ const HomeContainer = ({
               windowWidth={windowWidth}
             />
             <FilterForm
-              listings={listings}
               changeFilter={changeFilter}
               filter={filter}
               radius={radius}
@@ -81,7 +75,6 @@ const HomeContainer = ({
             windowWidth={windowWidth}
           />
           <FilterForm
-            listings={listings}
             changeFilter={changeFilter}
             filter={filter}
             radius={radius}

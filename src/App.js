@@ -4,13 +4,13 @@ import API from "./adapters/API";
 import MainContainer from "./containers/MainContainer";
 import Navigation from "./containers/Navigation";
 import { Container, Icon } from "semantic-ui-react";
+import { connect } from "react-redux";
 
 class App extends React.Component {
   state = {
     loading: true,
     user: null,
     isAuthenticated: null,
-    listings: [],
     location: [],
     venues: [],
     errors: [],
@@ -71,16 +71,13 @@ class App extends React.Component {
       })
     });
 
-  addListing = listing => {
-    this.setState({ listings: [...this.state.listings, listing] });
-  };
+  // addListing = listing => {
+  //   this.setState({ listings: [...this.state.listings, listing] });
+  // };
 
   setUser = user => this.setState({ user });
 
   setIsAuthenticated = val => this.setState({ isAuthenticated: val });
-
-  // const [user, setUser] = useState(null);
-  // const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   login = user => {
     this.setState({ user, isAuthenticated: true });
@@ -91,10 +88,11 @@ class App extends React.Component {
     this.setUser(user);
     this.props.history.push(`/user`);
   };
+
   removeUser = (user) => {
     this.setState({
       venues: this.state.venues.filter(ven => ven.user_id !== user.id),
-      listings: this.state.listings.filter(list => list.user_id !== user.id)
+      listings: this.props.removeListingsForUser(user)
     }, () => this.logout())
 
   }
@@ -126,20 +124,20 @@ class App extends React.Component {
           venues: user.venues.filter(v_id => v_id !== venue.id)
         },
         venues: this.state.venues.filter(v => v.id !== venue.id),
-        listings: this.state.listings.filter(l => l.venue_id !== venue.id)
+        listings: this.props.removeListingsForVenue(venue)
       },
       this.props.history.push("/")
     );
   };
 
-  removeListing = listing => {
-    this.setState(
-      {
-        listings: this.state.listings.filter(l => l.id !== listing.id)
-      },
-      this.props.history.push("/")
-    );
-  };
+  // removeListing = listing => {
+  //   this.setState(
+  //     {
+  //       listings: this.state.listings.filter(l => l.id !== listing.id)
+  //     },
+  //     this.props.history.push("/")
+  //   );
+  // };
 
   logout = () => {
     API.logout();
@@ -176,30 +174,31 @@ class App extends React.Component {
   initialCall = (lat, lng) => {
     API.initialCall(lat, lng, 10000).then(returnObj => {
       if (returnObj && returnObj.user && returnObj.user.errors) {
+        this.props.addListings(returnObj.listings)
         this.setState({
           errors: returnObj.user.errors,
           location: [lat, lng],
           venues: returnObj.venues,
-          listings: returnObj.listings,
           isAuthenticated: false,
           loading: false
         });
       } else if (returnObj && returnObj.user && returnObj.user.id) {
+        this.props.addListings(returnObj.listings)
         this.setState({
           location: [lat, lng],
           user: returnObj.user,
           isAuthenticated: true,
           venues: returnObj.venues,
-          listings: returnObj.listings,
           loading: false
         });
       } else if (returnObj && returnObj.errors && returnObj.venues) {
         API.logout();
+        this.props.addListings(returnObj.listings)
+
         this.setState({
           location: [lat, lng],
           errors: returnObj.errors,
           venues: returnObj.venues,
-          listings: returnObj.listings,
           isAuthenticated: false,
           loading: false
         });
@@ -215,46 +214,46 @@ class App extends React.Component {
     });
   };
 
-  updateListing = listing =>
-    this.setState({
-      listings: this.state.listings.map(l => {
-        if (l.id === listing.id) return listing;
-        return l;
-      })
-    });
+  // updateListing = listing =>
+  //   this.setState({
+  //     listings: this.state.listings.map(l => {
+  //       if (l.id === listing.id) return listing;
+  //       return l;
+  //     })
+  //   });
 
-  updateLikeOnListing = theLike => {
-    const theListing = this.state.listings.find(
-      l => l.id === theLike.listing_id
-    );
-    if (theListing.likes.find(l => l.user_id === theLike.user_id)) {
-      this.setState({
-        listings: this.state.listings.map(listing => {
-          if (listing.id === theLike.listing_id) {
-            return {
-              ...listing,
-              likes: listing.likes.filter(
-                like => like.user_id !== this.state.user.id
-              )
-            };
-          }
-          return listing;
-        })
-      });
-    } else {
-      this.setState({
-        listings: this.state.listings.map(listing => {
-          if (listing.id === theLike.listing_id) {
-            return {
-              ...listing,
-              likes: [...listing.likes, theLike]
-            };
-          }
-          return listing;
-        })
-      });
-    }
-  };
+  // updateLikeOnListing = theLike => {
+  //   const theListing = this.state.listings.find(
+  //     l => l.id === theLike.listing_id
+  //   );
+  //   if (theListing.likes.find(l => l.user_id === theLike.user_id)) {
+  //     this.setState({
+  //       listings: this.state.listings.map(listing => {
+  //         if (listing.id === theLike.listing_id) {
+  //           return {
+  //             ...listing,
+  //             likes: listing.likes.filter(
+  //               like => like.user_id !== this.state.user.id
+  //             )
+  //           };
+  //         }
+  //         return listing;
+  //       })
+  //     });
+  //   } else {
+  //     this.setState({
+  //       listings: this.state.listings.map(listing => {
+  //         if (listing.id === theLike.listing_id) {
+  //           return {
+  //             ...listing,
+  //             likes: [...listing.likes, theLike]
+  //           };
+  //         }
+  //         return listing;
+  //       })
+  //     });
+  //   }
+  // };
 
   updateDimensions = () => {
     this.setState({
@@ -282,7 +281,6 @@ class App extends React.Component {
             <MainContainer
               user={this.state.user}
               location={this.state.location}
-              listings={this.state.listings}
               venues={this.state.venues}
               login={this.login}
               logout={this.logout}
@@ -292,9 +290,6 @@ class App extends React.Component {
               addVenueToCurrentUser={this.addVenueToCurrentUser}
               setIsAuthenticated={this.setIsAuthenticated}
               removeVenue={this.removeVenue}
-              updateListing={this.updateListing}
-              addListing={this.addListing}
-              removeListing={this.removeListing}
               addReview={this.addReview}
               updateReview={this.updateReview}
               removeReview={this.removeReview}
@@ -316,4 +311,10 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  addListings: listings => dispatch({ type: 'ADD_LISTINGS', payload: listings }),
+  removeListingsForVenue: venue => dispatch({ type: 'REMOVE_LISTINGS_FOR_VENUE', payload: venue}),
+  removeListingsForUser: venue => dispatch({ type: 'REMOVE_LISTINGS_FOR_USER', payload: venue}),
+})
+
+export default connect(null, mapDispatchToProps)(App);

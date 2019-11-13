@@ -5,6 +5,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../adapters/API";
 import FormWrapper from "./FormWrapper";
+import { connect } from "react-redux";
+
 
 const NewListingForm = ({ user, addListing, venues, windowWidth }) => {
   const [title, setTitle] = useState("");
@@ -163,4 +165,8 @@ const NewListingForm = ({ user, addListing, venues, windowWidth }) => {
   );
 };
 
-export default NewListingForm;
+const mapDispatchToProps = dispatch => ({
+    addListing: (listing) => dispatch({ type: 'ADD_LISTING', payload: listing })
+  })
+
+export default connect(null, mapDispatchToProps)(NewListingForm);

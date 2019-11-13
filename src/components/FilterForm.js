@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Dropdown, Header } from "semantic-ui-react";
-import '../styles/FilterForm.css'
-
+import '../styles/FilterForm.css';
+import { connect } from "react-redux";
+import { isListingInNext24hours } from "../helpers/helperFunctions";
 const FilterForm = ({
   listings,
   changeFilter,
@@ -26,8 +27,10 @@ const FilterForm = ({
 
   useEffect(() => {
     if (listings) {
+      const currentListings = listings.filter(l => isListingInNext24hours(l) )
       setCategoryOptions(
-        getCategories(listings).map(cat => ({
+        
+        getCategories(currentListings).map(cat => ({
           key: cat.id,
           text: cat.name,
           value: cat.name
@@ -120,4 +123,6 @@ const FilterForm = ({
   );
 };
 
-export default FilterForm;
+const mapStateToProps = state => ({listings: state.listings})
+
+export default connect(mapStateToProps)(FilterForm);

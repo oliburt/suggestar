@@ -29,7 +29,6 @@ class MainContainer extends Component {
   render() {
     const {
       user,
-      listings,
       venues,
       location,
       login,
@@ -39,10 +38,6 @@ class MainContainer extends Component {
       addVenueToCurrentUser,
       setIsAuthenticated,
       removeVenue,
-      updateLikeOnListing,
-      updateListing,
-      addListing,
-      removeListing,
       addReview,
       updateReview,
       removeReview,
@@ -76,20 +71,15 @@ class MainContainer extends Component {
                     setIsAuthenticated={setIsAuthenticated}
                     updateUser={updateUser}
                     addVenueToCurrentUser={addVenueToCurrentUser}
-                    listings={listings}
                     location={location}
                     venues={venues}
                     selectedListingId={this.state.selectedListingId}
                     setSelectedListingId={this.setSelectedListingId}
                     removeVenue={removeVenue}
-                    addListing={addListing}
                     radius={this.state.currentRadius}
                     setRadius={this.setRadius}
                     filter={this.state.filter}
                     changeFilter={this.changeFilter}
-                    updateLikeOnListing={updateLikeOnListing}
-                    updateListing={updateListing}
-                    removeListing={removeListing}
                     addReview={addReview}
                     updateReview={updateReview}
                     removeReview={removeReview}

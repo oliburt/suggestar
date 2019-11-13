@@ -5,6 +5,7 @@ import UserListings from "./UserListings";
 import UserEdit from "./UserEdit";
 import UserDestroy from "./UserDestroy";
 import UserShowMenu from "./UserShowMenu";
+import { connect } from "react-redux";
 
 const UserShow = ({
   user,
@@ -14,7 +15,6 @@ const UserShow = ({
   activeUserMenuItem,
   setActiveUserMenuItem,
   updateUser,
-  updateLikeOnListing,
   location,
   listings,
   removeUser
@@ -27,7 +27,6 @@ const UserShow = ({
     if (activeMenuItem === "My Upcoming Listings") return <UserListings listings={userListings}
     location={location}
     user={user}
-    updateLikeOnListing={updateLikeOnListing}
     venues={venues}/>;
     if (activeMenuItem === "Edit")
       return <UserEdit user={user} updateUser={updateUser} setActiveUserMenuItem={setActiveUserMenuItem}/>;
@@ -70,4 +69,7 @@ const UserShow = ({
   );
 };
 
-export default UserShow;
+const mapStateToProps = state => ({listings: state.listings})
+
+
+export default connect(mapStateToProps)(UserShow);

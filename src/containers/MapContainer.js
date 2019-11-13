@@ -6,6 +6,8 @@ import {
   isListingInNext24hours
 } from "../helpers/helperFunctions";
 import { Header } from "semantic-ui-react";
+import { connect } from "react-redux";
+
 
 export class MapContainer extends Component {
   render() {
@@ -64,4 +66,8 @@ export class MapContainer extends Component {
   }
 }
 
-export default MapContainer;
+const mapStateToProps = state => ({listings: state.listings})
+
+
+export default connect(mapStateToProps)(MapContainer);
+

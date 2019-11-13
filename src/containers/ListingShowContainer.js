@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import ListingShow from "../components/ListingShow";
 import { Message } from "semantic-ui-react";
+import { connect } from "react-redux"
 
 export class ListingShowContainer extends PureComponent {
   state = {
@@ -65,4 +66,8 @@ export class ListingShowContainer extends PureComponent {
   }
 }
 
-export default ListingShowContainer;
+const mapStateToProps = state => ({
+  listings: state.listings
+})
+
+export default connect(mapStateToProps)(ListingShowContainer);

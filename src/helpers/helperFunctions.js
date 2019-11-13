@@ -122,7 +122,7 @@ export const formatDate = datetime => {
 };
 
 
-export const renderCards = (listings, location, user, updateLikeOnListing, venues) => {
+export const renderCards = (listings, location, user, venues) => {
   if (venues) {
     return listings.map(listing => {
       const venue = venues.find(v => v.id === listing.venue_id);
@@ -134,7 +134,6 @@ export const renderCards = (listings, location, user, updateLikeOnListing, venue
           distance={getDistance(venue, location)}
           user={user}
           venue={venue}
-          updateLikeOnListing={updateLikeOnListing}
         />
       );
     });
@@ -146,7 +145,6 @@ export const renderCards = (listings, location, user, updateLikeOnListing, venue
           key={listing.id}
           {...listing}
           user={user}
-          updateLikeOnListing={updateLikeOnListing}
         />
       );
     });

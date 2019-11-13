@@ -6,6 +6,8 @@ import {
   isListingInNext24hours
 } from "../helpers/helperFunctions";
 import { Message, Header } from "semantic-ui-react";
+import { connect } from "react-redux";
+
 
 export class HomeListingContainer extends Component {
   render() {
@@ -15,8 +17,7 @@ export class HomeListingContainer extends Component {
       radius,
       filter,
       user,
-      venues,
-      updateLikeOnListing
+      venues
     } = this.props;
 
     const currentListings = listings.filter(l => isListingInNext24hours(l));
@@ -40,7 +41,6 @@ export class HomeListingContainer extends Component {
           location={location}
           user={user}
           venues={venues}
-          updateLikeOnListing={updateLikeOnListing}
         />
       </div>
     ) : (
@@ -51,4 +51,6 @@ export class HomeListingContainer extends Component {
   }
 }
 
-export default HomeListingContainer;
+const mapStateToProps = state => ({listings: state.listings})
+
+export default connect(mapStateToProps)(HomeListingContainer);

@@ -5,12 +5,11 @@ const UserListings = ({
   listings,
   location,
   user,
-  updateLikeOnListing,
   venues
 }) => {
   return (
     <div>
-      {renderCards(listings, location, user, updateLikeOnListing, venues)}
+      {renderCards(listings, location, user, venues)}
     </div>
   );
 };

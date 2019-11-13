@@ -12,9 +12,7 @@ const ListingCard = ({
   id,
   venue,
   distance,
-  likes,
-  user,
-  updateLikeOnListing
+  user
 }) => {
   const history = useHistory();
 
@@ -42,10 +40,8 @@ const ListingCard = ({
       ) : null}
       <Card.Content extra>
         <LikeComponent
-          likes={likes}
           user={user}
           id={id}
-          updateLikeOnListing={updateLikeOnListing}
         />
       </Card.Content>
     </Card>
