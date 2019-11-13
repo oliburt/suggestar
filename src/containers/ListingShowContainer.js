@@ -20,7 +20,8 @@ export class ListingShowContainer extends PureComponent {
       setActiveListingMenuItem,
       activeListingMenuItem,
       removeListing,
-      updateListing
+      updateListing,
+      setActiveHomeMenuItem
     } = this.props;
 
     const listing = listings.find(l => l.id === parseInt(match.params.id));
@@ -51,6 +52,7 @@ export class ListingShowContainer extends PureComponent {
             match={match}
             removeListing={removeListing}
             updateListing={updateListing}
+            setActiveHomeMenuItem={setActiveHomeMenuItem}
           />
         ) : (
           <Message>

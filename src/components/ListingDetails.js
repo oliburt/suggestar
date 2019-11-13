@@ -1,10 +1,12 @@
 import React from "react";
 import { Segment, Icon, Header } from "semantic-ui-react";
+import { useHistory } from "react-router-dom";
 import {
   handleLikeButtonClick,
   isListingInNext24hours,
   formatDate
 } from "../helpers/helperFunctions";
+import "../styles/ListingDetails.css";
 
 const ListingDetails = ({
   title,
@@ -17,10 +19,20 @@ const ListingDetails = ({
   updateLikeOnListing,
   age_restriction,
   ticket_url,
-  categories
+  categories,
+  setSelectedListingId,
+  setActiveHomeMenuItem
 }) => {
+  const history = useHistory();
   const startDate = new Date(begin_datetime);
   const endDate = new Date(end_datetime);
+
+  const handleViewOnMapClick = id => {
+    setSelectedListingId(id);
+    setActiveHomeMenuItem("Map");
+    history.push("/");
+  };
+
   return (
     <div>
       <Segment.Group>
@@ -34,30 +46,32 @@ const ListingDetails = ({
             )}
           </p>
           <div>
-            <Icon
-              name="thumbs up"
+            <span
+              className="clickable"
               onClick={() =>
                 handleLikeButtonClick(user.id, id, updateLikeOnListing)
               }
-              color={likes.find(l => l.user_id === user.id) ? "blue" : null}
-            />
-            <span style={{ fontSize: "9px", marginRight: "10px" }}>
-              {likes.length} Likes
+            >
+              <Icon
+                name="thumbs up"
+                color={likes.find(l => l.user_id === user.id) ? "blue" : null}
+              />
+              <span
+                style={{ fontSize: "9px", marginRight: "10px" }}
+              >
+                {likes.length} Likes
+              </span>
             </span>
             {isListingInNext24hours({ begin_datetime, end_datetime }) ? (
-              <>
-                <Icon
-                  color="red"
-                  name="map pin"
-                  onClick={() => this.handleViewOnMapClick(id)}
-                />
-                <span
-                  style={{ fontSize: "9px", marginRight: "10px" }}
-                  onClick={() => this.handleViewOnMapClick(id)}
-                >
+              <span
+                onClick={() => handleViewOnMapClick(id)}
+                className="clickable"
+              >
+                <Icon color="red" name="map pin" />
+                <span style={{ fontSize: "9px", marginRight: "10px" }}>
                   View on Map
                 </span>
-              </>
+              </span>
             ) : null}
             {age_restriction.length > 0 ? (
               <>

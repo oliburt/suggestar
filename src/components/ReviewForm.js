@@ -79,7 +79,7 @@ const ReviewForm = ({
         onChange={(e, data) => setContent(data.value)}
         placeholder="Content..."
       />
-      <Button type="submit">Submit</Button>
+      <Button primary type="submit">Submit</Button>
     </Form>
   );
 };

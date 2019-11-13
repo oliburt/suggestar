@@ -7,10 +7,7 @@ import ListingDestroy from "./ListingDestroy";
 import { Grid } from "semantic-ui-react";
 
 export class ListingShow extends Component {
-  handleViewOnMapClick = id => {
-    this.props.setSelectedListingId(id);
-    this.props.history.push("/map");
-  };
+  
 
   render() {
     const {
@@ -34,7 +31,9 @@ export class ListingShow extends Component {
       listing,
       venues,
       updateListing,
-      removeListing
+      removeListing,
+      setSelectedListingId,
+      setActiveHomeMenuItem
     } = this.props;
 
     const renderContent = activeMenuItem => {
@@ -52,6 +51,8 @@ export class ListingShow extends Component {
             age_restriction={age_restriction}
             id={id}
             updateLikeOnListing={updateLikeOnListing}
+            setSelectedListingId={setSelectedListingId}
+            setActiveHomeMenuItem={setActiveHomeMenuItem}
           />
         );
       if (activeMenuItem === "Venue")
