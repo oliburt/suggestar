@@ -6,11 +6,26 @@ import { Message } from "semantic-ui-react";
 class MainContainer extends Component {
   state = {
     selectedListingId: null,
+    activeVenueMenuItem: "About",
+    activeHomeMenuItem: "Listings",
+    activeListingMenuItem: "Details",
+    activeUserMenuItem: "My Venues",
     filter: "All",
     currentRadius: localStorage.getItem("search-radius")
       ? parseInt(localStorage.getItem("search-radius"))
       : 2000
   };
+
+  setActiveUserMenuItem = activeUserMenuItem =>
+    this.setState({ activeUserMenuItem });
+  setActiveListingMenuItem = activeListingMenuItem =>
+    this.setState({ activeListingMenuItem });
+
+  setActiveVenueMenuItem = activeVenueMenuItem =>
+    this.setState({ activeVenueMenuItem });
+
+  setActiveHomeMenuItem = activeHomeMenuItem =>
+    this.setState({ activeHomeMenuItem });
 
   changeFilter = filter => this.setState({ filter });
 
@@ -19,10 +34,8 @@ class MainContainer extends Component {
     this.setState({ currentRadius: radius });
   };
 
-  setSelectedListingId = id =>
-    id
-      ? this.setState({ selectedListingId: id })
-      : (this.state.selectedListingId = id);
+  setSelectedListingId = id => this.setState({ selectedListingId: id })
+
 
   notFoundMessage = () => <Message negative>Not Found</Message>;
 
@@ -41,15 +54,7 @@ class MainContainer extends Component {
       addReview,
       updateReview,
       removeReview,
-      activeVenueMenuItem,
-      setActiveVenueMenuItem,
       windowWidth,
-      setActiveHomeMenuItem,
-      activeHomeMenuItem,
-      setActiveListingMenuItem,
-      activeListingMenuItem,
-      setActiveUserMenuItem,
-      activeUserMenuItem,
       removeUser
     } = this.props;
     return (
@@ -83,15 +88,15 @@ class MainContainer extends Component {
                     addReview={addReview}
                     updateReview={updateReview}
                     removeReview={removeReview}
-                    activeVenueMenuItem={activeVenueMenuItem}
-                    setActiveVenueMenuItem={setActiveVenueMenuItem}
+                    activeVenueMenuItem={this.state.activeVenueMenuItem}
+                    setActiveVenueMenuItem={this.setActiveVenueMenuItem}
                     windowWidth={windowWidth}
-                    setActiveHomeMenuItem={setActiveHomeMenuItem}
-                    activeHomeMenuItem={activeHomeMenuItem}
-                    setActiveListingMenuItem={setActiveListingMenuItem}
-                    activeListingMenuItem={activeListingMenuItem}
-                    activeUserMenuItem={activeUserMenuItem}
-                    setActiveUserMenuItem={setActiveUserMenuItem}
+                    setActiveHomeMenuItem={this.setActiveHomeMenuItem}
+                    activeHomeMenuItem={this.state.activeHomeMenuItem}
+                    setActiveListingMenuItem={this.setActiveListingMenuItem}
+                    activeListingMenuItem={this.state.activeListingMenuItem}
+                    activeUserMenuItem={this.state.activeUserMenuItem}
+                    setActiveUserMenuItem={this.setActiveUserMenuItem}
                     removeUser={removeUser}
                   />
                 ) : (

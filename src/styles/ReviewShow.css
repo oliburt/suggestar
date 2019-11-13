@@ -1,0 +1,6 @@
+.icon-click {
+    cursor: pointer;
+}
+i.icon-click:hover {
+    color: blue;
+}

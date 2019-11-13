@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Message } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../adapters/API";
 import FormWrapper from "./FormWrapper";
 import { connect } from "react-redux";
 
-
-const NewListingForm = ({ user, addListing, venues, windowWidth }) => {
+const NewListingForm = ({
+  user,
+  addListing,
+  venues,
+  windowWidth,
+  activeUserMenuItem,
+  setActiveUserMenuItem,
+  activeListingMenuItem,
+  setActiveListingMenuItem,
+  activeVenueMenuItem,
+  setActiveVenueMenuItem,
+  activeHomeMenuItem,
+  setActiveHomeMenuItem,
+  selectedListingId,
+  setSelectedListingId
+}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [ticketURL, setTicketURL] = useState("");
@@ -18,6 +32,7 @@ const NewListingForm = ({ user, addListing, venues, windowWidth }) => {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedVenue, setSelectedVenue] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [errors, setErrors] = useState([]);
 
   let history = useHistory();
 
@@ -35,7 +50,35 @@ const NewListingForm = ({ user, addListing, venues, windowWidth }) => {
         );
       });
     }
-  }, [categoryOptions.length]);
+
+    if (activeUserMenuItem !== "My Venues") {
+      setActiveUserMenuItem("My Venues");
+    }
+    if (activeListingMenuItem !== "Details") {
+      setActiveListingMenuItem("Details");
+    }
+    if (activeVenueMenuItem !== "About") {
+      setActiveVenueMenuItem("About");
+    }
+    if (activeHomeMenuItem !== "Listings") {
+      setActiveHomeMenuItem("Listings");
+    }
+    if (selectedListingId) {
+      setSelectedListingId(null);
+    }
+  }, [
+    categoryOptions.length,
+    activeUserMenuItem,
+    setActiveUserMenuItem,
+    activeListingMenuItem,
+    setActiveListingMenuItem,
+    activeVenueMenuItem,
+    setActiveVenueMenuItem,
+    activeHomeMenuItem,
+    setActiveHomeMenuItem,
+    selectedListingId,
+    setSelectedListingId
+  ]);
 
   const handleBeginDateTimeChange = date => {
     setBeginDateTime(date);
@@ -68,8 +111,13 @@ const NewListingForm = ({ user, addListing, venues, windowWidth }) => {
       if (listing && listing.id) {
         addListing(listing);
         history.push(`/listings/${listing.id}`);
+      } else if (listing && listing.error) {
+        setErrors([listing.error]);
+      } else if (listing && listing.errors) {
+        setErrors([...listing.errors]);
       } else {
-        console.log("todo: error handling");
+        setErrors(["Something went wrong! Please try again later."]);
+        console.error("Returned: ", listing);
       }
     });
   };
@@ -81,6 +129,14 @@ const NewListingForm = ({ user, addListing, venues, windowWidth }) => {
 
   return (
     <FormWrapper windowWidth={windowWidth}>
+      {errors.length > 0 ? (
+        <Message warning>
+          <Message.Header warning>Something went Wrong!</Message.Header>
+          {errors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </Message>
+      ) : null}
       <Form onSubmit={handleSubmit}>
         <Form.Select
           options={getVenueOptions(venues)}
@@ -155,8 +211,10 @@ const NewListingForm = ({ user, addListing, venues, windowWidth }) => {
             dateFormat="MMM d, yyyy h:mm aa"
           />
         </div>
-        <br /> <br/>
-        <Button primary type="submit">Create Listing</Button>
+        <br /> <br />
+        <Button primary type="submit">
+          Create Listing
+        </Button>
         <Button secondary type="button" onClick={() => history.push("/")}>
           Cancel
         </Button>
@@ -166,7 +224,7 @@ const NewListingForm = ({ user, addListing, venues, windowWidth }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    addListing: (listing) => dispatch({ type: 'ADD_LISTING', payload: listing })
-  })
+  addListing: listing => dispatch({ type: "ADD_LISTING", payload: listing })
+});
 
 export default connect(null, mapDispatchToProps)(NewListingForm);

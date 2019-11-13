@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import API from "../adapters/API";
 import { Icon, Message, Button, Header } from "semantic-ui-react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const ListingDestroy = ({
   match,
@@ -9,6 +11,8 @@ const ListingDestroy = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
+
+  const history = useHistory()
 
   const handleDeleteClick = () => {
       API.destroyListing(match.params.id).then(listing => {
@@ -20,6 +24,7 @@ const ListingDestroy = ({
           setLoading(false);
         } else if (listing && listing.id) {
           removeListing(listing);
+          history.push('/')
         } else {
           console.log("Return Value:", listing);
         }
@@ -45,4 +50,8 @@ const ListingDestroy = ({
   );
 };
 
-export default ListingDestroy;
+const mapDispatchToProps = dispatch => ({
+  removeListing: (listing) => dispatch({ type: 'REMOVE_LISTING', payload: listing })
+})
+
+export default connect(null, mapDispatchToProps)(ListingDestroy);

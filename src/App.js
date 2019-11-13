@@ -14,23 +14,10 @@ class App extends React.Component {
     location: [],
     venues: [],
     errors: [],
-    activeVenueMenuItem: "About",
-    activeHomeMenuItem: "Listings",
-    activeListingMenuItem: "Details",
-    activeUserMenuItem: "My Venues",
     windowWidth: window.innerWidth,
     windowHeight: window.innerHeight
   };
-  setActiveUserMenuItem = activeUserMenuItem =>
-    this.setState({ activeUserMenuItem });
-  setActiveListingMenuItem = activeListingMenuItem =>
-    this.setState({ activeListingMenuItem });
-
-  setActiveVenueMenuItem = activeVenueMenuItem =>
-    this.setState({ activeVenueMenuItem });
-
-  setActiveHomeMenuItem = activeHomeMenuItem =>
-    this.setState({ activeHomeMenuItem });
+  
 
   addReview = review =>
     this.setState({
@@ -293,15 +280,7 @@ class App extends React.Component {
               addReview={this.addReview}
               updateReview={this.updateReview}
               removeReview={this.removeReview}
-              activeVenueMenuItem={this.state.activeVenueMenuItem}
-              setActiveVenueMenuItem={this.setActiveVenueMenuItem}
               windowWidth={this.state.windowWidth}
-              setActiveHomeMenuItem={this.setActiveHomeMenuItem}
-              activeHomeMenuItem={this.state.activeHomeMenuItem}
-              setActiveListingMenuItem={this.setActiveListingMenuItem}
-              activeListingMenuItem={this.state.activeListingMenuItem}
-              activeUserMenuItem={this.state.activeUserMenuItem}
-              setActiveUserMenuItem={this.setActiveUserMenuItem}
               removeUser={this.removeUser}
             />
           )}

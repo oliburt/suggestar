@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Grid } from "semantic-ui-react";
 import HomeMenu from "../components/HomeMenu";
 import HomeListingContainer from "./HomeListingContainer";
@@ -18,8 +18,31 @@ const HomeContainer = ({
   selectedListingId,
   setSelectedListingId,
   changeFilter,
-  setRadius
+  setRadius,
+  activeUserMenuItem,
+  setActiveUserMenuItem,
+  activeListingMenuItem,
+  setActiveListingMenuItem,
+  activeVenueMenuItem,
+  setActiveVenueMenuItem
 }) => {
+  useEffect(() => {
+
+      if (activeUserMenuItem !== 'My Venues') {
+        setActiveUserMenuItem('My Venues')
+      }
+      if (activeListingMenuItem !== 'Details') {
+        setActiveListingMenuItem('Details')
+      }
+      if (activeVenueMenuItem !== 'About') {
+        setActiveVenueMenuItem('About')
+      }
+
+ 
+
+  }, [activeUserMenuItem, setActiveUserMenuItem, activeListingMenuItem, setActiveListingMenuItem, activeVenueMenuItem, setActiveVenueMenuItem]);
+
+
   const renderContent = activeMenuItem => {
     if (activeMenuItem === "Listings")
       return (
@@ -29,6 +52,8 @@ const HomeContainer = ({
           filter={filter}
           user={user}
           venues={venues}
+          setSelectedListingId={setSelectedListingId}
+          selectedListingId={selectedListingId}
         />
       );
     if (activeMenuItem === "Map")

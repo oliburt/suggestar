@@ -1,8 +1,25 @@
 import React from "react";
 import VenueShow from "../components/VenueShow";
 import { Icon } from "semantic-ui-react";
+import { connect } from "react-redux";
 
 class VenueShowContainer extends React.Component {
+componentDidMount() {
+    if (this.props.activeHomeMenuItem !== 'Listings') {
+      this.props.setActiveHomeMenuItem('Listings')
+    }
+    if (this.props.activeListingMenuItem !== 'Details') {
+      this.props.setActiveListingMenuItem('Details')
+    }
+    if (this.props.activeUserMenuItem !== 'My Venues') {
+      this.props.setActiveUserMenuItem('My Venues')
+    }
+    if (this.props.selectedListingId) {
+      this.props.setSelectedListingId(null)
+    }
+  }
+  
+  
   render() {
     const venue = this.props.venues.find(
       v => v.id === parseInt(this.props.match.params.id)
@@ -10,6 +27,9 @@ class VenueShowContainer extends React.Component {
     const venuesListings = this.props.listings.filter(
       l => l.venue_id === venue.id
     );
+
+    
+    
     
 
     return (
@@ -42,4 +62,8 @@ class VenueShowContainer extends React.Component {
   }
 }
 
-export default VenueShowContainer;
+const mapStateToProps = state => ({
+  listings: state.listings
+})
+
+export default connect(mapStateToProps)(VenueShowContainer);

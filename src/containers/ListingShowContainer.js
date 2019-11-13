@@ -8,6 +8,21 @@ export class ListingShowContainer extends PureComponent {
     errors: []
   };
 
+  componentDidMount() {
+    if (this.props.activeHomeMenuItem !== 'Listings') {
+      this.props.setActiveHomeMenuItem('Listings')
+    }
+    if (this.props.activeUserMenuItem !== 'My Venues') {
+      this.props.setActiveUserMenuItem('My Venues')
+    }
+    if (this.props.activeVenueMenuItem !== 'About') {
+      this.props.setActiveVenueMenuItem('About')
+    }
+    if (this.props.selectedListingId) {
+      this.props.setSelectedListingId(null)
+    }
+  }
+
   render() {
     const {
       listings,
@@ -16,16 +31,17 @@ export class ListingShowContainer extends PureComponent {
       match,
       history,
       setSelectedListingId,
-      updateLikeOnListing,
       windowWidth,
       setActiveListingMenuItem,
       activeListingMenuItem,
-      removeListing,
-      updateListing,
       setActiveHomeMenuItem
     } = this.props;
 
     const listing = listings.find(l => l.id === parseInt(match.params.id));
+    if (!listing) {
+      history.push('/')
+      return <></>
+    } 
     const venue = venues.find(v => v.id === listing.venue_id);
 
     return (
@@ -46,13 +62,10 @@ export class ListingShowContainer extends PureComponent {
             history={history}
             venue={venue}
             user={user}
-            updateLikeOnListing={updateLikeOnListing}
             windowWidth={windowWidth}
             setActiveListingMenuItem={setActiveListingMenuItem}
             activeListingMenuItem={activeListingMenuItem}
             match={match}
-            removeListing={removeListing}
-            updateListing={updateListing}
             setActiveHomeMenuItem={setActiveHomeMenuItem}
           />
         ) : (

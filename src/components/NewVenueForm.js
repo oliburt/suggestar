@@ -1,5 +1,5 @@
-import React from "react";
-import { Form, Button, Image, Icon } from "semantic-ui-react";
+import React, { useEffect } from "react";
+import { Form, Button, Image, Icon, Message } from "semantic-ui-react";
 import AutoComplete from "./AutoComplete";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import API from "../adapters/API";
@@ -12,7 +12,17 @@ const NewVenueForm = ({
   history,
   addVenueToCurrentUser,
   user,
-  windowWidth
+  windowWidth,
+  activeUserMenuItem,
+  setActiveUserMenuItem,
+  activeListingMenuItem,
+  setActiveListingMenuItem,
+  activeVenueMenuItem,
+  setActiveVenueMenuItem,
+  activeHomeMenuItem,
+  setActiveHomeMenuItem,
+  selectedListingId,
+  setSelectedListingId
 }) => {
   const [address, setAddress] = React.useState("");
   const [name, setName] = React.useState("");
@@ -25,6 +35,37 @@ const NewVenueForm = ({
     lat: null,
     lng: null
   });
+  const [errors, setErrors] = React.useState([]);
+
+
+  useEffect(() => {
+    if (activeUserMenuItem !== "My Venues") {
+      setActiveUserMenuItem("My Venues");
+    }
+    if (activeListingMenuItem !== "Details") {
+      setActiveListingMenuItem("Details");
+    }
+    if (activeVenueMenuItem !== "About") {
+      setActiveVenueMenuItem("About");
+    }
+    if (activeHomeMenuItem !== "Listings") {
+      setActiveHomeMenuItem("Listings");
+    }
+    if (selectedListingId) {
+      setSelectedListingId(null);
+    }
+  }, [
+    activeUserMenuItem,
+    setActiveUserMenuItem,
+    activeListingMenuItem,
+    setActiveListingMenuItem,
+    activeVenueMenuItem,
+    setActiveVenueMenuItem,
+    activeHomeMenuItem,
+    setActiveHomeMenuItem,
+    selectedListingId,
+    setSelectedListingId
+  ]);
 
   const handleAutocompleteSelect = async value => {
     const results = await geocodeByAddress(value);
@@ -55,8 +96,13 @@ const NewVenueForm = ({
       if (venue && venue.id) {
         addVenueToCurrentUser(user, venue);
         history.push(`/venues/${venue.id}`);
+      } else if (venue && venue.error) {
+        setErrors([venue.error]);
+      } else if (venue && venue.errors) {
+        setErrors([...venue.errors]);
       } else {
-        console.log("todo: handle errors for new venue");
+        setErrors(["Something went wrong! Please try again later."]);
+        console.error("Returned: ", venue);
       }
     });
   };
@@ -82,6 +128,14 @@ const NewVenueForm = ({
 
   return (
     <FormWrapper windowWidth={windowWidth}>
+    {errors.length > 0 ? (
+        <Message warning>
+          <Message.Header warning>Something went Wrong!</Message.Header>
+          {errors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </Message>
+      ) : null}
       <Form onSubmit={handleSubmit}>
         <Form.Input
           placeholder="Name..."
@@ -112,7 +166,7 @@ const NewVenueForm = ({
         {imageUrl.length > 0 ? null : (
           <ImageUploader handleChange={uploadImage} />
         )}
-        <div className='required field'>
+        <div className="required field">
           <label>Address (Please Select from the Suggestions)</label>
           {!placeId ? (
             <AutoComplete
@@ -128,7 +182,9 @@ const NewVenueForm = ({
           )}
         </div>
 
-        <Button primary type="submit">Create Venue</Button>
+        <Button primary type="submit">
+          Create Venue
+        </Button>
         <Button secondary type="button" onClick={() => history.push("/")}>
           Cancel
         </Button>

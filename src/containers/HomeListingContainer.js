@@ -10,6 +10,12 @@ import { connect } from "react-redux";
 
 
 export class HomeListingContainer extends Component {
+  componentDidMount() {
+    if (this.props.selectedListingId) {
+      this.props.setSelectedListingId(null)
+    }
+  }
+  
   render() {
     const {
       listings,
@@ -31,6 +37,8 @@ export class HomeListingContainer extends Component {
       radiusFilteredListings,
       filter
     );
+    
+    
 
     return eventFilteredListings.length > 0 ? (
       <div>

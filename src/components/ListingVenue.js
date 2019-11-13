@@ -2,11 +2,13 @@ import React from 'react';
 import { Segment, Image, Header } from 'semantic-ui-react';
 import { getAverageRating } from '../helpers/helperFunctions';
 import StarRatingComponent from "react-star-rating-component";
+import '../styles/VenueItem.css';
+
 
 
 const ListingVenue = ({venue, history, windowWidth}) => {
     return (
-         <Segment>
+         <Segment className="clickable">
             Venue
             <div style={{ display: "flex" }} onClick={() => history.push(`/venues/${venue.id}`)}>
               <div>

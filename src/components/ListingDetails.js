@@ -7,6 +7,7 @@ import {
   formatDate
 } from "../helpers/helperFunctions";
 import "../styles/ListingDetails.css";
+import { connect } from "react-redux";
 
 const ListingDetails = ({
   title,
@@ -115,4 +116,8 @@ const ListingDetails = ({
   );
 };
 
-export default ListingDetails;
+const mapDispatchToProps = dispatch => ({
+  updateLikeOnListing: (like) => dispatch({ type: 'TOGGLE_LIKE', payload: like })
+})
+
+export default connect(null, mapDispatchToProps)(ListingDetails);

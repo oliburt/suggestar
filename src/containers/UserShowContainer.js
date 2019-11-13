@@ -2,7 +2,20 @@ import React from "react";
 import UserShow from "../components/UserShow";
 
 class UserShowContainer extends React.Component {
-  componentDidMount() {}
+  componentDidMount() {
+    if (this.props.activeHomeMenuItem !== 'Listings') {
+      this.props.setActiveHomeMenuItem('Listings')
+    }
+    if (this.props.activeListingMenuItem !== 'Details') {
+      this.props.setActiveListingMenuItem('Details')
+    }
+    if (this.props.activeVenueMenuItem !== 'About') {
+      this.props.setActiveVenueMenuItem('About')
+    }
+    if (this.props.selectedListingId) {
+      this.props.setSelectedListingId(null)
+    }
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.isAuthenticated === false)

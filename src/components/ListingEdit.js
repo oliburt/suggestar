@@ -3,6 +3,7 @@ import { Form, Button, Message } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../adapters/API";
+import { connect } from "react-redux";
 
 export class ListingEdit extends Component {
   state = {
@@ -212,4 +213,8 @@ export class ListingEdit extends Component {
   }
 }
 
-export default ListingEdit;
+const mapDispatchToProps = dispatch => ({
+  updateListing: (listing) => dispatch({ type: 'UPDATE_LISTING', payload: listing })
+})
+
+export default connect(null, mapDispatchToProps)(ListingEdit);

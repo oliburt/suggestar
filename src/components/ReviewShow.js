@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import StarRatingComponent from "react-star-rating-component";
 import { Feed, Icon, Message } from "semantic-ui-react";
 import API from "../adapters/API";
+import "../styles/ReviewShow.css";
 
 const ReviewShow = ({
   content,
@@ -58,8 +59,16 @@ const ReviewShow = ({
         </Message>
       ) : null}
       <div style={{ textAlign: "right" }}>
-        <Icon name="edit" onClick={() => setReviewToEdit(id)} />
         <Icon
+          className="icon-click"
+          name="edit"
+          onClick={() => {
+            setReviewToEdit(id);
+            window.scrollTo(0, 0);
+          }}
+        />
+        <Icon
+          className="icon-click"
           name="trash alternate"
           color="red"
           onClick={() => handleDeleteClick(id)}

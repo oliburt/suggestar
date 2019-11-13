@@ -22,7 +22,6 @@ export class ListingShow extends Component {
       id,
       likes,
       user,
-      updateLikeOnListing,
       windowWidth,
       history,
       match,
@@ -30,8 +29,6 @@ export class ListingShow extends Component {
       activeListingMenuItem,
       listing,
       venues,
-      updateListing,
-      removeListing,
       setSelectedListingId,
       setActiveHomeMenuItem
     } = this.props;
@@ -50,7 +47,6 @@ export class ListingShow extends Component {
             ticket_url={ticket_url}
             age_restriction={age_restriction}
             id={id}
-            updateLikeOnListing={updateLikeOnListing}
             setSelectedListingId={setSelectedListingId}
             setActiveHomeMenuItem={setActiveHomeMenuItem}
           />
@@ -70,7 +66,6 @@ export class ListingShow extends Component {
             listing={listing}
             venues={venues}
             history={history}
-            updateListing={updateListing}
             match={match}
             setActiveListingMenuItem={setActiveListingMenuItem}
           />
@@ -79,7 +74,6 @@ export class ListingShow extends Component {
         return (
           <ListingDestroy
             match={match}
-            removeListing={removeListing}
             user={user}
             history={history}
             listing={listing}

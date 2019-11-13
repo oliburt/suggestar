@@ -2,10 +2,11 @@ import React from "react";
 import { Item } from "semantic-ui-react";
 import StarRatingComponent from "react-star-rating-component";
 import { getAverageRating } from "../helpers/helperFunctions";
+import '../styles/VenueItem.css';
 
 const VenueItem = ({ id, name, history, image_url, reviews }) => {
   return (
-    <Item onClick={() => history.push(`/venues/${id}`)}>
+    <Item onClick={() => history.push(`/venues/${id}`)} className="clickable">
       {image_url ? (
         <Item.Image src={image_url} size="tiny" />
       ) : (

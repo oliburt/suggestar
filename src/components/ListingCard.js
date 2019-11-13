@@ -17,9 +17,10 @@ const ListingCard = ({
   const history = useHistory();
 
   return (
-    <Card fluid className="clickable">
+    <Card fluid>
       {venue && venue.image_url ? (
         <Image
+        className="clickable"
           src={venue.image_url}
           wrapped
           ui={false}
@@ -27,13 +28,13 @@ const ListingCard = ({
         />
       ) : null}
 
-      <Card.Content onClick={() => history.push(`/listings/${id}`)}>
+      <Card.Content className="clickable" onClick={() => history.push(`/listings/${id}`)}>
         <Card.Header>{title}</Card.Header>
         <Card.Meta>{categories.map(c => c.name).join(", ")}</Card.Meta>
         <Card.Description>{description}</Card.Description>
       </Card.Content>
       {venue ? (
-        <Card.Content extra onClick={() => history.push(`/venues/${venue.id}`)}>
+        <Card.Content className="clickable" extra onClick={() => history.push(`/venues/${venue.id}`)}>
           <Icon name="map pin" color="red" />
           {venue.name} - {convertDistance(distance)}km
         </Card.Content>
