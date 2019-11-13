@@ -35,8 +35,8 @@ const VenueDestroy = ({ match, removeVenue, user, setActiveVenueMenuItem }) => {
         </Message>
       ) : null}
       <Header as="h4">Are you sure?</Header>
-      <Button onClick={handleDeleteClick}>Delete</Button>
-      <Button onClick={() => setActiveVenueMenuItem('About')}>Cancel</Button>
+      <Button negative onClick={handleDeleteClick}>Delete</Button>
+      <Button secondary onClick={() => setActiveVenueMenuItem('About')}>Cancel</Button>
     </div>
   ) : (
     <Icon loading size="big" name="spinner" />

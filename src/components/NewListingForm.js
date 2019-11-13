@@ -153,7 +153,7 @@ const NewListingForm = ({ user, addListing, venues, windowWidth }) => {
             dateFormat="MMM d, yyyy h:mm aa"
           />
         </div>
-        <br />
+        <br /> <br/>
         <Button primary type="submit">Create Listing</Button>
         <Button secondary type="button" onClick={() => history.push("/")}>
           Cancel

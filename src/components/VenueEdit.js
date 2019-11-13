@@ -154,15 +154,17 @@ export class VenueEdit extends Component {
     ) : (
       <Form onSubmit={this.handleSubmit}>
         <Form.Input
-          placeholder="name..."
+          placeholder="Name..."
           value={name ? name : ""}
           name="name"
+          label='Name'
           onChange={this.handleChange}
         />
         <Form.TextArea
-          placeholder="description..."
+          placeholder="Description..."
           value={description}
           name="description"
+          label="Description"
           onChange={this.handleChange}
         />
         {this.state.loadingImage ? (
@@ -183,19 +185,23 @@ export class VenueEdit extends Component {
           <ImageUploader handleChange={this.uploadImage} />
         )}
         {!placeId ? (
+          <div className='field'>
+
+          <label>Address (Please Select from the Suggestions)</label>
           <AutoComplete
             address={address}
             setAddress={this.setAddress}
             handleSelect={this.handleAutocompleteSelect}
           />
+          </div>
         ) : (
           <div>
             {formatAddress(address)}
             <Button onClick={this.handleChangeAddress}>Change address</Button>
           </div>
         )}
-        <Button type="submit" primary>Save</Button>
-        <Button type="button" onClick={() => this.props.setActiveVenueMenuItem("About")}>
+        <Button primary type="submit" primary>Save</Button>
+        <Button secondary type="button" onClick={() => this.props.setActiveVenueMenuItem("About")}>
           Back
         </Button>
 

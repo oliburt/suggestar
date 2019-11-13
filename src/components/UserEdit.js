@@ -90,8 +90,8 @@ export class UserEdit extends Component {
             onChange={this.handleChange}
           />
 
-          <Button type="submit">Submit</Button>
-          <Button onClick={() => this.props.setActiveUserMenuItem("Details")}>
+          <Button primary type="submit">Submit</Button>
+          <Button secondary onClick={() => this.props.setActiveUserMenuItem("Details")}>
             Back
           </Button>
         </Form>

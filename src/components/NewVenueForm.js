@@ -128,8 +128,8 @@ const NewVenueForm = ({
           )}
         </div>
 
-        <Button type="submit">Create Venue</Button>
-        <Button type="button" onClick={() => history.push("/")}>
+        <Button primary type="submit">Create Venue</Button>
+        <Button secondary type="button" onClick={() => history.push("/")}>
           Cancel
         </Button>
       </Form>

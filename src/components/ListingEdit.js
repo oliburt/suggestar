@@ -157,26 +157,30 @@ export class ListingEdit extends Component {
           selection
         />
         <Form.Input
-          placeholder="title..."
+          placeholder="Title..."
           value={title}
+          label='Title'
           name="title"
           onChange={this.handleChange}
         />
         <Form.TextArea
-          placeholder="description..."
+          placeholder="Description..."
           value={description}
+          label='Description'
           name="description"
           onChange={this.handleChange}
         />
         <Form.Input
-          placeholder="ticket url (if necessary)..."
+          placeholder="Ticket Url..."
           value={ticket_url}
+          label="Ticket Url (optional)"
           name="ticket_url"
           onChange={this.handleChange}
         />
         <Form.Input
-          placeholder="age restriction...?"
+          placeholder="Age Restriction..."
           value={age_restriction}
+          label="Age Restriction (optional)"
           name="age_restriction"
           onChange={this.handleChange}
         />
@@ -200,9 +204,9 @@ export class ListingEdit extends Component {
           timeCaption="Time"
           dateFormat="MMM d, yyyy h:mm aa"
         />
-        <br />
-        <Button type="submit">Save</Button>
-        <Button type="button" onClick={() => this.props.setActiveListingMenuItem('Details')}>Back</Button>
+        <br /><br/>
+        <Button primary type="submit">Save</Button>
+        <Button secondary type="button" onClick={() => this.props.setActiveListingMenuItem('Details')}>Back</Button>
       </Form>
     );
   }

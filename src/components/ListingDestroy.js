@@ -37,8 +37,8 @@ const ListingDestroy = ({
         </Message>
       ) : null}
       <Header as="h4">Are you sure?</Header>
-      <Button onClick={handleDeleteClick}>Delete</Button>
-      <Button onClick={() => setActiveListingMenuItem("Details")}>Cancel</Button>
+      <Button negative onClick={handleDeleteClick}>Delete</Button>
+      <Button secondary onClick={() => setActiveListingMenuItem("Details")}>Cancel</Button>
     </div>
   ) : (
     <Icon loading size="big" name="spinner" />

@@ -35,8 +35,8 @@ const UserDestroy = ({ user, setActiveUserMenuItem, removeUser }) => {
         </Message>
       ) : null}
       <Header as="h4">Are you sure?</Header>
-      <Button onClick={handleDeleteClick}>Delete</Button>
-      <Button onClick={() => setActiveUserMenuItem('Details')}>Cancel</Button>
+      <Button negative onClick={handleDeleteClick}>Delete</Button>
+      <Button secondary onClick={() => setActiveUserMenuItem('Details')}>Cancel</Button>
     </div>
   ) : (
     <Icon loading size="big" name="spinner" />
