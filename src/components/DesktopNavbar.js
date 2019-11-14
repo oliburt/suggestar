@@ -7,8 +7,8 @@ const DesktopNavbar = ({ user }) => {
   const history = useHistory()
   return (
     <Menu>
-      <Menu.Item style={{padding: '0'}} onClick={() => history.push('/')}>
-          <Image src={require('../images/logo.png')} size="mini" style={{paddingLeft: '0.5rem'}}/>
+      <Menu.Item style={{padding: '0', cursor: 'pointer'}} onClick={() => history.push('/')}>
+          <Image src={require('../images/logo.png')} style={{paddingLeft: '0.6rem', paddingRight: '0.6rem', width: '60px', height: 'auto'}}/>
         </Menu.Item>
       <Menu.Item key={"/"} as={NavLink} to={"/"} exact>
         Home
