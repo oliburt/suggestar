@@ -10,6 +10,24 @@ export class Login extends Component {
     errors: null
   };
 
+  componentDidMount() {
+    if (this.props.activeHomeMenuItem !== 'Listings') {
+      this.props.setActiveHomeMenuItem('Listings')
+    }
+    if (this.props.activeListingMenuItem !== 'Details') {
+      this.props.setActiveListingMenuItem('Details')
+    }
+    if (this.props.activeVenueMenuItem !== 'About') {
+      this.props.setActiveVenueMenuItem('About')
+    }
+    if (this.props.activeUserMenuItem !== 'My Venues') {
+      this.props.setActiveUserMenuItem('My Venues')
+    }
+    if (this.props.selectedListingId) {
+      this.props.setSelectedListingId(null)
+    }
+  }
+
   handleChange = e =>
     this.setState({
       [e.target.id]: e.target.value
@@ -22,10 +40,15 @@ export class Login extends Component {
       email,
       password
     }).then(user => {
-      if (user.errors) {
-        this.setState({ errors: user.errors });
-      } else {
+
+      if (user && user.errors) {
+        this.setState({ errors: [...user.errors] });
+      } else if (user && user.error) {
+        this.setState({ errors: [user.error] });
+      } else if (user && user.id) {
         this.props.login(user);
+      } else {
+        this.setState({ errors: ["Something went wrong"] });
       }
     });
   };

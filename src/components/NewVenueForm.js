@@ -92,19 +92,34 @@ const NewVenueForm = ({
       image_url: imageUrl,
       image_public_id: imagePublicId
     };
-    API.postVenue(venue).then(venue => {
-      if (venue && venue.id) {
-        addVenueToCurrentUser(user, venue);
-        history.push(`/venues/${venue.id}`);
-      } else if (venue && venue.error) {
-        setErrors([venue.error]);
-      } else if (venue && venue.errors) {
-        setErrors([...venue.errors]);
-      } else {
-        setErrors(["Something went wrong! Please try again later."]);
-        console.error("Returned: ", venue);
-      }
-    });
+
+    if (placeId && address.length > 0 && description.length > 0 && name.length > 0) {
+      API.postVenue(venue).then(venue => {
+        if (venue && venue.id) {
+          addVenueToCurrentUser(user, venue);
+          history.push(`/venues/${venue.id}`);
+        } else if (venue && venue.error) {
+          setErrors([venue.error]);
+        } else if (venue && venue.errors) {
+          setErrors([...venue.errors]);
+        } else {
+          setErrors(["Something went wrong! Please try again later."]);
+          console.error("Returned: ", venue);
+        }
+      });
+    } else {
+      const nameError = !name ? "Please provide a name" : null;
+      const descriptionError = !description ? "Please provide a description" : null;
+      const addressError = (address.length === 0 && placeId) || (!placeId) ? "Please choose one of the suggested places for the address" : null;
+      
+      const errors = [
+        nameError,
+        descriptionError,
+        addressError
+      ];
+      const nonNullErrors = errors.filter(e => e);
+      setErrors(nonNullErrors);
+    }
   };
 
   const uploadImage = async e => {

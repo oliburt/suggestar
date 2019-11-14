@@ -107,19 +107,37 @@ const NewListingForm = ({
       venue_id: selectedVenue,
       category_ids: selectedCategories
     };
-    API.postListing(listing).then(listing => {
-      if (listing && listing.id) {
-        addListing(listing);
-        history.push(`/listings/${listing.id}`);
-      } else if (listing && listing.error) {
-        setErrors([listing.error]);
-      } else if (listing && listing.errors) {
-        setErrors([...listing.errors]);
-      } else {
-        setErrors(["Something went wrong! Please try again later."]);
-        console.error("Returned: ", listing);
-      }
-    });
+    if (title && description && selectedVenue && selectedCategories.length > 0 && beginDateTime && endDateTime) {
+      API.postListing(listing).then(listing => {
+        if (listing && listing.id) {
+          addListing(listing);
+          history.push(`/listings/${listing.id}`);
+        } else if (listing && listing.error) {
+          setErrors([listing.error]);
+        } else if (listing && listing.errors) {
+          setErrors([...listing.errors]);
+        } else {
+          setErrors(["Something went wrong! Please try again later."]);
+          console.error("Returned: ", listing);
+        }
+      });
+    } else {
+      const titleError = !title ? "Please provide a title" : null;
+      const descriptionError = !description ? "Please provide a description" : null;
+      const venueError = !selectedVenue ? "Please provide a venue for this listing. (If you haven't created a venue please do so first!)" : null;
+      const selectedCategoriesError = selectedCategories.length === 0 ? "Please provide at least one category" : null;
+      const dateError = (!beginDateTime || !endDateTime) ? "Please provide a beginning and ending date and time for your listing" : null;
+      
+      const errors = [
+        titleError,
+        descriptionError,
+        venueError,
+        selectedCategoriesError,
+        dateError
+      ];
+      const nonNullErrors = errors.filter(e => e);
+      setErrors(nonNullErrors);
+    }
   };
 
   const getVenueOptions = venues =>
