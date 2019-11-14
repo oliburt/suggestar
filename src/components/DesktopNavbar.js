@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Dropdown } from "semantic-ui-react";
+import { Menu, Dropdown, Image } from "semantic-ui-react";
 import { NavLink, useHistory } from "react-router-dom";
 import '../styles/DesktopNav.css'
 
@@ -7,6 +7,9 @@ const DesktopNavbar = ({ user }) => {
   const history = useHistory()
   return (
     <Menu>
+      <Menu.Item style={{padding: '0'}} onClick={() => history.push('/')}>
+          <Image src={require('../images/logo.png')} size="mini" style={{paddingLeft: '0.5rem'}}/>
+        </Menu.Item>
       <Menu.Item key={"/"} as={NavLink} to={"/"} exact>
         Home
       </Menu.Item>
