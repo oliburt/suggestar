@@ -17,7 +17,7 @@ const ListingCard = ({
   const history = useHistory();
 
   return (
-    <Card fluid>
+    <Card fluid className="listing-card">
       {venue && venue.image_url ? (
         <Image
         className="clickable"

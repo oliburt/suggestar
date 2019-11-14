@@ -5,8 +5,8 @@
     font-size: 1.2em;
     text-align: left;
     padding: 1.5em;
-    background-color: #ffffff68;
-    box-shadow: 5px 5px rgba(17, 138, 178, 0.077);
+    background-color: #fff;
+    box-shadow: 5px 5px 5px 5px rgba(17, 138, 178, 0.077);
 }
 
 #filter-box-small {
@@ -16,8 +16,8 @@
     font-size: 0.8em;
     text-align: center;
     padding: 1em;
-    background-color: #ffffff68;
-    box-shadow: 5px 5px rgba(17, 138, 178, 0.077);
+    background-color: #fff;
+    box-shadow: 5px 5px 5px 5px rgba(17, 138, 178, 0.077);
     margin-bottom: 0.7em;
 }
 

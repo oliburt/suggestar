@@ -1,3 +1,9 @@
 .clickable {
     cursor: pointer;
+
+}
+
+div.ui.cards > div.ui.card.listing-card {
+    background-color: #ffffff;
+    box-shadow: 0 15px 20px rgba(168, 164, 176, 0.7);
 }

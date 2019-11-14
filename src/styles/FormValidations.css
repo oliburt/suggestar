@@ -1,0 +1,12 @@
+div.field.nomatch > div.ui.input > input {
+    border-color: rgb(255, 147, 147);
+}
+div.field.match > div.ui.input > input {
+    border-color: rgb(125, 220, 94);
+}
+
+
+
+div.field.empty > div.ui.input > input {
+    border-color: #9F3A38;
+}

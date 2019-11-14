@@ -7,6 +7,7 @@ import {
 } from "../helpers/helperFunctions";
 import { Message, Header } from "semantic-ui-react";
 import { connect } from "react-redux";
+import '../styles/HomeListings.css'
 
 
 export class HomeListingContainer extends Component {
@@ -41,7 +42,7 @@ export class HomeListingContainer extends Component {
     
 
     return eventFilteredListings.length > 0 ? (
-      <div>
+      <div id="scrollable-div">
       <Header as="h2">Today's Listings</Header>
 
         <Home

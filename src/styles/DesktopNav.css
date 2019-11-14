@@ -4,6 +4,8 @@ div.ui.menu > .item:first-child {
 
 div.ui.menu {
     border-radius: 0;
+    background: whitesmoke;
+    border: none;
 }
 
 div.ui.menu .active.item {

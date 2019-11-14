@@ -11,11 +11,11 @@ const ListingVenue = ({venue, history, windowWidth}) => {
          <Segment className="clickable">
             Venue
             <div style={{ display: "flex" }} onClick={() => history.push(`/venues/${venue.id}`)}>
-              <div>
+              <div style={{minWidth: '100px'}}>
                 <Image src={venue.image_url} size="small" />
               </div>
-              <div style={{ marginLeft: "3rem", paddingTop: "2rem" }}>
-                <Header as="h2">{venue.name}</Header>
+              <div style={{ marginLeft: "1rem", paddingTop: "1rem", minWidth: '75px' }}>
+                <Header as="h3">{venue.name}</Header>
                 <StarRatingComponent
                   name="rating"
                   value={venue.reviews ? getAverageRating(venue.reviews) : 0}
@@ -26,7 +26,7 @@ const ListingVenue = ({venue, history, windowWidth}) => {
                 />
               </div>
               {windowWidth > 800 ? (
-                <div style={{ marginLeft: "5rem", paddingTop: "2rem" }}>
+                <div style={{ marginLeft: "2rem", paddingTop: "2rem", fontSize: '0.7rem' }}>
                   <p>{venue.description}</p>
                 </div>
               ) : null}

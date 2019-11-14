@@ -12,7 +12,7 @@
 
 @primaryColor: #118AB2;
 
-@pageBackground: #F3F4F5;
+@pageBackground: snow;
 
 
 
