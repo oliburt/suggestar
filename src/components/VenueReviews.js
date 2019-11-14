@@ -26,7 +26,7 @@ const VenueReviews = ({ id, user, addReview, updateReview, reviews, removeReview
       )}
 
       {reviews.length > 0 ? (
-        <ReviewListContainer reviews={reviews} setReviewToEdit={setReviewToEdit} removeReview={removeReview}/>
+        <ReviewListContainer reviews={reviews} user={user} setReviewToEdit={setReviewToEdit} removeReview={removeReview}/>
       ) : (
         <Header as="h4">No Reviews</Header>
       )}

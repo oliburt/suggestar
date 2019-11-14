@@ -10,6 +10,8 @@ const ReviewShow = ({
   created_at,
   users_name,
   id,
+  user_id,
+  user,
   setReviewToEdit,
   removeReview
 }) => {
@@ -58,22 +60,24 @@ const ReviewShow = ({
           ))}
         </Message>
       ) : null}
-      <div style={{ textAlign: "right" }}>
-        <Icon
-          className="icon-click"
-          name="edit"
-          onClick={() => {
-            setReviewToEdit(id);
-            window.scrollTo(0, 0);
-          }}
-        />
-        <Icon
-          className="icon-click"
-          name="trash alternate"
-          color="red"
-          onClick={() => handleDeleteClick(id)}
-        />
-      </div>
+      {user && user_id === user.id ? (
+        <div style={{ textAlign: "right" }}>
+          <Icon
+            className="icon-click"
+            name="edit"
+            onClick={() => {
+              setReviewToEdit(id);
+              window.scrollTo(0, 0);
+            }}
+          />
+          <Icon
+            className="icon-click"
+            name="trash alternate"
+            color="red"
+            onClick={() => handleDeleteClick(id)}
+          />
+        </div>
+      ) : null}
       <Feed.Event>
         <Feed.Label>
           <Icon name="star" color={iconColor(rating)} />
