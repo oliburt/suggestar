@@ -85,7 +85,8 @@ export class Login extends Component {
             id="password"
             onChange={this.handleChange}
           />
-          <Button type="submit">Submit</Button>
+          <Button primary type="submit">Login</Button>
+          <Button secondary onClick={() => this.props.history.push('/')} type="button">Cancel</Button>
         </Form>
       </FormWrapper>
     );

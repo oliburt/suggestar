@@ -200,7 +200,7 @@ export class VenueEdit extends Component {
             <Button onClick={this.handleChangeAddress}>Change address</Button>
           </div>
         )}
-        <Button primary type="submit" primary>Save</Button>
+        <Button primary type="submit">Save</Button>
         <Button secondary type="button" onClick={() => this.props.setActiveVenueMenuItem("About")}>
           Back
         </Button>

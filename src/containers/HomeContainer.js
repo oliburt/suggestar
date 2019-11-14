@@ -5,6 +5,7 @@ import HomeListingContainer from "./HomeListingContainer";
 import MapContainer from "./MapContainer";
 import FilterForm from "../components/FilterForm";
 import '../styles/Grids.css'
+import '../styles/Menus.css'
 
 const HomeContainer = ({
   windowWidth,

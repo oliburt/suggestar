@@ -8,9 +8,25 @@ div.ui.menu {
     border: none;
 }
 
-div.ui.menu .active.item {
+div.ui.menu > .active.item {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+    background-color: snow;
+    color: #111;
+}
+div.ui.menu > a.item, div.ui.menu > div.simple.dropdown {
+    color: #fff;
+}
+div.ui.menu > div.active.simple.dropdown {
+    color: #111;
+}
+
+div.ui.menu > .active.item:hover, div.ui.menu > div.active.simple.dropdown:hover  {
+    background-color: rgba(211, 211, 211, 0.3);
+}
+div.ui.menu > a.item:hover,div.ui.menu > div.simple.dropdown:hover  {
+    background-color: rgba(154, 0, 0, 0.913);
+    color: #fff;
 }
 
 div.ui.menu {

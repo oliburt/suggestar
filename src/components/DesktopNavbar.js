@@ -1,15 +1,26 @@
 import React from "react";
 import { Menu, Dropdown, Image } from "semantic-ui-react";
 import { NavLink, useHistory } from "react-router-dom";
-import '../styles/DesktopNav.css'
+import "../styles/DesktopNav.css";
 
 const DesktopNavbar = ({ user }) => {
-  const history = useHistory()
+  const history = useHistory();
   return (
     <Menu>
-      <Menu.Item style={{padding: '0', cursor: 'pointer'}} onClick={() => history.push('/')}>
-          <Image src={require('../images/logo.png')} style={{paddingLeft: '0.6rem', paddingRight: '0.6rem', width: '60px', height: 'auto'}}/>
-        </Menu.Item>
+      <Menu.Item
+        style={{ padding: "0", cursor: "pointer", backgroundColor: 'snow' }}
+        onClick={() => history.push("/")}
+      >
+        <Image
+          src={require("../images/logo.png")}
+          style={{
+            paddingLeft: "0.6rem",
+            paddingRight: "0.6rem",
+            width: "60px",
+            height: "auto"
+          }}
+        />
+      </Menu.Item>
       <Menu.Item key={"/"} as={NavLink} to={"/"} exact>
         Home
       </Menu.Item>
@@ -51,12 +62,7 @@ const DesktopNavbar = ({ user }) => {
       ) : (
         <Dropdown text="Login" simple className="link item">
           <Dropdown.Menu>
-            <Dropdown.Item
-              key={"/login"}
-              as={NavLink}
-              to={"/login"}
-              exact
-            >
+            <Dropdown.Item key={"/login"} as={NavLink} to={"/login"} exact>
               Login
             </Dropdown.Item>
             <Dropdown.Item
@@ -70,7 +76,11 @@ const DesktopNavbar = ({ user }) => {
           </Dropdown.Menu>
         </Dropdown>
       )}
-      {user ? <Menu.Item position='right' onClick={() => history.push('/')}>Welcome {user.full_name}</Menu.Item> : null}
+      {user ? (
+        <Menu.Item position="right" onClick={() => history.push("/")}>
+          Welcome {user.full_name}
+        </Menu.Item>
+      ) : null}
     </Menu>
   );
 };

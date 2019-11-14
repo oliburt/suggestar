@@ -3,9 +3,36 @@
 }
 
 .ui.secondary.vertical.tabular.menu .active.item {
-    background-color: #118AB2;
+    background-color: #800000;
+    color: white;
 }
 
 .ui.secondary.vertical.menu > a.item {
     margin: 0;
+}
+
+div.ui.tabular.menu.small-screen-menu > a.active.item {
+    background-color: #800000;
+    color: white;
+}
+
+
+div.ui.menu {
+    border-radius: 0;
+    background: snow;
+    border: none;
+}
+
+div.ui.menu > .active.item {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: #800000;
+    color: white;
+}
+
+div.ui.menu > .active.item:hover, div.ui.menu > div.active.simple.dropdown:hover  {
+    background-color: rgba(211, 211, 211, 0.3);
+}
+div.ui.menu > a.item:hover,div.ui.menu > div.simple.dropdown:hover  {
+    background-color: rgba(154, 0, 0, 0.913)
 }
