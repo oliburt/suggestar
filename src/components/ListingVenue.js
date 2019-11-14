@@ -26,8 +26,8 @@ const ListingVenue = ({venue, history, windowWidth}) => {
                 />
               </div>
               {windowWidth > 800 ? (
-                <div style={{ marginLeft: "2rem", paddingTop: "2rem", fontSize: '0.7rem' }}>
-                  <p>{venue.description}</p>
+                <div style={{ marginLeft: "2rem", paddingTop: "2rem", fontSize: '0.7rem', maxWidth: '55%' }}>
+                  <p>{venue.description.slice(0, 200) + '...'}</p>
                 </div>
               ) : null}
             </div>
