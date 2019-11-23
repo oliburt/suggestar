@@ -37,7 +37,6 @@ const NewVenueForm = ({
   });
   const [errors, setErrors] = React.useState([]);
 
-
   useEffect(() => {
     if (activeUserMenuItem !== "My Venues") {
       setActiveUserMenuItem("My Venues");
@@ -93,7 +92,12 @@ const NewVenueForm = ({
       image_public_id: imagePublicId
     };
 
-    if (placeId && address.length > 0 && description.length > 0 && name.length > 0) {
+    if (
+      placeId &&
+      address.length > 0 &&
+      description.length > 0 &&
+      name.length > 0
+    ) {
       API.postVenue(venue).then(venue => {
         if (venue && venue.id) {
           addVenueToCurrentUser(user, venue);
@@ -109,14 +113,15 @@ const NewVenueForm = ({
       });
     } else {
       const nameError = !name ? "Please provide a name" : null;
-      const descriptionError = !description ? "Please provide a description" : null;
-      const addressError = (address.length === 0 && placeId) || (!placeId) ? "Please choose one of the suggested places for the address" : null;
-      
-      const errors = [
-        nameError,
-        descriptionError,
-        addressError
-      ];
+      const descriptionError = !description
+        ? "Please provide a description"
+        : null;
+      const addressError =
+        (address.length === 0 && placeId) || !placeId
+          ? "Please choose one of the suggested places for the address"
+          : null;
+
+      const errors = [nameError, descriptionError, addressError];
       const nonNullErrors = errors.filter(e => e);
       setErrors(nonNullErrors);
     }
@@ -126,8 +131,10 @@ const NewVenueForm = ({
     Cloudinary.uploadImage(e, setImageUrl, setImagePublicId, setLoadingImage);
   };
 
-  const handleChangeImage = () =>
-    this.setState({ imagePublicId: "", imageUrl: "" });
+  const handleChangeImage = () => {
+    setImageUrl('')
+    setImagePublicId('')
+  };
 
   // const changeImage = async e => {
   //   setImageUrl('')
@@ -143,7 +150,7 @@ const NewVenueForm = ({
 
   return (
     <FormWrapper windowWidth={windowWidth}>
-    {errors.length > 0 ? (
+      {errors.length > 0 ? (
         <Message warning>
           <Message.Header warning>Something went Wrong!</Message.Header>
           {errors.map((error, index) => (
