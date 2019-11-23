@@ -1,68 +1,85 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Suggestar
 
-## Available Scripts
+Suggestar is an application built with two goals in mind. The first is for it to serve as a platform for people to discover 'suggestions' for events/places/activities based on the time and the users proximity. When a user opens up the application the home page will give them a scrollable stream of 'listings' (posted by other users) that may be of interest for them to go to. They can filter these listings by category and also click on the map tab to see markers of each listing at their venue's location. The user can view informational pages about each listing and their specified venue. If a user creates an account they can also leave 'likes' on a listing and reviews on a venue.
 
-In the project directory, you can run:
+The second goal is to allow businesses that involve providing a service of some kind at some venue to be able to post listings of what service/promotion/event they are running at specific time. The goal would be to reach new customers who may be within the proximity of their venue. A person who uses suggestar for this purpose can create an account and setup informational pages about their venues and post listings for any of their venues that will appear on the home stream to any users in the correct proximity and on the correct day. This user can also update and delete any listings and venues they have created.
+This repo is only for the front end of the application. You can find the back-end here: [Backend-Repo](https://github.com/oliburt/suggestar-backend)
 
-### `yarn start`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Prerequisites
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+This was built on macOS.
 
-### `yarn test`
+In order to run this project on your own machine you will need first need Node.js and node-package-manager (npm) installed. (This was built with Node v.12.9.1 and npm v.6.13.1)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You can download node [here](https://nodejs.org/en/).
+Npm should be installed with Node.
 
-### `yarn build`
+You can then fork and clone this directory onto your machine, open the root directory in your terminal and run
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+npm install
+```
+to install all dependencies.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Then you can fire up the development server by running:
+```
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+*You will also need to start up the [Backend-Repo](https://github.com/oliburt/suggestar-backend) and make sure that the API_ENDPOINT variable in /src/adapters/API.js points to the correct url that you setup*
 
-### `yarn eject`
+*This project also makes use of google maps and google places api. Currently the project is setup so that it uses my personal api key and my google developer account is restricted to only accept requests from a select number of IP addresses that I set up. If you wish to fork and clone this project you will have to setup up your own [google developers](https://console.developers.google.com/) account, create an api key, select the google maps and places apis and then include the correct script in index.html*
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Main Features
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Starting up the application lands you on the homepage. Without logging in or signing up the user has access to most of the main features of the app. The user can see all nearby listings and change the distance and category filters. The user can also see listings on the map. By clicking on a listing the user is given an informational display page. This page will also link the user to another informational display page about the venue of the listing where the user can read reviews about the venue.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+After signing up, a user can then 'like' listings, leave reviews on venues and create their own venues and listings. Listings are dependent on their venue for their location.
 
-## Learn More
+For the homepage stream listings are fetched from the database if they are within the next 24 hours from the time of the request and if they are within a 10km proximity of the users location.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This project was also styled to be responsive in changing its layout with mobile devices in mind (although this has only been tested through chrome's devtools and not on any actual mobile devices)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Technology Stack
 
-### Code Splitting
+### Frontend - [Frontend-Repo](https://github.com/oliburt/suggestar)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+- JavaScript
+- HTML
+- CSS
+- [Node.js]((https://nodejs.org/en/)) + NPM
+- React (This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app))
+- [Redux](https://redux.js.org/) + [Redux Devtools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en)
+- [React Router Dom](https://reacttraining.com/react-router/web/guides/quick-start)
+- Google Maps API for showing the map and displaying venue locations with markers.
+- Google Places API for autofilling the address in the new venue form as well as retrieving and maintaing geolocation data
+- [React Google Maps Package](https://tomchentw.github.io/react-google-maps/)
+- [React Places Autocomplete Package](https://github.com/hibiken/react-places-autocomplete)
+- [React DatePicker Package](https://reactdatepicker.com/)
+- [React Star Rating Component Package](https://github.com/voronianski/react-star-rating-component)
+- Styling done with [Semantic-UI-React](https://react.semantic-ui.com/)
 
-### Analyzing the Bundle Size
+### Backend
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+- [Ruby](https://www.ruby-lang.org/en/documentation/)
+- [Rails](https://rubyonrails.org/) (Initialized with 'rails new' with '--api' flag)
+- [Postgres](https://www.postgresql.org/)
+- Active-Model-Serializers for data serialization
+- Bcrypt for password authentication
+- Rack-Cors for CORS
+- JWT for user Auth (stored in an HTTP-Only Cookie)
+- Figaro for managing secret env variables.
 
-### Making a Progressive Web App
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+## Future Development Plans
 
-### Advanced Configuration
+- More filter, sort and search options. Eg. sort by likes or search by venue.
+- A testing suite
+- Refactor controllers to seperate concerns on inital call and user validation.
+- Add action cable for websockets to send broadcast new listings and likes and reviews.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+## Author
 
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Oliver Burt
