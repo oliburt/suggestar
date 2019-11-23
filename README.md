@@ -44,7 +44,7 @@ This project was also styled to be responsive in changing its layout with mobile
 
 ## Technology Stack
 
-### Frontend - [Frontend-Repo](https://github.com/oliburt/suggestar)
+### Frontend
 
 - JavaScript
 - HTML
@@ -61,7 +61,7 @@ This project was also styled to be responsive in changing its layout with mobile
 - [React Star Rating Component Package](https://github.com/voronianski/react-star-rating-component)
 - Styling done with [Semantic-UI-React](https://react.semantic-ui.com/)
 
-### Backend
+### Backend - [Backend-Repo](https://github.com/oliburt/suggestar-backend)
 
 - [Ruby](https://www.ruby-lang.org/en/documentation/)
 - [Rails](https://rubyonrails.org/) (Initialized with 'rails new' with '--api' flag)
