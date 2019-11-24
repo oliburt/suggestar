@@ -6,6 +6,8 @@ The second goal is to allow businesses that involve providing a service of some 
 This repo is only for the front end of the application. You can find the back-end here: [Backend-Repo](https://github.com/oliburt/suggestar-backend)
 
 
+![Suggestar Homepage](https://media.giphy.com/media/IbOe07UXXOFXbkMD2v/giphy.gif)
+
 ## Prerequisites
 
 This was built on macOS.
